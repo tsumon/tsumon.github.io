@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数学基础 · 大模型用到的线性代数、概率论、微积分</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<script>
+  (function () {
+    var t = localStorage.getItem('theme');
+    // 默认浅色为主；只有用户明确选了 dark 才用深色
+    if (!t) t = 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-mark"></span>
+    <span class="brand-name">Transformer 图解</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="pagelinks">
+      <a class="pagelink" href="index.html">模型</a>
+      <a class="pagelink is-on" href="math.html">数学基础</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="切换深浅色">
+      <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+  <div class="progress"><i id="progressBar"></i><span class="progress-chap" id="progressChap"></span></div>
+</header>
+
+<aside class="rail">
+  <ol class="rail-list">
+    <li><a href="#primer"><b>00</b> 从这里开始</a></li>
+    <li><a href="#symbols"><b>·</b> 符号速查</a></li>
+    <li class="rail-sep" style="margin-top: 12px;">线性代数</li>
+    <li><a href="#la1"><b>A1</b> 向量与矩阵</a></li>
+    <li><a href="#la2"><b>A2</b> 矩阵运算</a></li>
+    <li><a href="#la3"><b>A3</b> 特征值分解</a></li>
+    <li><a href="#la4"><b>A4</b> SVD 奇异值分解</a></li>
+    <li class="rail-sep">概率论</li>
+    <li><a href="#prob1"><b>P1</b> 概率基础</a></li>
+    <li><a href="#prob2"><b>P2</b> 期望与方差</a></li>
+    <li><a href="#prob3"><b>P3</b> 常见分布</a></li>
+    <li><a href="#prob4"><b>P4</b> 最大似然估计</a></li>
+    <li><a href="#prob5"><b>P5</b> 信息论</a></li>
+    <li class="rail-sep">微积分</li>
+    <li><a href="#calc1"><b>C1</b> 导数与梯度</a></li>
+    <li><a href="#calc2"><b>C2</b> 链式法则</a></li>
+    <li><a href="#calc3"><b>C3</b> 常用求导</a></li>
+    <li><a href="#calc4"><b>C4</b> 雅可比与海森</a></li>
+  </ol>
+  <div class="rail-sep">快速跳转</div>
+  <ol class="rail-list">
+    <li><a href="index.html"><b>←</b> 回到模型</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<section id="hero" class="hero">
+  <div class="hero-copy">
+    <h1>大模型用到的<br>数学基础</h1>
+    <p class="hero-sub">大学学的线代概率微积分，现在忘得差不多了？这一页把符号和公式都捡回来。</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#primer">从零开始</a>
+      <a class="btn btn-ghost" href="#la1">直接复习</a>
+    </div>
+  </div>
+  <div class="hero-viz" style="display:grid;place-items:center;font-size:48px;color:var(--accent);font-family:var(--mono);">
+    ∇∫∑
+  </div>
+</section>
+
+<!-- ============================================================
+     PRIMER SECTION - 扫盲入门
+     ============================================================ -->
+<section id="primer" class="ch">
+  <div class="ch-head"><span class="ch-num">00</span><h2>从这里开始</h2></div>
+  <p class="lead">大学里的符号忘得差不多了也没关系。按这条线走：认识符号，理解向量，掌握概率，学会求导。</p>
+
+  <p>从<a href="#symbols">符号速查</a>认字，到<a href="#la1">A1 向量</a>建立坐标直觉，再看<a href="#prob1">P1 概率</a>——模型说的每一句话都是分布——最后用<a href="#calc1">C1 梯度</a>理解「猜错了就改一点」。</p>
+  <p>每个大类只留一个可动手的演示，其余是静图。先感受，再看公式。公式下面都标了对应模型页的哪一章。</p>
+</section>
+
+<!-- ============================================================
+     SYMBOL DICTIONARY - 符号字典
+     ============================================================ -->
+<section id="symbols" class="ch">
+  <div class="ch-head"><span class="ch-num">00</span><h2>数学符号速查表</h2></div>
+  <p class="lead">数学符号就像外语，认识了就不吓人。这里列出大模型里最常用的符号，包括怎么读、什么意思、在哪儿用。</p>
+
+  <h3 class="sub">希腊字母（最常用）</h3>
+  <table class="symtable" style="margin-bottom: 32px;">
+    <thead>
+      <tr>
+        <th>符号</th>
+        <th>读音</th>
+        <th>用途</th>
+        <th>常见场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>$\alpha$</td><td>阿尔法</td><td>学习率、权重系数</td><td>Adam 优化器里的学习率</td></tr>
+      <tr><td>$\beta$</td><td>贝塔</td><td>动量系数、超参数</td><td>Adam 的 $\beta_1, \beta_2$</td></tr>
+      <tr><td>$\gamma$</td><td>伽马</td><td>折扣因子</td><td>强化学习的奖励折扣</td></tr>
+      <tr><td>$\delta$</td><td>德尔塔</td><td>误差、变化量</td><td>反向传播的误差项 $\delta$</td></tr>
+      <tr><td>$\epsilon$</td><td>艾普西隆</td><td>很小的数</td><td>防止除零：$x/(y+\epsilon)$</td></tr>
+      <tr><td>$\theta$</td><td>西塔</td><td>参数向量</td><td>模型所有参数 $\theta = \{W, b\}$</td></tr>
+      <tr><td>$\lambda$</td><td>兰姆达</td><td>特征值、正则化系数</td><td>L2 正则：$\lambda\lVert W\rVert^2$</td></tr>
+      <tr><td>$\mu$</td><td>缪</td><td>均值</td><td>高斯分布的均值 $\mu$</td></tr>
+      <tr><td>$\sigma$</td><td>西格玛</td><td>标准差、激活函数</td><td>高斯分布的 $\sigma$，Sigmoid $\sigma(x)$</td></tr>
+      <tr><td>$\Sigma$</td><td>大写西格玛</td><td>求和、协方差矩阵</td><td>$\sum_{i=1}^{n} x_i$</td></tr>
+      <tr><td>$\phi$</td><td>斐</td><td>特征函数</td><td>特征映射 $\phi(x)$</td></tr>
+      <tr><td>$\omega$</td><td>欧米伽</td><td>频率、权重</td><td>傅里叶变换的角频率</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">运算符号</h3>
+  <table class="symtable" style="margin-bottom: 32px;">
+    <thead>
+      <tr>
+        <th>符号</th>
+        <th>读音</th>
+        <th>用途</th>
+        <th>常见场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>$\nabla$</td><td>纳布拉（梯度）</td><td>梯度算子</td><td>$\nabla f$ 是 $f$ 的梯度向量</td></tr>
+      <tr><td>$\partial$</td><td>偏导数</td><td>偏导数符号</td><td>$\frac{\partial f}{\partial x}$ 对 $x$ 求偏导</td></tr>
+      <tr><td>$\int$</td><td>积分</td><td>积分符号</td><td>$\int_a^b f(x)dx$ 从 $a$ 到 $b$ 积分</td></tr>
+      <tr><td>$\sum$</td><td>求和</td><td>累加</td><td>$\sum_{i=1}^{n} x_i = x_1+x_2+\cdots+x_n$</td></tr>
+      <tr><td>$\prod$</td><td>连乘</td><td>累乘</td><td>$\prod_{i=1}^{n} x_i = x_1 \cdot x_2 \cdot \cdots \cdot x_n$</td></tr>
+      <tr><td>$\propto$</td><td>正比于</td><td>正比关系</td><td>$y \propto x$ 表示 $y = cx$ ($c$ 是常数)</td></tr>
+      <tr><td>$\approx$</td><td>约等于</td><td>近似相等</td><td>$\pi \approx 3.14$</td></tr>
+      <tr><td>$\equiv$</td><td>恒等于</td><td>定义相等</td><td>$(a+b)^2 \equiv a^2+2ab+b^2$</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">集合与逻辑</h3>
+  <table class="symtable" style="margin-bottom: 32px;">
+    <thead>
+      <tr>
+        <th>符号</th>
+        <th>读音</th>
+        <th>用途</th>
+        <th>常见场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>$\in$</td><td>属于</td><td>元素关系</td><td>$x \in \mathbb{R}$ 表示 $x$ 是实数</td></tr>
+      <tr><td>$\mathbb{R}$</td><td>实数集</td><td>所有实数</td><td>$\mathbb{R}^n$ 是 $n$ 维实向量空间</td></tr>
+      <tr><td>$\mathbb{R}^{m\times n}$</td><td>实矩阵</td><td>$m$ 行 $n$ 列矩阵</td><td>权重矩阵 $W \in \mathbb{R}^{d\times k}$</td></tr>
+      <tr><td>$\forall$</td><td>对所有</td><td>全称量词</td><td>$\forall x, f(x) > 0$ 表示任意 $x$ 都满足</td></tr>
+      <tr><td>$\exists$</td><td>存在</td><td>存在量词</td><td>$\exists x, f(x)=0$ 表示至少有一个 $x$ 满足</td></tr>
+      <tr><td>$\mid$</td><td>给定、条件</td><td>条件概率</td><td>$P(A\mid B)$ 表示 $B$ 发生条件下 $A$ 的概率</td></tr>
+      <tr><td>$\sim$</td><td>服从分布</td><td>概率分布</td><td>$X \sim \mathcal{N}(0,1)$ 表示 $X$ 服从标准正态分布</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">矩阵运算</h3>
+  <table class="symtable">
+    <thead>
+      <tr>
+        <th>符号</th>
+        <th>读音</th>
+        <th>用途</th>
+        <th>常见场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>$A^{\top}$</td><td>A 转置</td><td>矩阵转置</td><td>行变列，$(A^{\top})_{ij} = A_{ji}$</td></tr>
+      <tr><td>$A^{-1}$</td><td>A 逆</td><td>矩阵的逆</td><td>$AA^{-1} = I$</td></tr>
+      <tr><td>$\lVert \mathbf{v} \rVert$</td><td>v 的范数</td><td>向量长度</td><td>$\lVert \mathbf{v} \rVert_2 = \sqrt{v_1^2+\cdots+v_n^2}$</td></tr>
+      <tr><td>$\langle \mathbf{u}, \mathbf{v} \rangle$</td><td>u v 内积</td><td>向量内积</td><td>$\langle \mathbf{u}, \mathbf{v} \rangle = \sum_i u_i v_i$</td></tr>
+      <tr><td>$\odot$</td><td>哈达玛积</td><td>逐元素乘法</td><td>$(A \odot B)_{ij} = A_{ij} \cdot B_{ij}$</td></tr>
+      <tr><td>$\otimes$</td><td>张量积/克罗内克积</td><td>张量积</td><td>LoRA 分解用到</td></tr>
+      <tr><td>$\text{tr}(A)$</td><td>A 的迹</td><td>对角线元素和</td><td>$\text{tr}(A) = \sum_i A_{ii}$</td></tr>
+      <tr><td>$\det(A)$ 或 $|A|$</td><td>A 的行列式</td><td>行列式</td><td>可逆当且仅当 $\det(A) \ne 0$</td></tr>
+    </tbody>
+  </table>
+
+  <div style="background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 20px 24px; border-radius: 8px; margin-top: 32px;">
+    <p style="margin: 0; line-height: 1.7; color: var(--text);">
+      <strong style="color: var(--accent);">💡 记忆技巧：</strong>不用死记所有符号。看到陌生符号时，回来查这张表。多看几次自然就记住了。重点是理解它们代表什么<strong>操作</strong>，而不是死背名字。
+    </p>
+  </div>
+</section>
+
+<!-- demos staged here, JS moves them into chapters -->
+<div id="viz-staging" hidden>
+
+  <!-- 可视化 1: 向量和内积 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">📐</span>
+      <h3>1. 向量和内积可视化</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="vectorCanvas" width="400" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>向量 u 的长度</label>
+          <input type="range" id="uLen" min="0.5" max="3" step="0.1" value="2">
+          <span class="viz-val" id="uLenVal">2.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>向量 u 的角度</label>
+          <input type="range" id="uAngle" min="0" max="360" step="5" value="30">
+          <span class="viz-val" id="uAngleVal">30°</span>
+        </div>
+        <div class="viz-ctl">
+          <label>向量 v 的长度</label>
+          <input type="range" id="vLen" min="0.5" max="3" step="0.1" value="1.5">
+          <span class="viz-val" id="vLenVal">1.5</span>
+        </div>
+        <div class="viz-ctl">
+          <label>向量 v 的角度</label>
+          <input type="range" id="vAngle" min="0" max="360" step="5" value="120">
+          <span class="viz-val" id="vAngleVal">120°</span>
+        </div>
+        <div class="viz-note">
+          <div style="font-family: var(--mono); font-size: 0.95em;">内积 ⟨u, v⟩ = <span id="dotProduct" style="color: var(--accent); font-weight: 600;">0.00</span></div>
+          <div style="margin-top: 8px; font-size: 0.9em; color: var(--dim);">
+            夹角越小，内积越大；垂直时内积为0
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 2: 高斯分布 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">📊</span>
+      <h3>2. 高斯分布（正态分布）</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="gaussCanvas" width="500" height="300"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>均值 μ</label>
+          <input type="range" id="gaussMu" min="-3" max="3" step="0.1" value="0">
+          <span class="viz-val" id="gaussMuVal">0.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>标准差 σ</label>
+          <input type="range" id="gaussSigma" min="0.3" max="2" step="0.1" value="1">
+          <span class="viz-val" id="gaussSigmaVal">1.0</span>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • μ 控制曲线的中心位置<br>
+          • σ 越小曲线越尖，越大越平坦<br>
+          • 68% 的数据在 μ±σ 范围内
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 3: Softmax -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🎯</span>
+      <h3>3. Softmax 函数</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="softmaxCanvas" width="400" height="300"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>输入 z₁</label>
+          <input type="range" id="z1" min="-3" max="3" step="0.1" value="1">
+          <span class="viz-val" id="z1Val">1.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>输入 z₂</label>
+          <input type="range" id="z2" min="-3" max="3" step="0.1" value="0">
+          <span class="viz-val" id="z2Val">0.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>输入 z₃</label>
+          <input type="range" id="z3" min="-3" max="3" step="0.1" value="-1">
+          <span class="viz-val" id="z3Val">-1.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>温度 T</label>
+          <input type="range" id="temp" min="0.1" max="2" step="0.1" value="1">
+          <span class="viz-val" id="tempVal">1.0</span>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • 所有输出概率和为 1<br>
+          • T 越小分布越尖锐（确定性强）<br>
+          • T 越大分布越平坦（随机性强）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 4: 梯度下降 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">📉</span>
+      <h3>4. 梯度下降优化</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="gdCanvas" width="500" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>学习率 η</label>
+          <input type="range" id="lr" min="0.01" max="0.5" step="0.01" value="0.1">
+          <span class="viz-val" id="lrVal">0.10</span>
+        </div>
+        <div class="viz-ctl">
+          <label>初始位置 x₀</label>
+          <input type="range" id="x0" min="-3" max="3" step="0.1" value="2.5">
+          <span class="viz-val" id="x0Val">2.5</span>
+        </div>
+        <div class="viz-ctl">
+          <button class="viz-btn" id="resetGD">重新开始动画</button>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • 学习率太大会振荡甚至发散<br>
+          • 学习率太小收敛很慢<br>
+          • 梯度下降沿着最陡的下坡方向走
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 20px 24px; border-radius: 8px; margin-top: 32px;">
+    <p style="margin: 0; line-height: 1.7; color: var(--text);">
+      <strong style="color: var(--accent);">💡 使用提示：</strong>
+      拖动滑块观察变化 → 在调整前先预测会怎样 → 验证你的直觉 → 尝试极端值看看边界情况。
+    </p>
+  </div>
+
+  <!-- 可视化 5: 矩阵乘法动画 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🔲</span>
+      <h3>5. 矩阵乘法：手动走一遍</h3>
+    </div>
+    <div class="viz-grid3">
+      <div>
+        <canvas id="matmulCanvas" width="300" height="300"></canvas>
+      </div>
+      <div>
+        <div style="text-align: center; font-family: var(--mono); color: var(--accent); font-size: 30px; margin: 10px 0;">×</div>
+        <div class="viz-ctl">
+          <label>高亮行 i</label>
+          <input type="range" id="mmRow" min="0" max="2" step="1" value="0">
+        </div>
+        <div class="viz-ctl">
+          <label>高亮列 j</label>
+          <input type="range" id="mmCol" min="0" max="2" step="1" value="0">
+        </div>
+      </div>
+      <div>
+        <canvas id="matmulResult" width="300" height="300"></canvas>
+      </div>
+    </div>
+    <div class="viz-note" style="margin-top: 16px; font-family: var(--mono); font-size: 14px; text-align: left;">
+      C<span id="mmCellIndex" style="color: var(--accent); font-weight: 600;">(0,0)</span> = Σ A<span id="mmRowK" style="color: var(--accent); font-weight: 600;">(0,k)</span>·B<span id="mmColK" style="color: var(--accent); font-weight: 600;">(k,0)</span> = <span id="mmValue" style="color: var(--accent); font-weight: 600;">0</span>
+    </div>
+    <p style="margin-top: 16px; font-size: 0.92em; color: var(--dim); line-height: 1.6;">
+      <strong style="color: var(--text);">提示：</strong>矩阵乘法 C<sub>ij</sub> = Σ<sub>k</sub> A<sub>ik</sub>B<sub>kj</sub>。拖动行列滑块，看亮起的格子——A 的「第 i 行」和 B 的「第 j 列」逐元素相乘再求和，就得到 C 的 (i,j) 元素。这就是神经网络前向传播的核心运算。
+    </p>
+  </div>
+
+  <!-- 可视化 6: 激活函数对比 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">⚡</span>
+      <h3>6. 激活函数对比</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="actCanvas" width="500" height="300"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl" style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <button class="act-toggle on" data-act="relu" style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--accent); background: var(--accent); color: var(--accent-on); cursor: pointer; font-weight: 500;">ReLU</button>
+          <button class="act-toggle" data-act="sigmoid" style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-weight: 500;">Sigmoid</button>
+          <button class="act-toggle" data-act="tanh" style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-weight: 500;">Tanh</button>
+          <button class="act-toggle" data-act="gelu" style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-weight: 500;">GELU</button>
+          <button class="act-toggle" data-act="all" style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-weight: 500;">全部</button>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • ReLU 梯度不消失，但负数输出全为 0<br>
+          • Sigmoid 把输出压到 (0,1)，容易梯度消失<br>
+          • Tanh 输出 (-1,1)，比 Sigmoid 更居中<br>
+          • GELU 是 GPT 系列首选，平滑版 ReLU
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 7: 矩阵线性变换 -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🧭</span>
+      <h3>7. 矩阵变换：单位方格去哪了</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="transformCanvas" width="500" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>选择变换矩阵 A</label>
+          <select id="transformSelect" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: 14px;">
+            <option value="shear">A = [[1, 0.5],[0, 1]] 剪切</option>
+            <option value="scale">A = [[2, 0],[0, 0.5]] 缩放</option>
+            <option value="rotate">A = [[cos,-sin],[sin,cos]] 旋转</option>
+            <option value="flip">A = [[-1, 0],[0, 1]] 水平翻转</option>
+          </select>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • 变换前的方格是单位网格<br>
+          • 变换后格子形状改变，但原点不变（线性变换）<br>
+          • 行列式 |det A| = 面积缩放比<br>
+          • 旋转/剪切保持面积，缩放改变面积
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 8: 特征值（A3） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🌀</span>
+      <h3>8. 特征值：变换后方向不变的向量</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="eigCanvas" width="400" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>矩阵元素 a (左上)</label>
+          <input type="range" id="eigA" min="-2" max="2" step="0.1" value="1.5">
+          <span class="viz-val" id="eigAVal">1.5</span>
+        </div>
+        <div class="viz-ctl">
+          <label>矩阵元素 d (右下)</label>
+          <input type="range" id="eigD" min="-2" max="2" step="0.1" value="0.5">
+          <span class="viz-val" id="eigDVal">0.5</span>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • 单位向量绕一圈，被矩阵拉伸的方向就是特征向量方向<br>
+          • 拉伸倍数 = 特征值 λ<br>
+          • 特征向量仍在该方向，只是被缩放
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 9: SVD（A4） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🔁</span>
+      <h3>9. SVD：旋转 → 拉伸 → 再旋转</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="svdCanvas" width="400" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>伸缩系数 σ₁</label>
+          <input type="range" id="svdS1" min="0.5" max="2.5" step="0.1" value="2">
+          <span class="viz-val" id="svdS1Val">2.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>伸缩系数 σ₂</label>
+          <input type="range" id="svdS2" min="0.5" max="2.5" step="0.1" value="0.6">
+          <span class="viz-val" id="svdS2Val">0.6</span>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • 单位圆先旋转，再沿主轴拉伸，再旋转<br>
+          • σ₁ ≥ σ₂ 是奇异值，越大的方向信息越多<br>
+          • 只留大奇异值 = 低秩近似
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 10: 概率（P1） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🎲</span>
+      <h3>10. 条件概率：B 发生下 A 的概率</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="probCanvas" width="400" height="400"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>P(A) 先验</label>
+          <input type="range" id="probA" min="0.1" max="0.9" step="0.05" value="0.3">
+          <span class="viz-val" id="probAVal">0.3</span>
+        </div>
+        <div class="viz-ctl">
+          <label>P(B|A) 灵敏度</label>
+          <input type="range" id="probBA" min="0.1" max="0.9" step="0.05" value="0.8">
+          <span class="viz-val" id="probBAVal">0.8</span>
+        </div>
+        <div class="viz-ctl">
+          <label>P(B|¬A) 误报率</label>
+          <input type="range" id="probBn" min="0.05" max="0.5" step="0.05" value="0.15">
+          <span class="viz-val" id="probBnVal">0.15</span>
+        </div>
+        <div class="viz-note">
+          <strong>读完：</strong><br>
+          • 深色块 = P(A) ∩ B；浅色块 = P(¬A) ∩ B<br>
+          • 后验 P(A|B) = 深色 / 全部蓝色
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 11: 期望方差（P2） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">📊</span>
+      <h3>11. 分布：期望与方差的直觉</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="varCanvas" width="400" height="300"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>均值 μ</label>
+          <input type="range" id="varMu" min="-3" max="3" step="0.1" value="0">
+          <span class="viz-val" id="varMuVal">0.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>方差 σ²</label>
+          <input type="range" id="varSig" min="0.2" max="2.5" step="0.1" value="1">
+          <span class="viz-val" id="varSigVal">1.0</span>
+        </div>
+        <div class="viz-note">
+          <strong>观察：</strong><br>
+          • μ 是分布「重心」，曲线中心<br>
+          • σ² 越大，分布越散、越扁平<br>
+          • 68% 数据落在 μ±σ 内
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 12: 最大似然（P4） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🎯</span>
+      <h3>12. 最大似然：哪个参数最像生了这些数据</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="mleCanvas" width="400" height="300"></canvas>
+      </div>
+      <div>
+        <p style="margin:0 0 14px; color:var(--dim); font-size:13.5px; line-height:1.7;">一堆金色的点是从某个未知分布采样来的。拖动把高斯曲线对准它们，<b style="color:var(--accent);">越匹配，似然值越大</b>。</p>
+        <div class="viz-ctl">
+          <label>尝试均值 μ</label>
+          <input type="range" id="mleMu" min="-3" max="5" step="0.1" value="1">
+          <span class="viz-val" id="mleMuVal">1.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>尝试标准差 σ</label>
+          <input type="range" id="mleSig" min="0.3" max="3" step="0.1" value="1.5">
+          <span class="viz-val" id="mleSigVal">1.5</span>
+        </div>
+        <div class="viz-note">
+          对数似然 ℓ = <span id="mleVal" style="color:var(--accent); font-family:var(--mono); font-weight:600;">-29.3</span><br>
+          <strong>思考：</strong>数据点越多、曲线越贴高概率区，ℓ 越大。找到最大 ℓ 的 μ、σ 就是 MLE。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 13: 信息论（P5） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🌡️</span>
+      <h3>13. 熵：分布有多「难预测」</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="entCanvas" width="400" height="300"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>概率 p₁</label>
+          <input type="range" id="entP1" min="0.1" max="0.8" step="0.05" value="0.5">
+          <span class="viz-val" id="entP1Val">0.5</span>
+        </div>
+        <div class="viz-ctl">
+          <label>概率 p₂</label>
+          <input type="range" id="entP2" min="0.1" max="0.8" step="0.05" value="0.3">
+          <span class="viz-val" id="entP2Val">0.3</span>
+        </div>
+        <div class="viz-note">
+          熵 H = <span id="entVal" style="color:var(--accent); font-family:var(--mono); font-weight:600;">0.88</span> bits<br>
+          <strong>观察：</strong>p 越均分（√ 接近 1/3），熵越大；越极端（某一项接近 1），熵越小。模型「越不确定」熵越高。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 14: 链式法则（C2） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">⛓️</span>
+      <h3>14. 链式法则：复合函数怎么求导</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="chainCanvas" width="400" height="320"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>输入 x</label>
+          <input type="range" id="chainX" min="-2" max="2" step="0.1" value="0.5">
+          <span class="viz-val" id="chainXVal">0.5</span>
+        </div>
+        <div class="viz-note">
+          <span style="font-family:var(--mono); font-size:13px;">f(x) = sin(x²)</span><br>
+          <strong>推导：</strong>令 u = x²，则<br>
+          df/dx = cos(u) · 2x<br>
+          = <span id="chainVal" style="color:var(--accent); font-family:var(--mono); font-weight:600;">0.88</span> · <span id="chainU" style="color:var(--accent); font-family:var(--mono); font-weight:600;">0.25</span><br>
+          外层导数 × 内层导数
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可视化 15: 雅可比与海森（C4） -->
+  <div class="math-viz">
+    <div class="viz-head">
+      <span class="viz-emoji">🏞️</span>
+      <h3>15. 海森矩阵：曲率告诉你几点</h3>
+    </div>
+    <div class="viz-grid">
+      <div>
+        <canvas id="hessCanvas" width="400" height="320"></canvas>
+      </div>
+      <div>
+        <div class="viz-ctl">
+          <label>二阶导数 ∂²f/∂x² (a)</label>
+          <input type="range" id="hessA" min="-2" max="2" step="0.1" value="1">
+          <span class="viz-val" id="hessAVal">1.0</span>
+        </div>
+        <div class="viz-ctl">
+          <label>混合项 ∂²f/∂x∂y (b)</label>
+          <input type="range" id="hessB" min="-1" max="1" step="0.1" value="0">
+          <span class="viz-val" id="hessBVal">0.0</span>
+        </div>
+        <div class="viz-note">
+          海森 H = [[a, b],[b, c]]，取 c = a<br>
+          <span id="hessType" style="color:var(--accent); font-weight:600;">正定 → 局部极小</span><br>
+          <strong>判定：</strong>a > |b| 正定(谷底)，a < -|b| 负定(峰顶)，否则鞍点(马鞍形)。
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     LINEAR ALGEBRA
+     ============================================================ -->
+<section id="la1" class="ch">
+  <div class="ch-head"><span class="ch-num">A1</span><h2>向量与矩阵：神经网络的砖瓦</h2></div>
+  <p class="lead">神经网络里的一切都是向量和矩阵。一句话是向量，一层参数是矩阵，一批数据是三维张量。先把符号和基本运算理清楚。</p>
+
+  <h3 class="sub">A1.1　向量</h3>
+  <p>向量是一列数。写成列向量 $\mathbf{v} = \begin{bmatrix}v_1\\v_2\\\vdots\\v_n\end{bmatrix}$，也可以写成行向量 $\mathbf{v}^{\top} = [v_1, v_2, \dots, v_n]$。转置 $(\cdot)^{\top}$ 把行变列、列变行。</p>
+
+  <table class="symtable">
+    <thead><tr><th>符号</th><th>名称</th><th>定义</th></tr></thead>
+    <tbody>
+      <tr><td>$\mathbf{v}\in\mathbb{R}^n$</td><td>n 维向量</td><td>实数向量空间</td></tr>
+      <tr><td>$\lVert\mathbf{v}\rVert_2$</td><td>L2 范数</td><td>$\sqrt{v_1^2+v_2^2+\cdots+v_n^2}$</td></tr>
+      <tr><td>$\lVert\mathbf{v}\rVert_1$</td><td>L1 范数</td><td>$|v_1|+|v_2|+\cdots+|v_n|$</td></tr>
+      <tr><td>$\langle\mathbf{u},\mathbf{v}\rangle$</td><td>内积</td><td>$\mathbf{u}^{\top}\mathbf{v}=\sum_i u_i v_i$</td></tr>
+      <tr><td>$\lVert\mathbf{v}\rVert_p$</td><td>Lp 范数</td><td>$\big(\sum_i |v_i|^p\big)^{1/p}$</td></tr>
+      <tr><td>$\lVert\mathbf{v}\rVert_\infty$</td><td>无穷范数</td><td>$\max_i |v_i|$</td></tr>
+    </tbody>
+  </table>
+
+  <div class="eq">
+    <div class="eq-label">柯西-施瓦茨不等式</div>
+    $$|\langle\mathbf{u},\mathbf{v}\rangle| \le \lVert\mathbf{u}\rVert_2\,\lVert\mathbf{v}\rVert_2$$
+    <p class="eq-why">等号成立当且仅当两个向量共线。这个不等式在推导注意力的 scaled dot-product 时会用到。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch4">第 04 章 注意力</a> · <a href="index.html#ch3">第 03 章 词向量</a></p>
+  </div>
+
+  <h3 class="sub">A1.2　矩阵</h3>
+  <p>矩阵是一张二维数表。$A\in\mathbb{R}^{m\times n}$ 表示 $m$ 行 $n$ 列的实矩阵。神经网络的权重 $W$ 就是矩阵。</p>
+
+  <table class="symtable">
+    <thead><tr><th>符号</th><th>名称</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>$A_{ij}$</td><td>元素</td><td>第 $i$ 行第 $j$ 列的元素</td></tr>
+      <tr><td>$A^{\top}$</td><td>转置</td><td>$(A^{\top})_{ij}=A_{ji}$</td></tr>
+      <tr><td>$\text{tr}(A)$</td><td>迹</td><td>$\sum_i A_{ii}$，对角线元素之和</td></tr>
+      <tr><td>$\det(A)$</td><td>行列式</td><td>方阵的行列式，记作 $|A|$</td></tr>
+      <tr><td>$A^{-1}$</td><td>逆矩阵</td><td>满足 $AA^{-1}=A^{-1}A=I$</td></tr>
+      <tr><td>$\text{rank}(A)$</td><td>秩</td><td>线性无关的行（列）数</td></tr>
+    </tbody>
+  </table>
+
+  <div class="eq">
+    <div class="eq-label">重要性质</div>
+    $$(AB)^{\top}=B^{\top}A^{\top},\qquad (AB)^{-1}=B^{-1}A^{-1}$$
+    $$\text{tr}(AB)=\text{tr}(BA),\qquad \text{tr}(ABC)=\text{tr}(CAB)=\text{tr}(BCA)$$
+    <p class="eq-why">迹的循环性质在推导梯度时经常用到。$(A^{\top})^{\top}=A$，$(A^{-1})^{-1}=A$。</p>
+  </div>
+</section>
+
+<section id="la2" class="ch">
+  <div class="ch-head"><span class="ch-num">A2</span><h2>矩阵运算：神经网络的流水线</h2></div>
+  <p class="lead">前向传播就是一连串矩阵乘法。反向传播就是把这些乘法倒过来求导。</p>
+
+  <h3 class="sub">A2.1　矩阵乘法</h3>
+  <p>$C = AB$，要求 $A$ 的列数等于 $B$ 的行数。$A\in\mathbb{R}^{m\times p}$，$B\in\mathbb{R}^{p\times n}$，则 $C\in\mathbb{R}^{m\times n}$。</p>
+
+  <div class="eq">
+    <div class="eq-label">矩阵乘法定义</div>
+    $$C_{ij}=\sum_{k=1}^{p} A_{ik}B_{kj}$$
+    <p class="eq-why">第 $i$ 行第 $j$ 列的元素，是 $A$ 的第 $i$ 行和 $B$ 的第 $j$ 列做内积。复杂度 $O(mnp)$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch2">第 02 章 神经网络</a> · <a href="index.html#ch4">第 04 章 注意力</a></p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>结合律</h4>
+      <p>$(AB)C = A(BC)$。矩阵乘法满足结合律但不满足交换律：$AB \ne BA$。</p>
+    </div>
+    <div class="card">
+      <h4>分配律</h4>
+      <p>$A(B+C)=AB+AC$，$(A+B)C=AC+BC$。</p>
+    </div>
+    <div class="card">
+      <h4>单位矩阵</h4>
+      <p>$I$ 是对角线全 1 其余全 0 的方阵，$AI=IA=A$。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">A2.2　Hadamard 积（逐元素乘法）</h3>
+  <p>记作 $A \odot B$，要求两个矩阵形状完全相同，对应位置相乘。激活函数就是逐元素操作。</p>
+
+  <div class="eq">
+    <div class="eq-label">Hadamard 积</div>
+    $$(A\odot B)_{ij}=A_{ij}\cdot B_{ij}$$
+    <p class="eq-why">例如 ReLU 就是 $\text{ReLU}(x)=\max(0,x)$，逐元素作用。不要和矩阵乘法混淆。</p>
+  </div>
+
+  <h3 class="sub">A2.3　Kronecker 积（张量积）</h3>
+  <p>$A\otimes B$ 把 $A$ 的每个元素都替换成 $B$ 的一个拷贝再乘上那个元素。LoRA 用到。</p>
+
+  <div class="eq">
+    <div class="eq-label">Kronecker 积</div>
+    $$A\otimes B = \begin{bmatrix}
+      A_{11}B & A_{12}B & \cdots\\
+      A_{21}B & A_{22}B & \cdots\\
+      \vdots & \vdots & \ddots
+    \end{bmatrix}$$
+    <p class="eq-why">如果 $A$ 是 $m\times n$，$B$ 是 $p\times q$，则 $A\otimes B$ 是 $mp\times nq$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch8">第 08 章 LoRA</a></p>
+  </div>
+</section>
+
+<section id="la3" class="ch">
+  <div class="ch-head"><span class="ch-num">A3</span><h2>特征值分解：理解方阵的本质</h2></div>
+  <p class="lead">方阵 $A$ 可以理解成一个线性变换。有些方向被 $A$ 拉伸或压缩，但方向不变，那就是特征向量。</p>
+
+  <div class="eq">
+    <div class="eq-label">特征值与特征向量</div>
+    $$A\mathbf{v}=\lambda\mathbf{v}$$
+    <p class="eq-why">$\mathbf{v}$ 是特征向量，$\lambda$ 是对应的特征值。$\mathbf{v}\ne\mathbf{0}$。</p>
+  </div>
+
+  <p>求解：$A\mathbf{v}=\lambda\mathbf{v}$ 等价于 $(A-\lambda I)\mathbf{v}=\mathbf{0}$，要有非零解就要求 $\det(A-\lambda I)=0$。这是特征多项式，解出所有 $\lambda$，再反代求 $\mathbf{v}$。</p>
+
+  <div class="eq">
+    <div class="eq-label">特征值分解（EVD）</div>
+    $$A=Q\Lambda Q^{-1}$$
+    <p class="eq-why">$Q$ 的列是特征向量，$\Lambda$ 是对角矩阵装着特征值。前提：$A$ 有 $n$ 个线性无关的特征向量。</p>
+    <p class="eq-xref">低秩方向的直觉，见模型页 <a href="index.html#ch8">第 08 章 LoRA</a></p>
+  </div>
+
+  <div class="note">
+    <b>对称矩阵的好处</b>
+    如果 $A$ 是实对称矩阵（$A=A^{\top}$），那么：
+    (1) 所有特征值都是实数；
+    (2) 不同特征值对应的特征向量正交；
+    (3) 一定可以被正交对角化：$A=Q\Lambda Q^{\top}$，其中 $Q$ 是正交矩阵（$Q^{\top}Q=I$）。
+    协方差矩阵就是对称的，所以 PCA 能用正交分解。
+  </div>
+</section>
+
+<section id="la4" class="ch">
+  <div class="ch-head"><span class="ch-num">A4</span><h2>SVD 奇异值分解：任意矩阵的万能分解</h2></div>
+  <p class="lead">特征值分解只能用于方阵。SVD 能分解任意矩阵，而且比特征值分解稳定。LoRA、PCA、推荐系统都用它。</p>
+
+  <div class="eq">
+    <div class="eq-label">奇异值分解</div>
+    $$A = U\Sigma V^{\top}$$
+    <p class="eq-why">$A\in\mathbb{R}^{m\times n}$，$U\in\mathbb{R}^{m\times m}$ 和 $V\in\mathbb{R}^{n\times n}$ 都是正交矩阵，$\Sigma\in\mathbb{R}^{m\times n}$ 是对角矩阵（非方阵时对角线之外全 0）。</p>
+  </div>
+
+  <p>奇异值 $\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r > 0$ 放在 $\Sigma$ 的对角线上，$r=\text{rank}(A)$。</p>
+
+  <div class="derive">
+    <div class="derive-step">
+      <h5>SVD 怎么算出来</h5>
+      <p>关键：$A^{\top}A$ 和 $AA^{\top}$ 都是对称半正定矩阵，可以正交对角化。</p>
+      $$A^{\top}A = V\Sigma^{\top}\Sigma V^{\top}=V\text{diag}(\sigma_1^2,\dots,\sigma_n^2)V^{\top}$$
+    </div>
+    <div class="derive-step">
+      <h5>$V$ 就是 $A^{\top}A$ 的特征向量</h5>
+      <p>对 $A^{\top}A$ 做特征值分解，得到特征向量矩阵 $V$ 和特征值 $\sigma_i^2$。</p>
+    </div>
+    <div class="derive-step">
+      <h5>$U$ 通过 $AV=U\Sigma$ 反推</h5>
+      <p>已知 $V$ 和 $\Sigma$，令 $U$ 的第 $i$ 列 $\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i$，这样构造出来的 $U$ 是正交的。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">A4.1　截断 SVD 与低秩近似</h3>
+  <p>只保留前 $k$ 个最大的奇异值，丢掉后面的小奇异值，得到低秩近似 $A_k = U_k \Sigma_k V_k^{\top}$。这是所有秩为 $k$ 的矩阵里最接近 $A$ 的那个（Frobenius 范数意义下）。</p>
+
+  <div class="eq">
+    <div class="eq-label">LoRA 的思路</div>
+    $$\Delta W \approx BA,\qquad B\in\mathbb{R}^{d\times r},\  A\in\mathbb{R}^{r\times d},\  r\ll d$$
+    <p class="eq-why">原权重 $W\in\mathbb{R}^{d\times d}$ 冻结，只训练两个瘦矩阵 $B$ 和 $A$。秩 $r$ 越小，参数越少，表达能力越弱。SVD 告诉我们低秩近似是最优的，但 LoRA 不显式做 SVD，而是直接随机初始化 $A$ 和 $B$ 让梯度下降去学。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch8">第 08 章 微调与 LoRA</a></p>
+  </div>
+</section>
+
+<div class="ch-air"><p>模型说的每一句话，都是一个分布。</p></div>
+
+<!-- ============================================================
+     PROBABILITY
+     ============================================================ -->
+<section id="prob1" class="ch">
+  <div class="ch-head"><span class="ch-num">P1</span><h2>概率基础：模型的不确定性</h2></div>
+  <p class="lead">语言模型不是输出一个确定的词，而是输出一个概率分布。理解概率是理解生成的前提。</p>
+
+  <h3 class="sub">P1.1　基本定义</h3>
+  <table class="symtable">
+    <thead><tr><th>符号</th><th>名称</th><th>定义</th></tr></thead>
+    <tbody>
+      <tr><td>$P(A)$</td><td>概率</td><td>事件 $A$ 发生的可能性，$0\le P(A)\le 1$</td></tr>
+      <tr><td>$P(A\mid B)$</td><td>条件概率</td><td>$B$ 发生的条件下 $A$ 发生的概率</td></tr>
+      <tr><td>$P(A,B)$</td><td>联合概率</td><td>$A$ 和 $B$ 同时发生的概率</td></tr>
+      <tr><td>$P(A)+P(B)$</td><td>概率和</td><td>互斥事件：$P(A\cup B)=P(A)+P(B)$</td></tr>
+    </tbody>
+  </table>
+
+  <div class="eq">
+    <div class="eq-label">条件概率公式</div>
+    $$P(A\mid B)=\frac{P(A,B)}{P(B)},\qquad P(B)>0$$
+    <p class="eq-why">$P(A,B)$ 是 $A$ 和 $B$ 同时发生的概率。可以改写成 $P(A,B)=P(A\mid B)P(B)=P(B\mid A)P(A)$。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">贝叶斯定理</div>
+    $$P(A\mid B)=\frac{P(B\mid A)P(A)}{P(B)}$$
+    <p class="eq-why">从结果反推原因。$P(A)$ 叫先验，$P(A\mid B)$ 叫后验，$P(B\mid A)$ 叫似然。语言模型本质上就是在建模 $P(\text{下一个词}\mid\text{前文})$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch6">第 06 章 生成下一个字</a> · <a href="index.html#ch7">第 07 章 预训练</a></p>
+  </div>
+
+  <h3 class="sub">P1.2　全概率公式</h3>
+  <p>如果事件 $B_1, B_2, \dots, B_n$ 互不相交且覆盖整个样本空间，那么：</p>
+
+  <div class="eq">
+    <div class="eq-label">全概率公式</div>
+    $$P(A)=\sum_{i=1}^{n} P(A\mid B_i)P(B_i)$$
+    <p class="eq-why">把 $A$ 按不同情况拆开算，再加起来。在推导边缘概率时用到。</p>
+  </div>
+
+  <h3 class="sub">P1.3　独立性</h3>
+  <p>如果 $A$ 和 $B$ 独立，那么 $P(A,B)=P(A)P(B)$，且 $P(A\mid B)=P(A)$。知道 $B$ 发生与否不影响 $A$ 的概率。</p>
+
+  <div class="note">
+    <b>条件独立</b>
+    $A$ 和 $B$ 在给定 $C$ 的条件下独立，记作 $A \perp B \mid C$，定义为 $P(A,B\mid C)=P(A\mid C)P(B\mid C)$。朴素贝叶斯假设特征之间条件独立，虽然不现实但很有效。
+  </div>
+</section>
+
+<section id="prob2" class="ch">
+  <div class="ch-head"><span class="ch-num">P2</span><h2>期望与方差：分布的中心和离散程度</h2></div>
+  <p class="lead">期望是分布的「重心」，方差是「散开的程度」。训练神经网络时要控制激活值的期望和方差，否则梯度爆炸或消失。</p>
+
+  <div class="eq">
+    <div class="eq-label">期望（均值）</div>
+    $$\mathbb{E}[X]=\sum_x x\,P(X=x)\quad\text{(离散)},\qquad \mathbb{E}[X]=\int x\,p(x)\,dx\quad\text{(连续)}$$
+    <p class="eq-why">期望是加权平均，权重是概率。记作 $\mu$ 或 $\mathbb{E}[X]$。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">方差</div>
+    $$\text{Var}(X)=\mathbb{E}\big[(X-\mu)^2\big]=\mathbb{E}[X^2]-\big(\mathbb{E}[X]\big)^2$$
+    <p class="eq-why">方差衡量 $X$ 偏离期望的平方距离的平均。标准差 $\sigma=\sqrt{\text{Var}(X)}$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch9">第 09 章 强化学习</a>（期望回报）</p>
+  </div>
+
+  <h3 class="sub">P2.1　期望的性质</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>线性性</h4>
+      <p>$\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y]$，无论 $X$ 和 $Y$ 是否独立。</p>
+    </div>
+    <div class="card">
+      <h4>乘积期望</h4>
+      <p>如果 $X$ 和 $Y$ 独立，$\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]$。</p>
+    </div>
+    <div class="card">
+      <h4>方差的性质</h4>
+      <p>$\text{Var}(aX)=a^2\text{Var}(X)$。如果 $X$ 和 $Y$ 独立，$\text{Var}(X+Y)=\text{Var}(X)+\text{Var}(Y)$。</p>
+    </div>
+  </div>
+
+  <h3 class="sub">P2.2　协方差与相关系数</h3>
+  <div class="eq">
+    <div class="eq-label">协方差</div>
+    $$\text{Cov}(X,Y)=\mathbb{E}\big[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])\big]=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]$$
+    <p class="eq-why">协方差衡量两个变量线性相关的程度。正值表示同增同减，负值表示反向，零表示线性无关（但未必独立）。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">相关系数</div>
+    $$\rho(X,Y)=\frac{\text{Cov}(X,Y)}{\sigma_X\sigma_Y},\qquad -1\le\rho\le 1$$
+    <p class="eq-why">标准化后的协方差，$|\rho|=1$ 表示完全线性相关，$\rho=0$ 表示线性无关。</p>
+  </div>
+</section>
+
+<section id="prob3" class="ch">
+  <div class="ch-head"><span class="ch-num">P3</span><h2>常见分布：大模型用到的几个关键分布</h2></div>
+  <p class="lead">伯努利、高斯、Softmax、Categorical，这几个分布串起来就是一个分类模型。</p>
+
+  <h3 class="sub">P3.1　伯努利分布（Bernoulli）</h3>
+  <p>抛硬币。$X\in\{0,1\}$，$P(X=1)=p$。</p>
+  <div class="eq">
+    $$P(X=x)=p^x(1-p)^{1-x},\qquad \mathbb{E}[X]=p,\ \text{Var}(X)=p(1-p)$$
+  </div>
+
+  <h3 class="sub">P3.2　类别分布（Categorical）</h3>
+  <p>多分类。$X\in\{1,2,\dots,K\}$，每个类的概率是 $p_k$，$\sum_k p_k=1$。语言模型输出的就是类别分布。</p>
+  <div class="eq">
+    <div class="eq-label">Categorical / Multinoulli</div>
+    $$P(X=k)=p_k,\qquad \mathbb{E}[X]=\sum_k k\,p_k$$
+  </div>
+
+  <h3 class="sub">P3.3　高斯分布（正态分布）</h3>
+  <p>最重要的连续分布。中心极限定理说大量独立随机变量的和趋向高斯分布。</p>
+
+  <div class="eq">
+    <div class="eq-label">一维高斯分布</div>
+    $$p(x)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+    $$\mathbb{E}[X]=\mu,\qquad \text{Var}(X)=\sigma^2$$
+    <p class="eq-why">记作 $X\sim\mathcal{N}(\mu,\sigma^2)$。标准正态分布是 $\mu=0, \sigma=1$ 的特例。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">多维高斯分布</div>
+    $$p(\mathbf{x})=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}\exp\!\left(-\tfrac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top}\Sigma^{-1}(\mathbf{x}-\boldsymbol{\mu})\right)$$
+    <p class="eq-why">$\boldsymbol{\mu}\in\mathbb{R}^d$ 是均值向量，$\Sigma\in\mathbb{R}^{d\times d}$ 是协方差矩阵（对称半正定）。VAE 的编码器输出的就是高斯分布的参数 $(\boldsymbol{\mu}, \Sigma)$。</p>
+  </div>
+
+  <h3 class="sub">P3.4　Softmax 与交叉熵</h3>
+  <p>把任意实数向量 $\mathbf{z}\in\mathbb{R}^K$ 变成概率分布（和为 1，每项非负）。</p>
+
+  <div class="eq">
+    <div class="eq-label">Softmax</div>
+    $$\text{softmax}(\mathbf{z})_k=\frac{\exp(z_k)}{\sum_{j=1}^{K}\exp(z_j)}$$
+    <p class="eq-why">分类网络最后一层输出 logits $\mathbf{z}$，过 softmax 得到概率 $\mathbf{p}$。温度参数 $T$ 可以调控分布尖锐程度：$\text{softmax}(\mathbf{z}/T)$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch4">第 04 章 注意力</a> · <a href="index.html#ch6">第 06 章 采样</a></p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">交叉熵损失</div>
+    $$\mathcal{L}=-\sum_{k=1}^{K} y_k\log p_k=-\log p_{\text{true}}$$
+    <p class="eq-why">真实标签是 one-hot 向量 $\mathbf{y}$，只有正确类那一项是 1。交叉熵退化成负对数似然。让正确类的概率尽可能高。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch7">第 07 章 预训练</a></p>
+  </div>
+</section>
+
+<section id="prob4" class="ch">
+  <div class="ch-head"><span class="ch-num">P4</span><h2>最大似然估计：从数据反推参数</h2></div>
+  <p class="lead">有一堆数据，假设它们服从某个分布，怎么估计分布的参数？最大似然估计说：让这些数据在你的分布下出现的概率最大。</p>
+
+  <div class="eq">
+    <div class="eq-label">似然函数</div>
+    $$\mathcal{L}(\theta)=P(\mathcal{D}\mid\theta)=\prod_{i=1}^{n} p(x_i\mid\theta)$$
+    <p class="eq-why">$\mathcal{D}=\{x_1,\dots,x_n\}$ 是观测数据，$\theta$ 是模型参数。假设样本独立同分布，联合概率是连乘。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">对数似然</div>
+    $$\ell(\theta)=\log\mathcal{L}(\theta)=\sum_{i=1}^{n}\log p(x_i\mid\theta)$$
+    <p class="eq-why">乘法变加法，数值更稳定，优化更方便。最大化似然等价于最大化对数似然。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch7">第 07 章 预训练</a> · <a href="index.html#ch1">第 01 章 机器学习</a></p>
+  </div>
+
+  <p>最大似然估计（MLE）就是求 $\hat{\theta}=\arg\max_{\theta}\ell(\theta)$。对 $\theta$ 求导，令导数为零，解方程。</p>
+
+  <div class="derive">
+    <div class="derive-step">
+      <h5>例子：估计高斯分布的均值和方差</h5>
+      <p>数据 $\{x_1,\dots,x_n\}$ 来自 $\mathcal{N}(\mu,\sigma^2)$，对数似然是：</p>
+      $$\ell(\mu,\sigma^2)=-\frac{n}{2}\log(2\pi\sigma^2)-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2$$
+    </div>
+    <div class="derive-step">
+      <h5>对 μ 求导并令其为零</h5>
+      $$\frac{\partial\ell}{\partial\mu}=\frac{1}{\sigma^2}\sum_{i}(x_i-\mu)=0\quad\Rightarrow\quad \hat{\mu}=\frac{1}{n}\sum_{i}x_i$$
+      <p>就是样本均值。</p>
+    </div>
+    <div class="derive-step">
+      <h5>对 σ² 求导并令其为零</h5>
+      $$\frac{\partial\ell}{\partial\sigma^2}=-\frac{n}{2\sigma^2}+\frac{1}{2\sigma^4}\sum_{i}(x_i-\mu)^2=0
+        \quad\Rightarrow\quad \hat{\sigma}^2=\frac{1}{n}\sum_{i}(x_i-\hat{\mu})^2$$
+      <p>样本方差（无偏估计是除以 $n-1$，这里是 MLE 所以除以 $n$）。</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>神经网络训练就是最大似然估计</b>
+    分类任务的交叉熵损失，回归任务的均方误差，本质上都是负对数似然。最小化损失 = 最大化似然 = 让模型在训练数据上的概率最大。
+  </div>
+</section>
+
+<section id="prob5" class="ch">
+  <div class="ch-head"><span class="ch-num">P5</span><h2>信息论：熵、KL 散度、互信息</h2></div>
+  <p class="lead">信息论给了「不确定性」一个数学定义。熵越高，分布越平坦，越难预测。KL 散度衡量两个分布有多不一样。</p>
+
+  <div class="eq">
+    <div class="eq-label">熵（Entropy）</div>
+    $$H(X)=-\sum_x P(x)\log P(x)=-\mathbb{E}[\log P(X)]$$
+    <p class="eq-why">熵是「平均惊讶度」。均匀分布熵最大，确定性分布（某一项概率为 1）熵为 0。log 通常取底数 2（比特）或 $e$（奈特）。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">交叉熵（Cross Entropy）</div>
+    $$H(P,Q)=-\sum_x P(x)\log Q(x)=-\mathbb{E}_{x\sim P}[\log Q(x)]$$
+    <p class="eq-why">用分布 $Q$ 去编码真实分布 $P$ 产生的数据，需要的平均编码长度。交叉熵 $\ge$ 熵，等号成立当且仅当 $P=Q$。</p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">KL 散度（相对熵）</div>
+    $$D_{\text{KL}}(P\parallel Q)=\sum_x P(x)\log\frac{P(x)}{Q(x)}=H(P,Q)-H(P)$$
+    <p class="eq-why">衡量 $P$ 和 $Q$ 的差异。非负，$D_{\text{KL}}(P\parallel Q)\ge 0$，等号成立当且仅当 $P=Q$。不对称：$D_{\text{KL}}(P\parallel Q)\ne D_{\text{KL}}(Q\parallel P)$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch7">第 07 章 预训练</a> · <a href="index.html#ch9">第 09 章 PPO / DPO</a></p>
+  </div>
+
+  <p>PPO 和 DPO 都用 KL 散度约束：优化后的策略 $\pi_\theta$ 不能离参考策略 $\pi_{\text{ref}}$ 太远，否则模型会忘记原本学到的语言能力。</p>
+
+  <div class="eq">
+    <div class="eq-label">互信息（Mutual Information）</div>
+    $$I(X;Y)=D_{\text{KL}}\big(P(X,Y)\parallel P(X)P(Y)\big)=H(X)-H(X\mid Y)$$
+    <p class="eq-why">$X$ 和 $Y$ 共享多少信息。如果独立，$I(X;Y)=0$。互信息对称：$I(X;Y)=I(Y;X)$。</p>
+  </div>
+</section>
+
+<div class="ch-air"><p>猜错了，就朝下坡走一步。</p></div>
+
+<!-- ============================================================
+     CALCULUS
+     ============================================================ -->
+<section id="calc1" class="ch">
+  <div class="ch-head"><span class="ch-num">C1</span><h2>导数与梯度：神经网络的方向盘</h2></div>
+  <p class="lead">神经网络训练就是求导。误差对每个参数求偏导，得到梯度，然后朝梯度反方向更新参数。</p>
+
+  <h3 class="sub">C1.1　导数</h3>
+  <p>函数 $f(x)$ 在 $x_0$ 处的导数定义为：</p>
+
+  <div class="eq">
+    $$f'(x_0)=\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h}$$
+    <p class="eq-why">导数是切线斜率，是瞬时变化率。记作 $f'(x)$、$\frac{df}{dx}$ 或 $\frac{d}{dx}f(x)$。</p>
+  </div>
+
+  <h3 class="sub">C1.2　偏导数</h3>
+  <p>多元函数 $f(x_1,x_2,\dots,x_n)$ 对某一个变量求导，其他变量当常数。</p>
+
+  <div class="eq">
+    <div class="eq-label">偏导数</div>
+    $$\frac{\partial f}{\partial x_i}=\lim_{h\to 0}\frac{f(x_1,\dots,x_i+h,\dots,x_n)-f(x_1,\dots,x_n)}{h}$$
+    <p class="eq-why">记作 $\frac{\partial f}{\partial x_i}$ 或 $f_{x_i}$。</p>
+  </div>
+
+  <h3 class="sub">C1.3　梯度</h3>
+  <p>标量函数 $f:\mathbb{R}^n\to\mathbb{R}$ 的梯度是所有偏导数组成的向量。</p>
+
+  <div class="eq">
+    <div class="eq-label">梯度</div>
+    $$\nabla f=\begin{bmatrix}
+      \frac{\partial f}{\partial x_1}\\
+      \frac{\partial f}{\partial x_2}\\
+      \vdots\\
+      \frac{\partial f}{\partial x_n}
+    \end{bmatrix}$$
+    <p class="eq-why">梯度指向函数增长最快的方向。梯度下降就是朝 $-\nabla f$ 方向走：$\mathbf{x}\leftarrow \mathbf{x}-\eta\nabla f(\mathbf{x})$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch1">第 01 章 机器学习</a></p>
+  </div>
+
+  <div class="note">
+    <b>为什么是梯度的负方向</b>
+    泰勒展开：$f(\mathbf{x}+\Delta\mathbf{x})\approx f(\mathbf{x})+\nabla f^{\top}\Delta\mathbf{x}$。如果 $\Delta\mathbf{x}=-\eta\nabla f$，那么 $\nabla f^{\top}\Delta\mathbf{x}=-\eta\lVert\nabla f\rVert^2<0$，函数值下降。学习率 $\eta$ 控制步长。
+  </div>
+</section>
+
+<section id="calc2" class="ch">
+  <div class="ch-head"><span class="ch-num">C2</span><h2>链式法则：反向传播的核心</h2></div>
+  <p class="lead">神经网络是一层套一层的复合函数。链式法则说：复合函数的导数是每一层导数的连乘。反向传播就是链式法则的递归应用。</p>
+
+  <div class="eq">
+    <div class="eq-label">一元链式法则</div>
+    $$\frac{d}{dx}f\big(g(x)\big)=f'\big(g(x)\big)\cdot g'(x)$$
+    <p class="eq-why">令 $u=g(x)$，则 $\frac{df}{dx}=\frac{df}{du}\cdot\frac{du}{dx}$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch2">第 02 章 神经网络</a></p>
+  </div>
+
+  <div class="eq">
+    <div class="eq-label">多元链式法则</div>
+    $$\frac{\partial f}{\partial x_i}=\sum_j \frac{\partial f}{\partial u_j}\cdot\frac{\partial u_j}{\partial x_i}$$
+    <p class="eq-why">$f$ 依赖中间变量 $u_1,\dots,u_m$，每个 $u_j$ 又依赖 $x_i$。所有路径的贡献加起来。</p>
+  </div>
+
+  <h3 class="sub">C2.1　反向传播</h3>
+  <p>神经网络：$\mathbf{x}\xrightarrow{W_1}\mathbf{h}_1\xrightarrow{\sigma}\mathbf{a}_1\xrightarrow{W_2}\mathbf{h}_2\xrightarrow{\sigma}\cdots\xrightarrow{}\mathcal{L}$。</p>
+
+  <p>前向：从输入算到损失。反向：从损失往回传梯度。</p>
+
+  <div class="derive">
+    <div class="derive-step">
+      <h5>符号约定</h5>
+      <p>$\mathbf{h}^{(l)}=W^{(l)}\mathbf{a}^{(l-1)}+\mathbf{b}^{(l)}$，$\mathbf{a}^{(l)}=\sigma(\mathbf{h}^{(l)})$，损失是 $\mathcal{L}(\mathbf{a}^{(L)}, \mathbf{y})$。</p>
+    </div>
+    <div class="derive-step">
+      <h5>输出层梯度</h5>
+      <p>先算最后一层对激活的梯度：</p>
+      $$\boldsymbol{\delta}^{(L)}=\frac{\partial\mathcal{L}}{\partial\mathbf{h}^{(L)}}
+        =\frac{\partial\mathcal{L}}{\partial\mathbf{a}^{(L)}}\odot\sigma'(\mathbf{h}^{(L)})$$
+      <p>$\odot$ 是逐元素乘法。</p>
+    </div>
+    <div class="derive-step">
+      <h5>往前传递</h5>
+      <p>第 $l$ 层的梯度通过下一层传回来：</p>
+      $$\boldsymbol{\delta}^{(l)}=\big((W^{(l+1)})^{\top}\boldsymbol{\delta}^{(l+1)}\big)\odot\sigma'(\mathbf{h}^{(l)})$$
+    </div>
+    <div class="derive-step">
+      <h5>对参数的梯度</h5>
+      <p>有了 $\boldsymbol{\delta}^{(l)}$，权重和偏置的梯度是：</p>
+      $$\frac{\partial\mathcal{L}}{\partial W^{(l)}}=\boldsymbol{\delta}^{(l)}(\mathbf{a}^{(l-1)})^{\top},
+        \qquad \frac{\partial\mathcal{L}}{\partial\mathbf{b}^{(l)}}=\boldsymbol{\delta}^{(l)}$$
+    </div>
+  </div>
+
+  <p>计算复杂度：前向一次 $O(n)$，反向一次 $O(n)$，总共 $O(n)$。如果朴素地对每个参数单独求导，是 $O(n^2)$。反向传播快在复用中间结果。</p>
+</section>
+
+<section id="calc3" class="ch">
+  <div class="ch-head"><span class="ch-num">C3</span><h2>常用求导公式：背下来就快了</h2></div>
+  <p class="lead">这些公式在推导注意力、LayerNorm、损失函数时反复出现。</p>
+
+  <h3 class="sub">C3.1　标量函数</h3>
+  <table class="symtable">
+    <thead><tr><th>函数</th><th>导数</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>$x^n$</td><td>$nx^{n-1}$</td><td>幂函数</td></tr>
+      <tr><td>$e^x$</td><td>$e^x$</td><td>指数函数自己是自己的导数</td></tr>
+      <tr><td>$\log x$</td><td>$\frac{1}{x}$</td><td>自然对数</td></tr>
+      <tr><td>$\sin x$</td><td>$\cos x$</td><td></td></tr>
+      <tr><td>$\cos x$</td><td>$-\sin x$</td><td></td></tr>
+      <tr><td>$\frac{1}{x}$</td><td>$-\frac{1}{x^2}$</td><td></td></tr>
+      <tr><td>$\sqrt{x}$</td><td>$\frac{1}{2\sqrt{x}}$</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">C3.2　向量函数</h3>
+  <p>$\mathbf{x}\in\mathbb{R}^n$，$A\in\mathbb{R}^{m\times n}$，$\mathbf{b}\in\mathbb{R}^m$。</p>
+
+  <table class="symtable">
+    <thead><tr><th>函数 $f(\mathbf{x})$</th><th>梯度 $\nabla f$</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>$\mathbf{a}^{\top}\mathbf{x}$</td><td>$\mathbf{a}$</td><td>线性函数</td></tr>
+      <tr><td>$\mathbf{x}^{\top}A\mathbf{x}$</td><td>$(A+A^{\top})\mathbf{x}$</td><td>二次型；若 $A$ 对称则是 $2A\mathbf{x}$</td></tr>
+      <tr><td>$\lVert\mathbf{x}\rVert_2^2$</td><td>$2\mathbf{x}$</td><td>$\mathbf{x}^{\top}\mathbf{x}$ 的导数</td></tr>
+      <tr><td>$\lVert A\mathbf{x}-\mathbf{b}\rVert_2^2$</td><td>$2A^{\top}(A\mathbf{x}-\mathbf{b})$</td><td>最小二乘损失</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">C3.3　矩阵对矩阵求导</h3>
+  <p>$X\in\mathbb{R}^{m\times n}$，$f(X)$ 是标量。梯度 $\nabla_X f$ 是一个和 $X$ 同形状的矩阵，每个位置是 $\frac{\partial f}{\partial X_{ij}}$。</p>
+
+  <table class="symtable">
+    <thead><tr><th>$f(X)$</th><th>$\nabla_X f$</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>$\text{tr}(AX)$</td><td>$A^{\top}$</td><td></td></tr>
+      <tr><td>$\text{tr}(AXB)$</td><td>$A^{\top}B^{\top}$</td><td></td></tr>
+      <tr><td>$\text{tr}(X^{\top}AX)$</td><td>$(A+A^{\top})X$</td><td>若 $A$ 对称则 $2AX$</td></tr>
+      <tr><td>$\lVert X\rVert_F^2$</td><td>$2X$</td><td>Frobenius 范数平方</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">C3.4　激活函数导数</h3>
+  <table class="symtable">
+    <thead><tr><th>激活函数 $\sigma(x)$</th><th>导数 $\sigma'(x)$</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>$\text{ReLU}(x)=\max(0,x)$</td><td>$\begin{cases}1 & x>0\\0 & x\le 0\end{cases}$</td><td>$x=0$ 处次梯度取 0 或 1</td></tr>
+      <tr><td>$\sigma(x)=\frac{1}{1+e^{-x}}$</td><td>$\sigma(x)(1-\sigma(x))$</td><td>Sigmoid</td></tr>
+      <tr><td>$\tanh(x)$</td><td>$1-\tanh^2(x)$</td><td></td></tr>
+      <tr><td>$\text{GELU}(x)$</td><td>$\Phi(x)+x\phi(x)$</td><td>$\Phi$ 是标准正态 CDF，$\phi$ 是 PDF</td></tr>
+      <tr><td>$\text{Softmax}(\mathbf{z})_i$</td><td>$p_i(\delta_{ij}-p_j)$</td><td>雅可比矩阵；$\delta_{ij}$ 是 Kronecker delta</td></tr>
+    </tbody>
+  </table>
+
+  <div class="eq">
+    <div class="eq-label">Softmax 导数推导</div>
+    $$\frac{\partial p_i}{\partial z_j}=\begin{cases}
+      p_i(1-p_i) & i=j\\
+      -p_i p_j & i\ne j
+    \end{cases}$$
+    <p class="eq-why">交叉熵 + Softmax 组合后梯度特别简洁：$\frac{\partial\mathcal{L}}{\partial z_i}=p_i-y_i$。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch2">第 02 章 神经网络</a> · <a href="index.html#ch6">第 06 章 采样</a></p>
+  </div>
+</section>
+
+<section id="calc4" class="ch">
+  <div class="ch-head"><span class="ch-num">C4</span><h2>雅可比矩阵与海森矩阵：二阶信息</h2></div>
+  <p class="lead">雅可比是向量对向量求导，海森是标量对向量求二阶导。二阶优化器（牛顿法、L-BFGS）会用到海森矩阵，但深度学习里通常用不起（太大了）。</p>
+
+  <h3 class="sub">C4.1　雅可比矩阵</h3>
+  <p>$\mathbf{f}:\mathbb{R}^n\to\mathbb{R}^m$ 是向量函数，$\mathbf{f}(\mathbf{x})=[f_1(\mathbf{x}),\dots,f_m(\mathbf{x})]^{\top}$。雅可比矩阵是所有偏导数组成的 $m\times n$ 矩阵。</p>
+
+  <div class="eq">
+    <div class="eq-label">雅可比矩阵</div>
+    $$J=\frac{\partial\mathbf{f}}{\partial\mathbf{x}}=\begin{bmatrix}
+      \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n}\\
+      \vdots & \ddots & \vdots\\
+      \frac{\partial f_m}{\partial x_1} & \cdots & \frac{\partial f_m}{\partial x_n}
+    \end{bmatrix}$$
+    <p class="eq-why">第 $i$ 行是 $f_i$ 的梯度。如果 $m=1$，雅可比退化成梯度（行向量）。</p>
+  </div>
+
+  <p>链式法则的矩阵形式：$\mathbf{z}=\mathbf{g}(\mathbf{f}(\mathbf{x}))$，则 $\frac{\partial\mathbf{z}}{\partial\mathbf{x}}=\frac{\partial\mathbf{z}}{\partial\mathbf{f}}\cdot\frac{\partial\mathbf{f}}{\partial\mathbf{x}}$。两个雅可比矩阵相乘。</p>
+
+  <h3 class="sub">C4.2　海森矩阵</h3>
+  <p>$f:\mathbb{R}^n\to\mathbb{R}$ 是标量函数。海森矩阵是二阶偏导数组成的 $n\times n$ 对称矩阵。</p>
+
+  <div class="eq">
+    <div class="eq-label">海森矩阵</div>
+    $$H=\nabla^2 f=\begin{bmatrix}
+      \frac{\partial^2 f}{\partial x_1^2} & \frac{\partial^2 f}{\partial x_1\partial x_2} & \cdots\\
+      \frac{\partial^2 f}{\partial x_2\partial x_1} & \frac{\partial^2 f}{\partial x_2^2} & \cdots\\
+      \vdots & \vdots & \ddots
+    \end{bmatrix}$$
+    <p class="eq-why">$H_{ij}=\frac{\partial^2 f}{\partial x_i\partial x_j}$。若 $f$ 二阶连续可导，$H$ 是对称的（Schwarz 定理）。</p>
+  </div>
+
+  <p>海森矩阵刻画曲率。正定 → 局部极小点，负定 → 局部极大点，不定 → 鞍点。</p>
+
+  <div class="eq">
+    <div class="eq-label">泰勒二阶展开</div>
+    $$f(\mathbf{x}+\Delta\mathbf{x})\approx f(\mathbf{x})+\nabla f^{\top}\Delta\mathbf{x}
+      +\tfrac{1}{2}\Delta\mathbf{x}^{\top}H\,\Delta\mathbf{x}$$
+    <p class="eq-why">牛顿法用这个二次近似直接跳到极值点：$\Delta\mathbf{x}=-H^{-1}\nabla f$。但深度学习里 $H$ 太大（参数几十亿），算不起也存不下。实践中用一阶方法（SGD、Adam）或拟牛顿法（L-BFGS）。</p>
+    <p class="eq-xref">对应模型页：<a href="index.html#ch1">第 01 章 机器学习</a>（为什么只用一阶）</p>
+  </div>
+
+  <div class="note">
+    <b>为什么不用二阶优化</b>
+    海森矩阵是 $n\times n$，$n$ 是参数量。GPT-3 有 1750 亿参数，海森矩阵是 $1.75\times 10^{11}\times 1.75\times 10^{11}$，存不下。求逆的复杂度是 $O(n^3)$，算不起。所以深度学习只用一阶梯度（Adam、SGD），或者用对角近似（AdaGrad）、低秩近似（K-FAC）。
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-in">
+    <p>这一页是 <a href="index.html" style="color:var(--accent)">Transformer 图解</a> 的数学补充。</p>
+    <p class="foot-dim">公式用 KaTeX 离线渲染，无需联网。代码已开源。</p>
+  </div>
+</footer>
+
+</main>
+
+<script src="vendor/katex/katex.min.js"></script>
+<script src="vendor/katex/auto-render.min.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* scroll progress & active link */
+  const prog = document.getElementById('progressBar');
+  const links = document.querySelectorAll('.rail-list a[href^="#"]');
+  const secs = Array.from(links).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  function onScroll() {
+    const sh = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = sh > 0 ? (window.scrollY / sh) * 100 : 0;
+    prog.style.width = pct + '%';
+
+    let cur = null;
+    for (let i = secs.length - 1; i >= 0; i--) {
+      if (secs[i].getBoundingClientRect().top < 100) { cur = secs[i]; break; }
+    }
+    links.forEach(a => a.classList.toggle('is-on', cur && a.getAttribute('href') === '#' + cur.id));
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+<!-- ============================================================
+     INTERACTIVE VISUALIZATION JAVASCRIPT
+     ============================================================ -->
+<script>
+// 等待DOM加载完成
+document.addEventListener('DOMContentLoaded', function() {
+
+// ============================================================
+// 0. 把每张可视化卡片自动搬进对应章节（先于所有初始化执行）
+// ============================================================
+function moveCard(canvasId, targetSecId) {
+  const anchor = document.getElementById(canvasId);
+  if (!anchor) return;
+  const card = anchor.closest('.math-viz');
+  const target = document.getElementById(targetSecId);
+  if (card && target) target.appendChild(card);
+}
+const gaussCard = document.getElementById('gaussCanvas');
+if (gaussCard) {
+  const c = gaussCard.closest('.math-viz');
+  if (c) c.remove();
+}
+const KEEP = new Set(['vectorCanvas', 'softmaxCanvas', 'gdCanvas']);
+document.querySelectorAll('.math-viz').forEach(function (card) {
+  const cv = card.querySelector('canvas');
+  if (cv && !KEEP.has(cv.id)) card.classList.add('is-still');
+  const title = card.querySelector('.viz-head h3');
+  if (title) title.textContent = title.textContent.replace(/^\d+\.\s*/, '');
+});
+moveCard('vectorCanvas', 'la1');
+moveCard('matmulCanvas', 'la2');
+moveCard('transformCanvas', 'la2');
+moveCard('gaussCanvas', 'prob3');
+moveCard('softmaxCanvas', 'prob3');
+moveCard('gdCanvas', 'calc1');
+moveCard('actCanvas', 'calc3');
+moveCard('eigCanvas', 'la3');       // A3 特征值
+moveCard('svdCanvas', 'la4');       // A4 SVD
+moveCard('probCanvas', 'prob1');    // P1 概率
+moveCard('varCanvas', 'prob2');     // P2 期望方差
+moveCard('mleCanvas', 'prob4');     // P4 最大似然
+moveCard('entCanvas', 'prob5');     // P5 信息论
+moveCard('chainCanvas', 'calc2');   // C2 链式法则
+moveCard('hessCanvas', 'calc4');    // C4 雅可比海森
+
+// ============================================================
+// 1. 向量和内积可视化
+// ============================================================
+const vectorCanvas = document.getElementById('vectorCanvas');
+if (vectorCanvas) {
+  const ctx = vectorCanvas.getContext('2d');
+  const uLenSlider = document.getElementById('uLen');
+  const uAngleSlider = document.getElementById('uAngle');
+  const vLenSlider = document.getElementById('vLen');
+  const vAngleSlider = document.getElementById('vAngle');
+
+  function drawVector() {
+    const w = vectorCanvas.width;
+    const h = vectorCanvas.height;
+    const scale = 80;
+    const cx = w / 2;
+    const cy = h / 2;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // 绘制网格
+    ctx.strokeStyle = '#E7E1D7';
+    ctx.lineWidth = 1;
+    for (let i = -5; i <= 5; i++) {
+      ctx.beginPath();
+      ctx.moveTo(cx + i * scale, 0);
+      ctx.lineTo(cx + i * scale, h);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, cy + i * scale);
+      ctx.lineTo(w, cy + i * scale);
+      ctx.stroke();
+    }
+
+    // 绘制坐标轴
+    ctx.strokeStyle = '#5C635D';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, 0);
+    ctx.lineTo(cx, h);
+    ctx.moveTo(0, cy);
+    ctx.lineTo(w, cy);
+    ctx.stroke();
+
+    // 获取向量参数
+    const uLen = parseFloat(uLenSlider.value);
+    const uAngle = parseFloat(uAngleSlider.value) * Math.PI / 180;
+    const vLen = parseFloat(vLenSlider.value);
+    const vAngle = parseFloat(vAngleSlider.value) * Math.PI / 180;
+
+    // 计算向量坐标
+    const ux = uLen * Math.cos(uAngle) * scale;
+    const uy = -uLen * Math.sin(uAngle) * scale;
+    const vx = vLen * Math.cos(vAngle) * scale;
+    const vy = -vLen * Math.sin(vAngle) * scale;
+
+    // 绘制向量u
+    ctx.strokeStyle = '#C4612F';
+    ctx.fillStyle = '#C4612F';
+    ctx.lineWidth = 3;
+    drawArrow(ctx, cx, cy, cx + ux, cy + uy);
+    ctx.fillText('u', cx + ux + 10, cy + uy - 10);
+
+    // 绘制向量v
+    ctx.strokeStyle = '#2563eb';
+    ctx.fillStyle = '#2563eb';
+    drawArrow(ctx, cx, cy, cx + vx, cy + vy);
+    ctx.fillText('v', cx + vx + 10, cy + vy - 10);
+
+    // 计算并显示内积
+    const dotProd = uLen * vLen * Math.cos(uAngle - vAngle);
+    document.getElementById('dotProduct').textContent = dotProd.toFixed(2);
+    document.getElementById('uLenVal').textContent = uLen.toFixed(1);
+    document.getElementById('uAngleVal').textContent = Math.round(uAngle * 180 / Math.PI) + '°';
+    document.getElementById('vLenVal').textContent = vLen.toFixed(1);
+    document.getElementById('vAngleVal').textContent = Math.round(vAngle * 180 / Math.PI) + '°';
+  }
+
+  function drawArrow(ctx, x1, y1, x2, y2) {
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    
+    // 箭头
+    const arrowLen = 15;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - arrowLen * Math.cos(angle - Math.PI / 6), y2 - arrowLen * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2 - arrowLen * Math.cos(angle + Math.PI / 6), y2 - arrowLen * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  uLenSlider.addEventListener('input', drawVector);
+  uAngleSlider.addEventListener('input', drawVector);
+  vLenSlider.addEventListener('input', drawVector);
+  vAngleSlider.addEventListener('input', drawVector);
+  drawVector();
+}
+
+// ============================================================
+// 2. 高斯分布可视化
+// ============================================================
+const gaussCanvas = document.getElementById('gaussCanvas');
+if (gaussCanvas) {
+  const ctx = gaussCanvas.getContext('2d');
+  const muSlider = document.getElementById('gaussMu');
+  const sigmaSlider = document.getElementById('gaussSigma');
+
+  function gaussian(x, mu, sigma) {
+    return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+  }
+
+  function drawGaussian() {
+    const w = gaussCanvas.width;
+    const h = gaussCanvas.height;
+    const mu = parseFloat(muSlider.value);
+    const sigma = parseFloat(sigmaSlider.value);
+
+    ctx.clearRect(0, 0, w, h);
+
+    // 绘制坐标系
+    const margin = 40;
+    const plotW = w - 2 * margin;
+    const plotH = h - 2 * margin;
+
+    ctx.strokeStyle = '#5C635D';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(margin, margin + plotH);
+    ctx.lineTo(margin + plotW, margin + plotH);
+    ctx.stroke();
+
+    // 绘制高斯曲线
+    ctx.strokeStyle = '#C4612F';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+
+    const xMin = -5;
+    const xMax = 5;
+    const yMax = gaussian(mu, mu, sigma) * 1.2;
+
+    for (let i = 0; i <= plotW; i++) {
+      const x = xMin + (i / plotW) * (xMax - xMin);
+      const y = gaussian(x, mu, sigma);
+      const px = margin + i;
+      const py = margin + plotH - (y / yMax) * plotH;
+      
+      if (i === 0) {
+        ctx.moveTo(px, py);
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.stroke();
+
+    // 绘制μ±σ区域
+    ctx.fillStyle = 'rgba(196, 97, 47, 0.1)';
+    ctx.beginPath();
+    const x1 = margin + ((mu - sigma - xMin) / (xMax - xMin)) * plotW;
+    const x2 = margin + ((mu + sigma - xMin) / (xMax - xMin)) * plotW;
+    ctx.rect(x1, margin, x2 - x1, plotH);
+    ctx.fill();
+
+    // 更新显示值
+    document.getElementById('gaussMuVal').textContent = mu.toFixed(1);
+    document.getElementById('gaussSigmaVal').textContent = sigma.toFixed(1);
+  }
+
+  muSlider.addEventListener('input', drawGaussian);
+  sigmaSlider.addEventListener('input', drawGaussian);
+  drawGaussian();
+}
+
+// ============================================================
+// 3. Softmax可视化
+// ============================================================
+const softmaxCanvas = document.getElementById('softmaxCanvas');
+if (softmaxCanvas) {
+  const ctx = softmaxCanvas.getContext('2d');
+  const z1Slider = document.getElementById('z1');
+  const z2Slider = document.getElementById('z2');
+  const z3Slider = document.getElementById('z3');
+  const tempSlider = document.getElementById('temp');
+
+  function softmax(z, temp) {
+    const zScaled = z.map(x => x / temp);
+    const expZ = zScaled.map(x => Math.exp(x));
+    const sumExp = expZ.reduce((a, b) => a + b, 0);
+    return expZ.map(x => x / sumExp);
+  }
+
+  function drawSoftmax() {
+    const w = softmaxCanvas.width;
+    const h = softmaxCanvas.height;
+    const z1 = parseFloat(z1Slider.value);
+    const z2 = parseFloat(z2Slider.value);
+    const z3 = parseFloat(z3Slider.value);
+    const temp = parseFloat(tempSlider.value);
+
+    ctx.clearRect(0, 0, w, h);
+
+    const probs = softmax([z1, z2, z3], temp);
+    const colors = ['#C4612F', '#2563eb', '#16a34a'];
+    const labels = ['z₁', 'z₂', 'z₃'];
+
+    const barWidth = 80;
+    const spacing = 40;
+    const startX = (w - (3 * barWidth + 2 * spacing)) / 2;
+    const maxH = h - 80;
+
+    // 绘制柱状图
+    for (let i = 0; i < 3; i++) {
+      const x = startX + i * (barWidth + spacing);
+      const barH = probs[i] * maxH;
+      const y = h - 60 - barH;
+
+      ctx.fillStyle = colors[i];
+      ctx.fillRect(x, y, barWidth, barH);
+
+      // 标签
+      ctx.fillStyle = '#1F2421';
+      ctx.font = '16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(labels[i], x + barWidth / 2, h - 40);
+      
+      // 概率值
+      ctx.font = 'bold 14px monospace';
+      ctx.fillText(probs[i].toFixed(3), x + barWidth / 2, y - 10);
+    }
+
+    // 更新显示值
+    document.getElementById('z1Val').textContent = z1.toFixed(1);
+    document.getElementById('z2Val').textContent = z2.toFixed(1);
+    document.getElementById('z3Val').textContent = z3.toFixed(1);
+    document.getElementById('tempVal').textContent = temp.toFixed(1);
+  }
+
+  z1Slider.addEventListener('input', drawSoftmax);
+  z2Slider.addEventListener('input', drawSoftmax);
+  z3Slider.addEventListener('input', drawSoftmax);
+  tempSlider.addEventListener('input', drawSoftmax);
+  drawSoftmax();
+}
+
+// ============================================================
+// 4. 梯度下降可视化
+// ============================================================
+const gdCanvas = document.getElementById('gdCanvas');
+if (gdCanvas) {
+  const ctx = gdCanvas.getContext('2d');
+  const lrSlider = document.getElementById('lr');
+  const x0Slider = document.getElementById('x0');
+  const resetBtn = document.getElementById('resetGD');
+
+  let animationFrame = null;
+  let path = [];
+  let currentStep = 0;
+
+  function f(x) {
+    return 0.5 * x * x - 0.3 * Math.pow(x, 3) + 0.05 * Math.pow(x, 4) + 2;
+  }
+
+  function df(x) {
+    return x - 0.9 * x * x + 0.2 * Math.pow(x, 3);
+  }
+
+  function drawGD() {
+    const w = gdCanvas.width;
+    const h = gdCanvas.height;
+    const margin = 50;
+    const plotW = w - 2 * margin;
+    const plotH = h - 2 * margin;
+
+    ctx.clearRect(0, 0, w, h);
+
+    const xMin = -3;
+    const xMax = 3;
+    const yMin = 0;
+    const yMax = 8;
+
+    // 绘制函数曲线
+    ctx.strokeStyle = '#5C635D';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    for (let i = 0; i <= plotW; i++) {
+      const x = xMin + (i / plotW) * (xMax - xMin);
+      const y = f(x);
+      const px = margin + i;
+      const py = margin + plotH - ((y - yMin) / (yMax - yMin)) * plotH;
+      
+      if (i === 0) {
+        ctx.moveTo(px, py);
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.stroke();
+
+    // 绘制路径
+    if (path.length > 0) {
+      ctx.strokeStyle = '#C4612F';
+      ctx.fillStyle = '#C4612F';
+      ctx.lineWidth = 2;
+
+      for (let i = 0; i < Math.min(currentStep, path.length); i++) {
+        const x = path[i];
+        const y = f(x);
+        const px = margin + ((x - xMin) / (xMax - xMin)) * plotW;
+        const py = margin + plotH - ((y - yMin) / (yMax - yMin)) * plotH;
+
+        ctx.beginPath();
+        ctx.arc(px, py, 5, 0, 2 * Math.PI);
+        ctx.fill();
+
+        if (i > 0) {
+          const prevX = path[i - 1];
+          const prevY = f(prevX);
+          const prevPx = margin + ((prevX - xMin) / (xMax - xMin)) * plotW;
+          const prevPy = margin + plotH - ((prevY - yMin) / (yMax - yMin)) * plotH;
+          
+          ctx.beginPath();
+          ctx.moveTo(prevPx, prevPy);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // 更新显示值
+    document.getElementById('lrVal').textContent = parseFloat(lrSlider.value).toFixed(2);
+    document.getElementById('x0Val').textContent = parseFloat(x0Slider.value).toFixed(1);
+  }
+
+  function resetAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+    }
+
+    const lr = parseFloat(lrSlider.value);
+    const x0 = parseFloat(x0Slider.value);
+
+    path = [x0];
+    let x = x0;
+
+    for (let i = 0; i < 30; i++) {
+      const grad = df(x);
+      x = x - lr * grad;
+      path.push(x);
+      
+      if (Math.abs(grad) < 0.01) break;
+    }
+
+    currentStep = 0;
+    animate();
+  }
+
+  function animate() {
+    if (currentStep < path.length) {
+      currentStep++;
+      drawGD();
+      animationFrame = requestAnimationFrame(() => setTimeout(animate, 200));
+    }
+  }
+
+  lrSlider.addEventListener('input', drawGD);
+  x0Slider.addEventListener('input', drawGD);
+  resetBtn.addEventListener('click', resetAnimation);
+
+  drawGD();
+  resetAnimation();
+}
+
+// ============================================================
+// 5. 矩阵乘法可视化
+// ============================================================
+const mmCanvas = document.getElementById('matmulCanvas');
+const mmResult = document.getElementById('matmulResult');
+if (mmCanvas && mmResult) {
+  const ctxA = mmCanvas.getContext('2d');
+  const ctxC = mmResult.getContext('2d');
+  const rowSlider = document.getElementById('mmRow');
+  const colSlider = document.getElementById('mmCol');
+
+  // 3x3 矩阵
+  const A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+  const B = [[9, 8, 7], [6, 5, 4], [3, 2, 1]];
+  const C = [[0,0,0],[0,0,0],[0,0,0]];
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++) {
+      let s = 0;
+      for (let k = 0; k < 3; k++) s += A[i][k] * B[k][j];
+      C[i][j] = s;
+    }
+
+  function drawMatrix(ctx, M, highlight, w, h) {
+    ctx.clearRect(0, 0, w, h);
+    const cell = Math.min(w, h) / 3;
+    const pad = 20;
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#14181e';
+    ctx.fillRect(0, 0, w, h);
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const x = (w - 3*cell)/2 + j * cell;
+        const y = (h - 3*cell)/2 + i * cell;
+        const isHL = highlight && highlight[0] === i && highlight[1] === j;
+        ctx.fillStyle = isHL ? (highlight[2] || 'rgba(255,176,32,0.5)') : (getComputedStyle(document.documentElement).getPropertyValue('--bg-2') || '#1b2028');
+        ctx.fillRect(x, y, cell, cell);
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#262d37';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, cell, cell);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text') || '#e9ecf1';
+        ctx.font = 'bold 18px ' + (getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace');
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(M[i][j], x + cell/2, y + cell/2);
+      }
+    }
+  }
+
+  function drawMatmul() {
+    const ri = parseInt(rowSlider.value);
+    const cj = parseInt(colSlider.value);
+
+    // A: highlight row ri
+    drawMatrix(ctxA, A, null, mmCanvas.width, mmCanvas.height);
+    ctxA.strokeStyle = '#ffb020';
+    ctxA.lineWidth = 3;
+    const cell = Math.min(mmCanvas.width, mmCanvas.height) / 3;
+    const y = (mmCanvas.height - 3*cell)/2 + ri * cell;
+    ctxA.beginPath();
+    ctxA.moveTo((mmCanvas.width - 3*cell)/2, y);
+    ctxA.lineTo((mmCanvas.width - 3*cell)/2 + 3*cell, y);
+    ctxA.moveTo((mmCanvas.width - 3*cell)/2, y + cell);
+    ctxA.lineTo((mmCanvas.width - 3*cell)/2 + 3*cell, y + cell);
+    ctxA.stroke();
+    ctxA.fillStyle = '#ffb020';
+    ctxA.font = 'bold 12px sans-serif';
+    ctxA.textAlign = 'left';
+    ctxA.fillText('第 ' + (ri+1) + ' 行', 8, y + cell/2 + 4);
+
+    // Result: highlight cell (ri, cj)
+    drawMatrix(ctxC, C, [ri, cj, 'rgba(255,176,32,0.6)'], mmResult.width, mmResult.height);
+
+    // Update labels
+    document.getElementById('mmCellIndex').textContent = '(' + ri + ',' + cj + ')';
+    document.getElementById('mmRowK').textContent = '(' + ri + ',k)';
+    document.getElementById('mmColK').textContent = '(k,' + cj + ')';
+    document.getElementById('mmValue').textContent = C[ri][cj];
+  }
+
+  rowSlider.addEventListener('input', drawMatmul);
+  colSlider.addEventListener('input', drawMatmul);
+  drawMatmul();
+}
+
+// ============================================================
+// 6. 激活函数对比可视化
+// ============================================================
+const actCanvas = document.getElementById('actCanvas');
+if (actCanvas) {
+  const ctx = actCanvas.getContext('2d');
+  let active = 'relu';
+
+  function relu(x) { return Math.max(0, x); }
+  function sigmoid(x) { return 1 / (1 + Math.exp(-x)); }
+  function tanh(x) { return Math.tanh(x); }
+  function gelu(x) { return 0.5 * x * (1 + Math.tanh(Math.sqrt(2/Math.PI) * (x + 0.044715 * x*x*x))); }
+
+  const funcs = { relu: relu, sigmoid: sigmoid, tanh: tanh, gelu: gelu };
+  const colors = { relu: '#ffb020', sigmoid: '#4fb8e8', tanh: '#a78bfa', gelu: '#34d399' };
+
+  function drawAct() {
+    const w = actCanvas.width, h = actCanvas.height;
+    const margin = 40;
+    const plotH = h - 2 * margin;
+    const xMin = -6, xMax = 6, yMin = -2, yMax = 2;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#14181e';
+    ctx.fillRect(0, 0, w, h);
+
+    const toX = x => margin + (x - xMin) / (xMax - xMin) * (w - 2*margin);
+    const toY = y => margin + plotH - (y - yMin) / (yMax - yMin) * plotH;
+
+    // grid + axes
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#262d37';
+    ctx.lineWidth = 1;
+    for (let gx = xMin; gx <= xMax; gx += 2) {
+      ctx.beginPath(); ctx.moveTo(toX(gx), margin); ctx.lineTo(toX(gx), margin+plotH); ctx.stroke();
+    }
+    ctx.beginPath(); ctx.moveTo(margin, toY(0)); ctx.lineTo(w-margin, toY(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(toX(0), margin); ctx.lineTo(toX(0), margin+plotH); ctx.stroke();
+
+    const keys = active === 'all' ? Object.keys(funcs) : [active];
+    for (const k of keys) {
+      ctx.strokeStyle = colors[k];
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let px = 0; px <= (w - 2*margin); px++) {
+        const x = xMin + px / (w - 2*margin) * (xMax - xMin);
+        const y = funcs[k](x);
+        const sx = toX(x), sy = toY(Math.max(yMin, Math.min(yMax, y)));
+        if (px === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+      ctx.fillStyle = colors[k];
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(k.toUpperCase(), w - margin - 55, toY(funcs[k](xMax-0.4)) + (k==='relu'?18:0));
+    }
+  }
+
+  document.querySelectorAll('.act-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.act-toggle').forEach(b => {
+        b.style.background = 'transparent';
+        b.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#ffb020';
+      });
+      btn.style.background = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#ffb020';
+      btn.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-on') || '#17120a';
+      active = btn.dataset.act;
+      drawAct();
+    });
+  });
+  drawAct();
+}
+
+// ============================================================
+// 7. 矩阵线性变换可视化
+// ============================================================
+const transformCanvas = document.getElementById('transformCanvas');
+if (transformCanvas) {
+  const ctx = transformCanvas.getContext('2d');
+  const select = document.getElementById('transformSelect');
+
+  function drawTransform() {
+    const w = transformCanvas.width, h = transformCanvas.height;
+    const cx = w / 2, cy = h / 2, scale = 55;
+    const value = select.value;
+
+    const transforms = {
+      shear: [[1, 0.5], [0, 1]],
+      scale: [[2, 0], [0, 0.5]],
+      rotate: [[Math.cos(Math.PI/6), -Math.sin(Math.PI/6)], [Math.sin(Math.PI/6), Math.cos(Math.PI/6)]],
+      flip: [[-1, 0], [0, 1]]
+    };
+    const M = transforms[value];
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#14181e';
+    ctx.fillRect(0, 0, w, h);
+
+    // grid
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#262d37';
+    ctx.lineWidth = 1;
+    for (let i = -5; i <= 5; i++) {
+      ctx.beginPath(); ctx.moveTo(cx + i*scale, 0); ctx.lineTo(cx + i*scale, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, cy + i*scale); ctx.lineTo(w, cy + i*scale); ctx.stroke();
+    }
+    // axes
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--faint') || '#5f6975';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+
+    // transform unit square corners
+    const corners = [[0,0],[1,0],[1,1],[0,1]];
+    const t = corners.map(([x,y]) => [M[0][0]*x + M[0][1]*y, M[1][0]*x + M[1][1]*y]);
+    const px = t.map(([x,y]) => [cx + x*scale, cy - y*scale]);
+
+    ctx.fillStyle = 'rgba(255,176,32,0.2)';
+    ctx.strokeStyle = '#ffb020';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(px[0][0], px[0][1]);
+    px.forEach(p => ctx.lineTo(p[0], p[1]));
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // unit basis vectors
+    const e1 = [M[0][0], M[1][0]];
+    const e2 = [M[0][1], M[1][1]];
+    ctx.strokeStyle = '#ffb020';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + e1[0]*scale, cy - e1[1]*scale);
+    ctx.stroke();
+    ctx.strokeStyle = '#a78bfa';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + e2[0]*scale, cy - e2[1]*scale);
+    ctx.stroke();
+
+    // labels
+    const det = M[0][0]*M[1][1] - M[0][1]*M[1][0];
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text') || '#e9ecf1';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('变换矩阵 A = [[' + M[0][0].toFixed(2) + ', ' + M[0][1].toFixed(2) + '],[' + M[1][0].toFixed(2) + ', ' + M[1][1].toFixed(2) + ']]', 10, 20);
+    ctx.fillStyle = '#ffb020';
+    ctx.fillText('det(A) = ' + det.toFixed(2) + '  (面积缩放比)', 10, 40);
+  }
+
+  select.addEventListener('change', drawTransform);
+  drawTransform();
+}
+
+// ============================================================
+// 8. 特征值可视化（A3）
+// ============================================================
+(function() {
+  const cv = document.getElementById('eigCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const aS = document.getElementById('eigA');
+  const dS = document.getElementById('eigD');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const cx = w/2, cy = h/2, s = 70;
+    const a = +aS.value, d = +dS.value;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // grid
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#eee';
+    ctx.lineWidth = 1;
+    for (let i = -4; i <= 4; i++) {
+      ctx.beginPath(); ctx.moveTo(cx + i*s, 0); ctx.lineTo(cx + i*s, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, cy + i*s); ctx.lineTo(w, cy + i*s); ctx.stroke();
+    }
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--faint') || '#999';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,h); ctx.moveTo(0,cy); ctx.lineTo(w,cy); ctx.stroke();
+
+    // unit circle (input)
+    const N = 72;
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--faint') || '#999';
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const ang = i/N*Math.PI*2;
+      const px = cx + Math.cos(ang)*s, py = cy - Math.sin(ang)*s;
+      if (i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // transformed ellipse (M = [[a,0],[0,d]])
+    ctx.strokeStyle = '#c7864a';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const ang = i/N*Math.PI*2;
+      const vx = Math.cos(ang), vy = Math.sin(ang);
+      const tx = a*vx, ty = d*vy;
+      const px = cx + tx*s, py = cy - ty*s;
+      if (i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+
+    // eigen directions: e1=(1,0), e2=(0,1) with eigenvalues a,d
+    // highlight the direction with larger |eigenvalue|
+    const eigs = [a, d];
+    const main = eigs[0]>=eigs[1] ? 0 : 1;
+    if (main===0) {
+      // draw arrow along x-axis
+      ctx.strokeStyle = '#9c4a2f';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + a*s, cy);
+      ctx.stroke();
+      ctx.fillStyle = '#9c4a2f';
+      ctx.beginPath(); ctx.arc(cx + a*s, cy, 6, 0, 7); ctx.fill();
+    } else {
+      ctx.strokeStyle = '#9c4a2f';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx, cy - d*s);
+      ctx.stroke();
+      ctx.fillStyle = '#9c4a2f';
+      ctx.beginPath(); ctx.arc(cx, cy - d*s, 6, 0, 7); ctx.fill();
+    }
+
+    document.getElementById('eigAVal').textContent = a.toFixed(1);
+    document.getElementById('eigDVal').textContent = d.toFixed(1);
+  }
+
+  aS.addEventListener('input', surf);
+  dS.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 9. 特征值可视化（A4 SVD）— 旋转→拉伸→旋转
+// ============================================================
+(function() {
+  const cv = document.getElementById('svdCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const s1S = document.getElementById('svdS1');
+  const s2S = document.getElementById('svdS2');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const cx = w/2, cy = h/2, s = 65;
+    const s1 = +s1S.value, s2 = +s2S.value;
+    const ang = Math.PI/6;  // first rotation
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#eee';
+    ctx.lineWidth = 1;
+    for (let i=-4;i<=4;i++){ctx.beginPath();ctx.moveTo(cx+i*s,0);ctx.lineTo(cx+i*s,h);ctx.stroke();ctx.beginPath();ctx.moveTo(0,cy+i*s);ctx.lineTo(w,cy+i*s);ctx.stroke();}
+
+    // draw three stages: circle → rotate → scale (V^T) → rotate (U)
+    // stage colors
+    const stages = [
+      { c: getComputedStyle(document.documentElement).getPropertyValue('--faint') || '#999', dash: true },
+      { c: '#4fb8e8', dash: false },   // rotated
+      { c: '#c7864a', dash: false }    // scaled
+    ];
+
+    const N = 72;
+    function drawEllipse(a, b, rot, col, dash) {
+      ctx.strokeStyle = col; ctx.lineWidth = 3;
+      if (dash) ctx.setLineDash([4,4]); else ctx.setLineDash([]);
+      ctx.beginPath();
+      for (let i=0;i<=N;i++){
+        const q = i/N*Math.PI*2;
+        let x = Math.cos(q)*a, y = Math.sin(q)*b;
+        let rx = x*Math.cos(rot)-y*Math.sin(rot);
+        let ry = x*Math.sin(rot)+y*Math.cos(rot);
+        const px = cx+rx*s, py = cy-ry*s;
+        if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    // step 1: unit circle
+    drawEllipse(1,1,0,stages[0].c,true);
+    // step 2: rotated by -ang (V^T)
+    drawEllipse(1,1,-ang,stages[1].c,false);
+    // step 3: scaled by singular values along axes
+    drawEllipse(s1, s2, -ang, stages[2].c,false);
+
+    // singular directions
+    ctx.strokeStyle = '#9c4a2f'; ctx.lineWidth = 4;
+    // principal direction after full transform
+    const p1x = s1*Math.cos(-ang), p1y = s1*Math.sin(-ang);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+p1x*s,cy-p1y*s); ctx.stroke();
+
+    document.getElementById('svdS1Val').textContent = s1.toFixed(1);
+    document.getElementById('svdS2Val').textContent = s2.toFixed(1);
+  }
+
+  s1S.addEventListener('input', surf);
+  s2S.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 10. 条件概率可视化（P1）
+// ============================================================
+(function() {
+  const cv = document.getElementById('probCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const aS = document.getElementById('probA');
+  const baS = document.getElementById('probBA');
+  const bnS = document.getElementById('probBn');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const pad = 40;
+    const bw = w - pad*2, bh = h - pad*2;
+    const pA = +aS.value, pBA = +baS.value, pBn = +bnS.value;
+    // Bayes: P(A|B) = P(A)P(B|A) / [P(A)P(B|A)+P(¬A)P(B|¬A)]
+    const pNotA = 1 - pA;
+    const pAB = pA * pBA;          // dark = A and B
+    const pNab = pNotA * pBn;      // light = not A and B
+    const denom = pAB + pNab;
+    const post = denom ? pAB / denom : 0;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // Left column: prior (A = red, not A = grey)
+    const colW = 120;
+    ctx.fillStyle = '#c7864a'; ctx.fillRect(pad, pad, colW, bh*pA);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-2') || '#eee';
+    ctx.fillRect(pad, pad + bh*pA, colW, bh*pNotA);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dim') || '#666';
+    ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('P(A)='+pA.toFixed(2), pad+colW/2, pad+12);
+
+    // Right: B occurred — split by A vs not-A
+    const total = pAB + pNab;
+    const rx = pad+colW+40, rw = 140;
+    const darkH = total ? (pAB/total)*bh : 0;
+    ctx.fillStyle = 'rgba(156,74,47,.85)'; ctx.fillRect(rx, pad, rw, darkH);
+    ctx.fillStyle = 'rgba(150,150,160,.35)'; ctx.fillRect(rx, pad+darkH, rw, bh-darkH);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#ccc';
+    ctx.lineWidth = 2; ctx.strokeRect(rx, pad, rw, bh);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dim') || '#666';
+    ctx.fillText('已发生 B', rx+rw/2, pad+12);
+
+    // Bayes line
+    ctx.fillStyle = '#9c4a2f';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('P(A|B) = ' + post.toFixed(2), pad, h-14);
+
+    document.getElementById('probAVal').textContent = pA.toFixed(2);
+    document.getElementById('probBAVal').textContent = pBA.toFixed(2);
+    document.getElementById('probBnVal').textContent = pBn.toFixed(2);
+  }
+
+  aS.addEventListener('input', surf);
+  baS.addEventListener('input', surf);
+  bnS.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 11. 期望方差可视化（P2）
+// ============================================================
+(function() {
+  const cv = document.getElementById('varCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const muS = document.getElementById('varMu');
+  const sigS = document.getElementById('varSig');
+
+  function gauss(x, mu, sig) {
+    return Math.exp(-(x-mu)*(x-mu)/(2*sig*sig))/(sig*Math.sqrt(2*Math.PI));
+  }
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const mu = +muS.value, sig = +sigS.value;
+    const xMin=-4, xMax=4, yMax=1.2;
+    const plotW=w-40, plotH=h-30;
+    const toX = x => 20 + (x-xMin)/(xMax-xMin)*plotW;
+    const toY = y => h-15 - (y/yMax)*plotH;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // curve
+    ctx.strokeStyle = '#c7864a'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let px=0; px<=plotW; px++){
+      const x = xMin + px/plotW*(xMax-xMin);
+      const y = gauss(x, mu, sig);
+      const X = 20+px, Y = toY(y);
+      if (px===0) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
+    }
+    ctx.stroke();
+
+    // mu line
+    ctx.strokeStyle = '#9c4a2f'; ctx.lineWidth = 2; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(toX(mu),15); ctx.lineTo(toX(mu),h-15); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // mu±sigma shading
+    ctx.fillStyle = 'rgba(156,74,47,.14)';
+    ctx.fillRect(toX(mu-sig), 15, toX(mu+sig)-toX(mu-sig), plotH);
+
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dim') || '#666';
+    ctx.font='13px sans-serif'; ctx.textAlign='left';
+    ctx.fillText('μ='+mu.toFixed(1)+'  σ²='+(sig*sig).toFixed(1), 20, 20);
+    ctx.fillText('阴影 = μ±σ (约68%)', 20, h-3);
+
+    document.getElementById('varMuVal').textContent = mu.toFixed(1);
+    document.getElementById('varSigVal').textContent = sig.toFixed(1);
+  }
+
+  muS.addEventListener('input', surf);
+  sigS.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 12. 最大似然可视化（P4）
+// ============================================================
+(function() {
+  const cv = document.getElementById('mleCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const muS = document.getElementById('mleMu');
+  const sigS = document.getElementById('mleSig');
+
+  // fixed data points (generated around true μ=1, σ=1.5)
+  const data = [ -0.8, 0.2, 0.6, 1.1, 1.4, 1.9, 2.3, 2.7, 3.2, 0.9, 0.1, 1.6 ];
+
+  function gauss(x, mu, sig) {
+    return Math.exp(-(x-mu)*(x-mu)/(2*sig*sig))/(sig*Math.sqrt(2*Math.PI));
+  }
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const mu = +muS.value, sig = +sigS.value;
+    const yMax = 0.5;
+    const toX = x => 20 + (x+3)/(7)* (w-40);
+    const toY = y => h-15 - (y/yMax)*(h-45);
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // data points
+    data.forEach(x => {
+      const px = toX(x);
+      ctx.fillStyle = '#c7864a';
+      ctx.beginPath(); ctx.arc(px, h-15, 4, 0, 7); ctx.fill();
+    });
+
+    // current gaussian curve
+    ctx.strokeStyle = '#9c4a2f'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let px=0; px<=w-40; px++){
+      const x = -3 + px/(w-40)*7;
+      const y = gauss(x, mu, sig);
+      if (px===0) ctx.moveTo(20+px, toY(y)); else ctx.lineTo(20+px, toY(y));
+    }
+    ctx.stroke();
+
+    // log likelihood
+    let ll = 0;
+    data.forEach(x => {
+      const g = gauss(x, mu, sig);
+      ll += Math.log(g > 1e-12 ? g : 1e-12);
+    });
+    ll = Math.max(-400, Math.min(0, ll));
+    document.getElementById('mleMuVal').textContent = mu.toFixed(1);
+    document.getElementById('mleSigVal').textContent = sig.toFixed(1);
+    document.getElementById('mleVal').textContent = (ll>99?'∞':ll.toFixed(1)) + ' (最大≈'+(-29.0).toFixed(1)+')';
+  }
+
+  muS.addEventListener('input', surf);
+  sigS.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 13. 熵可视化（P5）
+// ============================================================
+(function() {
+  const cv = document.getElementById('entCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const p1S = document.getElementById('entP1');
+  const p2S = document.getElementById('entP2');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const p1 = +p1S.value, p2 = +p2S.value;
+    const p3 = Math.max(0.05, 1 - p1 - p2);
+    const ps = [p1, p2, p3];
+    let H = 0;
+    ps.forEach(p => { if (p>0) H += -p*Math.log2(p); });
+
+    const bw = 90, gap = 40;
+    const startX = (w - (3*bw+2*gap))/2;
+    const maxH = h-60;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    const cols = ['#c7864a', '#4fb8e8', '#a78bfa'];
+    ps.forEach((p,i) => {
+      const x = startX + i*(bw+gap);
+      const bh = p*maxH;
+      ctx.fillStyle = cols[i];
+      ctx.fillRect(x, h-40-bh, bw, bh);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dim') || '#666';
+      ctx.font='14px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('p'+(i+1), x+bw/2, h-20);
+      ctx.font='bold 13px monospace';
+      ctx.fillText(p.toFixed(2), x+bw/2, h-48);
+    });
+
+    document.getElementById('entP1Val').textContent = p1.toFixed(2);
+    document.getElementById('entP2Val').textContent = p2.toFixed(2);
+    document.getElementById('entVal').textContent = H.toFixed(2) + ' (均匀时≈'+Math.log2(3).toFixed(2)+')';
+  }
+
+  p1S.addEventListener('input', surf);
+  p2S.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 14. 链式法则可视化（C2）
+// ============================================================
+(function() {
+  const cv = document.getElementById('chainCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const xS = document.getElementById('chainX');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const x = +xS.value;
+    const u = x*x;                 // inner
+    const fx = Math.sin(u);        // outer result
+    const dOuter = Math.cos(u);    // cos(x²)
+    const dInner = 2*x;            // 2x
+    const dTotal = dOuter * dInner;
+
+    const xMin=-2, xMax=2, yMin=-1.5, yMax=1.5;
+    const toX = v => 20 + (v-xMin)/(xMax-xMin)*(w-40);
+    const toY = v => h-20 - (v-yMin)/(yMax-yMin)*(h-40);
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // axes
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#eee';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(20, toY(0)); ctx.lineTo(w-20, toY(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(toX(0), 20); ctx.lineTo(toX(0), h-20); ctx.stroke();
+
+    // f(x) = sin(x²)
+    ctx.strokeStyle = '#c7864a'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let px=0;px<=w-40;px++){
+      const v = xMin + px/(w-40)*(xMax-xMin);
+      const y = Math.sin(v*v);
+      if (px===0) ctx.moveTo(20+px, toY(y)); else ctx.lineTo(20+px, toY(y));
+    }
+    ctx.stroke();
+
+    // point x
+    const px = toX(x), py = toY(fx);
+    ctx.fillStyle = '#9c4a2f';
+    ctx.beginPath(); ctx.arc(px, py, 5, 0, 7); ctx.fill();
+
+    document.getElementById('chainXVal').textContent = x.toFixed(1);
+    document.getElementById('chainU').textContent = u.toFixed(2);
+    document.getElementById('chainVal').textContent = dOuter.toFixed(2);
+  }
+
+  xS.addEventListener('input', surf);
+  surf();
+})();
+
+// ============================================================
+// 15. 海森可视化（C4）
+// ============================================================
+(function() {
+  const cv = document.getElementById('hessCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const aS = document.getElementById('hessA');
+  const bS = document.getElementById('hessB');
+
+  function surf() {
+    const w = cv.width, h = cv.height;
+    const a = +aS.value, b = +bS.value;
+    const c = a;  // simplified symmetric, c=a
+
+    // type: a^2 - b^2 vs 0
+    const det = a*c - b*b;
+    const type = det > 0 ? (a>0 ? '正定 → 局部极小 (谷底)' : '负定 → 局部极大 (峰顶)') : '不定 → 鞍点 (马鞍形)';
+
+    const cx = w/2, cy = h/2, span = 6;
+    function f(x,y){ return 0.5*(a*x*x + 2*b*x*y + c*y*y); }
+
+    // grid surface via filled rects (coarse)
+    const cell = 6;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    const toX = v => cx + v/span*(w/2-20);
+    const toY = v => cy - v/span*(h/2-20);
+
+    for (let gx=-span; gx<span; gx+=0.15) {
+      for (let gy=-span; gy<span; gy+=0.15) {
+        const z = f(gx, gy);
+        // normalize z to a color (positive warm, negative cool)
+        const zn = Math.max(-1, Math.min(1, z/3));
+        let col;
+        if (zn >= 0) {
+          const t = Math.min(1, zn);
+          col = `rgba(199,134,74,${0.15+0.7*t})`;
+        } else {
+          const t = Math.min(1, -zn);
+          col = `rgba(79,184,232,${0.15+0.7*t})`;
+        }
+        const px = toX(gx), py = toY(gy);
+        ctx.fillStyle = col;
+        ctx.fillRect(px-w/10/span, py-h/10/span, w/10/span+1, h/10/span+1);
+      }
+    }
+
+    // axes
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line') || '#ccc';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(toX(0), 20); ctx.lineTo(toX(0), h-20);
+    ctx.moveTo(20, toY(0)); ctx.lineTo(w-20, toY(0)); ctx.stroke();
+
+    document.getElementById('hessAVal').textContent = a.toFixed(1);
+    document.getElementById('hessBVal').textContent = b.toFixed(1);
+    document.getElementById('hessType').textContent = type;
+  }
+
+  aS.addEventListener('input', surf);
+  bS.addEventListener('input', surf);
+  surf();
+})();
+
+});
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

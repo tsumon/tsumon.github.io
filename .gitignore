@@ -1,0 +1,11 @@
+.agents/
+.claude/
+.DS_Store
+Thumbs.db
+math-backup.html
+FILES-SUMMARY.txt
+check-math.sh
+skills-lock.json
+CHANGELOG-MATH.md
+README-MATH.md
+CLAUDE.md

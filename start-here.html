@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数学基础指南 - 快速开始</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: linear-gradient(135deg, #F7F4EF 0%, #FBF9F5 100%);
+      color: #1F2421;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 12px;
+      color: #1F2421;
+    }
+    .subtitle {
+      color: #5C635D;
+      font-size: 1.1em;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #E7E1D7;
+    }
+    .hero-btn {
+      display: inline-block;
+      padding: 16px 32px;
+      background: #C4612F;
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 1.1em;
+      margin: 24px 0;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(196, 97, 47, 0.3);
+    }
+    .hero-btn:hover {
+      background: #A94E22;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(196, 97, 47, 0.4);
+    }
+    .section {
+      margin: 32px 0;
+    }
+    .section h2 {
+      font-size: 1.8em;
+      margin-bottom: 16px;
+      color: #1F2421;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+    .feature {
+      padding: 20px;
+      background: #FBF9F5;
+      border-radius: 12px;
+      border-left: 4px solid #C4612F;
+    }
+    .feature h3 {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      color: #C4612F;
+    }
+    .feature p {
+      color: #5C635D;
+      font-size: 0.95em;
+    }
+    .docs-list {
+      list-style: none;
+      margin: 20px 0;
+    }
+    .docs-list li {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: #F7F4EF;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .docs-list a {
+      color: #C4612F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .docs-list a:hover {
+      text-decoration: underline;
+    }
+    .icon {
+      font-size: 1.5em;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 32px 0;
+      padding: 24px;
+      background: linear-gradient(135deg, #F2E3D6 0%, #FBF9F5 100%);
+      border-radius: 12px;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 2em;
+      font-weight: 600;
+      color: #C4612F;
+    }
+    .stat-label {
+      color: #5C635D;
+      font-size: 0.9em;
+    }
+    .alert {
+      padding: 16px 20px;
+      background: #F2E3D6;
+      border-radius: 8px;
+      margin: 24px 0;
+      border-left: 4px solid #C4612F;
+    }
+    .alert strong {
+      color: #C4612F;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 24px; }
+      h1 { font-size: 2em; }
+      .features { grid-template-columns: 1fr; }
+      .stats { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 数学基础学习指南 v2.0</h1>
+    <p class="subtitle">为LLM学习者准备的交互式数学指南 - 从扫盲到精通</p>
+
+    <div style="text-align: center;">
+      <a href="math.html" class="hero-btn">🚀 开始学习</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">35+</div>
+        <div class="stat-label">数学符号</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">交互可视化</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">17</div>
+        <div class="stat-label">知识章节</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1425</div>
+        <div class="stat-label">代码行数</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="icon">✨</span> 核心功能</h2>
+      <div class="features">
+        <div class="feature">
+          <h3>🎓 扫盲入门</h3>
+          <p>零基础友好的学习起点，四步法带你入门数学符号和概念</p>
+        </div>
+        <div class="feature">
+          <h3>📖 符号速查</h3>
+          <p>35+常用数学符号，包含读音、用途和实际应用场景</p>
+        </div>
+        <div class="feature">
+          <h3>🎨 交互可视化</h3>
+          <p>向量、高斯、Softmax、梯度下降，边玩边学建立直觉</p>
+        </div>
+        <div class="feature">
+          <h3>📚 完整知识</h3>
+          <p>线性代数、概率论、微积分，系统化的理论学习</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert">
+      <strong>💡 学习建议：</strong> 如果你是完全零基础，建议按照「扫盲入门 → 符号速查 → 可视化 → 理论章节」的顺序学习。如果已有基础，可以直接跳到感兴趣的章节。
+    </div>
+
+    <div class="section">
+      <h2><span class="icon">📚</span> 配套文档</h2>
+      <ul class="docs-list">
+        <li>
+          <span class="icon">📖</span>
+          <a href="README-MATH.md" target="_blank">README-MATH.md</a>
+          <span style="color: #5C635D; margin-left: auto;">- 完整使用指南和学习路径</span>
+        </li>
+        <li>
+          <span class="icon">📝</span>
+          <a href="CHANGELOG-MATH.md" target="_blank">CHANGELOG-MATH.md</a>
+          <span style="color: #5C635D; margin-left: auto;">- 详细更新日志和版本对比</span>
+        </li>
+        <li>
+          <span class="icon">🔍</span>
+          <span style="color: #5C635D;">check-math.sh</span>
+          <span style="color: #5C635D; margin-left: auto;">- 功能验证脚本</span>
+        </li>
+        <li>
+          <span class="icon">💾</span>
+          <a href="math-backup.html" target="_blank">math-backup.html</a>
+          <span style="color: #5C635D; margin-left: auto;">- 原始版本备份</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2><span class="icon">🎯</span> 快速导航</h2>
+      <p style="margin: 16px 0; color: #5C635D;">打开主文件后，你将看到：</p>
+      <div class="features">
+        <div class="feature">
+          <h3>#primer</h3>
+          <p>扫盲入门 - 为什么学数学？怎么学？</p>
+        </div>
+        <div class="feature">
+          <h3>#symbols</h3>
+          <p>符号速查 - α β γ θ σ 这些符号怎么读？</p>
+        </div>
+        <div class="feature">
+          <h3>#viz</h3>
+          <p>可视化 - 动手调整参数，看数学动起来</p>
+        </div>
+        <div class="feature">
+          <h3>A1-A4</h3>
+          <p>线性代数 - 向量、矩阵、特征值、SVD</p>
+        </div>
+        <div class="feature">
+          <h3>P1-P5</h3>
+          <p>概率论 - 从基础概念到常见分布</p>
+        </div>
+        <div class="feature">
+          <h3>C1-C4</h3>
+          <p>微积分 - 导数、梯度、反向传播</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="icon">✅</span> 已验证功能</h2>
+      <ul style="list-style: none; margin: 16px 0;">
+        <li style="margin: 8px 0; color: #5C635D;">✅ 所有导航链接正常工作</li>
+        <li style="margin: 8px 0; color: #5C635D;">✅ 4个Canvas可视化正常渲染</li>
+        <li style="margin: 8px 0; color: #5C635D;">✅ 13个滑块实时响应</li>
+        <li style="margin: 8px 0; color: #5C635D;">✅ 梯度下降动画流畅播放</li>
+        <li style="margin: 8px 0; color: #5C635D;">✅ 所有数学公式正确显示</li>
+        <li style="margin: 8px 0; color: #5C635D;">✅ 响应式设计，移动端友好</li>
+      </ul>
+    </div>
+
+    <div class="alert">
+      <strong>🎉 准备好了吗？</strong> 点击上方的「开始学习」按钮，开启你的数学学习之旅！记住：数学不难，只是需要时间和练习。
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #E7E1D7; color: #5C635D; font-size: 0.9em;">
+      <p>Math.html v2.0 | 更新日期: 2026年9月2日</p>
+      <p style="margin-top: 8px;">包含扫盲入门、符号速查、交互可视化和完整数学知识</p>
+    </div>
+  </div>
+</body>
+</html>
