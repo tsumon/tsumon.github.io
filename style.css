@@ -1035,9 +1035,6 @@ select:focus, .text-input:focus { border-color: var(--accent-line); }
   .journey-hub { text-align: left; padding: 0; }
   .journey-stop { align-items: flex-start; }
   .ch-air, .next { padding-left: 20px; padding-right: 20px; }
-  .tree, .join-wrap, .grid2, .compare-3, .bc-row { grid-template-columns: 1fr; }
-  .perm { grid-template-columns: 1fr; }
-  .loop-task { grid-template-columns: 64px 1fr 64px; }
 }
 @media (max-width: 560px) {
   .hero h1 { font-size: 36px; }
@@ -1047,6 +1044,8 @@ select:focus, .text-input:focus { border-color: var(--accent-line); }
 /* ============================================================
    BASICS PAGE
    ============================================================ */
+/* basics page extras — also appended into style.css by _patch.py */
+
 .ch pre, .demo pre {
   font-family: var(--mono);
   font-size: 13px;
@@ -1198,3 +1197,9 @@ select:focus, .text-input:focus { border-color: var(--accent-line); }
 .symtable.wide th:first-child, .symtable.wide td:first-child { width: auto; }
 .symtable.wide th:nth-child(2), .symtable.wide td:nth-child(2) { width: auto; }
 .symtable.wide td:first-child { font-family: var(--mono); font-size: 13.5px; color: var(--accent-ink); }
+
+@media (max-width: 900px) {
+  .tree, .join-wrap, .grid2, .compare-3, .bc-row { grid-template-columns: 1fr; }
+  .perm { grid-template-columns: 1fr; }
+  .loop-task { grid-template-columns: 64px 1fr 64px; }
+}

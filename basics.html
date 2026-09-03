@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>工程基础 · Linux、Python、MySQL、Docker</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="basics-extra.css">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <script>
   (function () {
@@ -44,7 +45,7 @@
     <li><a href="#ch3"><b>03</b> Shell 脚本</a></li>
     <li class="rail-sep">写码</li>
     <li><a href="#ch4"><b>04</b> Python 容器</a></li>
-    <li><a href="#ch5"><b>05</b> 函数与对象</a></li>
+    <li><a href="#ch5"><b>05</b> 闭包与三器</a></li>
     <li><a href="#ch6"><b>06</b> NumPy / Pandas</a></li>
     <li class="rail-sep">上线</li>
     <li><a href="#ch7"><b>07</b> MySQL</a></li>
@@ -98,10 +99,12 @@
     </div>
     <span class="j-link"></span>
     <div class="journey-hub" data-hub="py">
-      <button type="button" class="journey-stop journey-hub-btn"><i>03</i><b>写码</b><small>Python 的积木</small></button>
+      <button type="button" class="journey-stop journey-hub-btn"><i>03</i><b>写码</b><small>容器、闭包、三器、三程</small></button>
       <div class="journey-subs">
         <button type="button" class="journey-substop" data-sec="ch4">04 容器类型</button>
-        <button type="button" class="journey-substop" data-sec="ch5">05 函数与对象</button>
+        <button type="button" class="journey-substop" data-sec="py-comp">推导式 / lambda</button>
+        <button type="button" class="journey-substop" data-sec="ch5">05 闭包与三器</button>
+        <button type="button" class="journey-substop" data-sec="py-conc">三程</button>
       </div>
     </div>
     <span class="j-link"></span>
@@ -314,31 +317,171 @@ for ((i=1;i<=100;i++)); do sum=$[$sum+$i]; done</code></pre>
       <ul>
         <li>不可变：<code>int float str tuple frozenset</code>。看起来像「改了」，其实是绑到新对象上</li>
         <li>可变：<code>list dict set</code>。函数里如果改了传入的 list，外面能看见</li>
-        <li><code>is</code> 问的是是不是同一个对象，<code>==</code> 问的是值相不相等。小整数和短字符串有 intern，别被 <code>is</code> 骗到</li>
+        <li>面试只爱问一件事：list 可变、不能当字典的键；tuple 不可变、能被哈希。里面嵌了 list，那个 list 仍可变</li>
       </ul>
     </div>
-    <div class="cmp-col"><h4>每天都在用的糖</h4>
+    <div class="cmp-col"><h4>切片、enumerate、zip</h4>
       <ul>
-        <li>推导式 <code>[x*x for x in range(10) if x%2==0]</code></li>
+        <li>切片 <code>a[1:5:2]</code>，倒序 <code>a[::-1]</code>。切片是新对象，但里面的可变元素仍是同一份</li>
         <li><code>enumerate</code> 同时拿下标，<code>zip</code> 并行遍历</li>
-        <li>切片 <code>a[1:5:2]</code>，倒序 <code>a[::-1]</code>。切片是新对象，改它不改原 list；但切片里的可变元素仍是同一份</li>
+        <li><code>is</code> 问是不是同一个对象，<code>==</code> 问值相不相等。小整数和短字符串有 intern，别被 <code>is</code> 骗到</li>
       </ul>
     </div>
   </div>
+
+  <h3 class="sub" id="py-comp">三个推导式，外加一个圆括号</h3>
+  <p>Python 原生只认四种写法。方括号立刻造出整份 list；花括号看有没有冒号，决定是 set 还是 dict；圆括号不造容器——它返回生成器，<code>next()</code> 一次才算一个。面试常把后两个问成一对：列表推导式吃内存，生成器表达式吃时间。</p>
+
+  <div class="demo" id="compDemo">
+    <div class="demo-head">
+      <h3>同一句话，四个括号</h3>
+      <p>数据源都是 <code>range(5)</code>，表达式都是 <code>x * 2</code>。换括号，得到的东西完全不是一类。</p>
+    </div>
+    <div class="demo-body">
+      <div class="chip-row">
+        <button class="chip is-on" data-k="list">列表 [ ]</button>
+        <button class="chip" data-k="dict">字典 {k: v}</button>
+        <button class="chip" data-k="set">集合 { }</button>
+        <button class="chip" data-k="gen">生成器 ( )</button>
+      </div>
+      <pre id="compCode"></pre>
+      <div id="compStage"></div>
+      <div class="btn-row" id="compBtns" hidden>
+        <button class="btn btn-sm btn-primary" id="compNext">next()</button>
+        <button class="btn btn-sm btn-ghost" id="compReset">重新生成</button>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub" id="py-lambda">匿名函数：就一行</h3>
+  <p><code>lambda 参数: 表达式</code>。没有名字、不能写语句，复杂逻辑别塞。真正出场的地方是「函数当参数」：<code>sorted(..., key=)</code>、<code>filter</code>、<code>map</code>。能写成推导式的，优先推导式——更像人话。</p>
+  <div class="compare">
+    <div class="cmp-col"><h4>和 def 差在哪</h4>
+      <ul>
+        <li><code>def</code> 有名字、有语句块、能 <code>return</code> 多次</li>
+        <li><code>lambda</code> 是表达式，只能有一个返回值，常被随手塞进参数里</li>
+        <li>两者都是函数对象，都可以当闭包用。工厂函数返回 <code>lambda n: n * k</code>，捕获的还是那个 <code>k</code></li>
+      </ul>
+    </div>
+    <div class="cmp-col"><h4>跟谁走</h4>
+      <ul>
+        <li>排序：<code>sorted(rows, key=lambda r: r['age'])</code></li>
+        <li>过滤 / 映射：能写推导式就别用 <code>filter</code> + <code>map</code></li>
+        <li>面试更常问闭包和装饰器。lambda 只是闭包的一种瘦写法</li>
+      </ul>
+    </div>
+  </div>
+  <pre><code>students = [{'name': '张三', 'age': 36}, {'name': '李四', 'age': 14}]
+sorted(students, key=lambda s: s['age'])
+[s['name'] for s in students if s['age'] > 18]   # 比 filter+map 更清楚</code></pre>
 
   <h3 class="sub">流程控制就这些</h3>
   <p>顺序、分支、循环。分支用 <code>if / elif / else</code>，3.10 以后还有 <code>match-case</code>。循环里 <code>continue</code> 跳过本轮，<code>break</code> 离开，<code>for-else</code> / <code>while-else</code> 的 else 在「没被 break」时才走。输出优先 f-string：<code>f'{name} 的 loss={loss:.4f}'</code>。</p>
 </section>
 
 <section id="ch5" class="ch">
-  <div class="ch-head"><span class="ch-num">05</span><h2>函数、对象、迭代器</h2></div>
-  <p class="lead">函数是把一段逻辑起个名字。对象是把数据和操作这件事的方法放一起。迭代器是「一次只给你下一个」——这和模型一次吐一个 token 是同一个形状。</p>
+  <div class="ch-head"><span class="ch-num">05</span><h2>闭包、三器、三程</h2></div>
+  <p class="lead">高频面试把 Python 进阶压成三叠：闭包把状态揣走；三器分别解决遍历、内存和监控；三程决定 CPU 密集还是 I/O 密集该派谁上场。</p>
 
   <h3 class="sub">参数怎么传</h3>
   <p>位置参数、默认值、关键字、<code>*args</code> 收成元组、<code>**kwargs</code> 收成字典。默认值只求值一次，所以不要写 <code>def f(xs=[])</code>。不可变对象当参数，函数里重新赋值不影响外面；可变对象当参数，<code>.append</code> 会影响外面。</p>
   <pre><code>def train(model, data, lr=1e-4, *hooks, **opt):
     ...
 train(net, ds, 3e-4, log, wandb, device='cuda')</code></pre>
+
+  <h3 class="sub" id="py-close">闭包：外层走了，变量还在</h3>
+  <p>内部函数引用了外部函数的局部变量，并且外部函数把内部函数 return 出去——这三件齐了就是闭包。外层结束本该销毁的变量，被内层「捕获」留在内存里。装饰器、函数工厂、藏一点私有状态，全靠它。</p>
+
+  <div class="demo" id="closeDemo">
+    <div class="demo-head">
+      <h3>make_mul(n) 把 n 揣走</h3>
+      <p>外层函数已经返回，按理说 <code>n</code> 该销毁。点下面的倍数，看内层函数还拿得到它。</p>
+    </div>
+    <div class="demo-body">
+      <div class="chip-row">
+        <button class="chip is-on" data-n="2">n = 2</button>
+        <button class="chip" data-n="3">n = 3</button>
+        <button class="chip" data-n="5">n = 5</button>
+      </div>
+      <div id="closeStage"></div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="cmp-col"><h4>三条缺一不可</h4>
+      <ul>
+        <li>有函数嵌套：内层定义在外层里面</li>
+        <li>内层引用了外层的变量（不是全局变量）</li>
+        <li>外层把内层的引用 return 出去</li>
+      </ul>
+    </div>
+    <div class="cmp-col"><h4>改它、扔它</h4>
+      <ul>
+        <li>内层默认只能读外层变量。要改，得写 <code>nonlocal n</code>，否则 Python 会当成「正在定义局部变量」报错</li>
+        <li>闭包会把大对象一直握在手里，不用了把引用设成 <code>None</code></li>
+        <li>作用域查找顺着 LEGB：Local → Enclosing → Global → Built-in</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub" id="py-iter">三器：迭代器、生成器、装饰器</h3>
+  <p>一句话带走：<strong>迭代器解决遍历，生成器解决内存，装饰器解决监控。</strong>循环的本质是先 <code>iter()</code> 拿到迭代器，再不断 <code>next()</code>，取完抛 <code>StopIteration</code> 结束。</p>
+
+  <div class="demo" id="iterDemo">
+    <div class="demo-head">
+      <h3>next() 一次吐一个 token</h3>
+      <p>列表本身不是迭代器，<code>iter(tokens)</code> 才是。惰性、单向、取完不能自动重来——和模型一次吐一个 token 同一个形状。</p>
+    </div>
+    <div class="demo-body">
+      <div id="iterStage"></div>
+      <div class="btn-row">
+        <button class="btn btn-sm btn-primary" id="iterNext">next()</button>
+        <button class="btn btn-sm btn-ghost" id="iterReset">重新 iter()</button>
+      </div>
+      <p class="tip" id="iterTip"></p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="cmp-col"><h4>可迭代 vs 迭代器</h4>
+      <ul>
+        <li>可迭代：实现 <code>__iter__</code>。list、str、dict、文件对象都是</li>
+        <li>迭代器：再实现 <code>__next__</code>。一次性、只能往前、取完作废</li>
+        <li>超大文件、百万行日志，用迭代器逐条读，避免一次性装进内存</li>
+      </ul>
+    </div>
+    <div class="cmp-col"><h4>生成器是特殊的迭代器</h4>
+      <ul>
+        <li>函数体里有 <code>yield</code>，调用它不执行，只返回生成器</li>
+        <li>每次 <code>next()</code>，代码才跑到下一个 <code>yield</code></li>
+        <li>LangGraph 的 <code>stream()</code>、SSE 边生成边推 token，都是生成器在干活</li>
+      </ul>
+    </div>
+  </div>
+  <pre><code>def batched(xs, n):
+    buf = []
+    for x in xs:
+        buf.append(x)
+        if len(buf) == n:
+            yield buf
+            buf = []
+    if buf: yield buf</code></pre>
+
+  <div class="demo" id="decoDemo">
+    <div class="demo-head">
+      <h3>装饰器：不改原函数，外包一层</h3>
+      <p><code>@log</code> 就是 <code>chat = log(chat)</code>。点开关，看出栈顺序：先进后出。计时、日志、重试、鉴权都是这一招。</p>
+    </div>
+    <div class="demo-body">
+      <div class="chip-row">
+        <button class="chip is-on" data-k="log">@log</button>
+        <button class="chip" data-k="timer">@timer</button>
+        <button class="chip" data-k="retry">@retry</button>
+      </div>
+      <div id="decoStage"></div>
+    </div>
+  </div>
+  <p>装饰器本质是闭包：外层收下原函数，内层在调用前后加活，再把原函数的返回值递出去。<code>functools.wraps</code> 用来把原函数的名字抄回来，不然堆栈里全是 <code>wrapper</code>。</p>
 
   <h3 class="sub">类只要三件事</h3>
   <div class="compare">
@@ -358,20 +501,36 @@ train(net, ds, 3e-4, log, wandb, device='cuda')</code></pre>
     </div>
   </div>
 
-  <h3 class="sub">迭代器、生成器、装饰器</h3>
-  <p>可迭代对象实现 <code>__iter__</code>；迭代器再实现 <code>__next__</code>，一次性、单向、惰性。生成器是带 <code>yield</code> 的函数，调用它不执行，只返回生成器。装饰器是「用一个函数包住另一个函数」的语法糖，本质是闭包。</p>
-  <pre><code>def batched(xs, n):
-    buf = []
-    for x in xs:
-        buf.append(x)
-        if len(buf) == n:
-            yield buf
-            buf = []
-    if buf: yield buf</code></pre>
+  <h3 class="sub" id="py-conc">三程：进程、线程、协程</h3>
+  <p>同步：点完菜站在柜台等，期间什么也不干。异步：拿号回去刷手机，叫到再取。进程是操作系统分资源的独立房间；线程是房间里的几双手，共享家具；协程是自己排队，遇到 <code>await</code> 就让位，不劳操作系统。</p>
+
+  <div class="demo" id="concDemo">
+    <div class="demo-head">
+      <h3>三间工位</h3>
+      <p>CPU 密集看谁能真并行；I/O 密集看谁切换更便宜。GIL 是那把只能递来递去的钥匙。</p>
+    </div>
+    <div class="demo-body">
+      <div class="chip-row">
+        <button class="chip is-on" data-k="proc">进程</button>
+        <button class="chip" data-k="th">线程</button>
+        <button class="chip" data-k="co">协程</button>
+      </div>
+      <div id="concStage"></div>
+    </div>
+  </div>
+
+  <table class="symtable wide">
+    <thead><tr><th></th><th>适合</th><th>不适合</th><th>典型任务</th></tr></thead>
+    <tbody>
+      <tr><td>线程</td><td>I/O 密集、要共享内存、几十到几百个任务</td><td>CPU 密集（GIL）、成千上万连接</td><td>读文件、调接口、后台轮询</td></tr>
+      <tr><td>协程</td><td>高并发 I/O、连接数多、单任务计算量小</td><td>CPU 密集（会堵住事件循环）、大量同步库</td><td>HTTP、WebSocket、SSE、模型流式输出</td></tr>
+      <tr><td>多进程</td><td>CPU 密集、要绕开 GIL、要强隔离</td><td>纯等 I/O、要频繁共享数据（IPC 贵）</td><td>图像处理、批量特征、模型并行</td></tr>
+    </tbody>
+  </table>
 
   <div class="note">
-    <b>GIL 一句话</b>
-    CPython 同一时刻只有一个线程在跑 Python 字节码。CPU 密集（算矩阵）用多进程或把活交给 NumPy / GPU；I/O 密集（等网络、等磁盘）用线程或协程。FastAPI 选协程，就是因为 Web 几乎全是 I/O。
+    <b>GIL 不是 bug</b>
+    CPython 同一时刻只有一个线程在跑 Python 字节码。等网络、等磁盘时线程会放开这把锁，所以 I/O 密集多线程仍有用；算矩阵时锁不放，多线程跑不满多核。CPU 密集请用多进程，或把活交给 NumPy / GPU。Agent 里 <code>async</code> 定义协程，<code>await</code> 让出执行权，<code>asyncio.gather</code> 把检索、调模型、调工具叠在一起等。
   </div>
 </section>
 
@@ -516,29 +675,7 @@ LIMIT 5;</code></pre>
   <div class="ch-head"><span class="ch-num">08</span><h2>FastAPI：把函数变成接口</h2></div>
   <p class="lead">浏览器打过来的是 HTTP。FastAPI 做的事：按路径找到函数，把参数从 URL 或 JSON 里拆出来，校验类型，再把返回值变成 JSON。底下用 Uvicorn 跑，调度靠协程。</p>
 
-  <div class="compare compare-3">
-    <div class="cmp-col"><h4>进程</h4>
-      <ul>
-        <li>操作系统调度</li>
-        <li>内存完全隔离</li>
-        <li>适合 CPU 密集、真多核</li>
-      </ul>
-    </div>
-    <div class="cmp-col"><h4>线程</h4>
-      <ul>
-        <li>仍是操作系统调度</li>
-        <li>共享内存，要加锁</li>
-        <li>受 GIL 限制，数量一多切换就贵</li>
-      </ul>
-    </div>
-    <div class="cmp-col"><h4>协程</h4>
-      <ul>
-        <li>事件循环自己调度</li>
-        <li>遇到 <code>await</code> 就让出</li>
-        <li>I/O 密集可以挂几万个</li>
-      </ul>
-    </div>
-  </div>
+  <p>进程、线程、协程的对比在 <a href="#py-conc">05 三程</a>。FastAPI 选协程，因为 Web 几乎全是等网络。下面只看 <code>await</code> 让不让路。</p>
 
   <div class="demo" id="loopDemo">
     <div class="demo-head">
@@ -670,7 +807,7 @@ volumes:
     </div>
     <div class="cmp-col"><h4>面试里常被问到的</h4>
       <ul>
-        <li>list / tuple / dict 的区别，<code>*args **kwargs</code>，迭代器和生成器，GIL</li>
+        <li>list / tuple，闭包三条件，迭代器 / 生成器 / 装饰器，进程线程协程和 GIL</li>
         <li><code>loc</code> 和 <code>iloc</code>，广播规则，INNER 和 LEFT JOIN，事务 ACID</li>
         <li>镜像和容器的区别，为什么容器删了数据会丢，为什么要数据卷</li>
       </ul>
@@ -701,5 +838,3 @@ volumes:
 <script src="vendor/katex/auto-render.min.js"></script>
 <script src="app.js"></script>
 <script src="basics.js"></script>
-</body>
-</html>

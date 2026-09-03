@@ -357,3 +357,206 @@
   $$('#dockDemo .dock-layer').forEach(el => el.addEventListener('click', () => show(el.dataset.k)));
   show('image');
 })();
+
+/* ---------- 三个推导式 ---------- */
+(function comp() {
+  const stage = $('#compStage');
+  if (!stage) return;
+  const xs = [0, 1, 2, 3, 4];
+  const kinds = {
+    list: {
+      code: '[x * 2 for x in range(5)]',
+      note: '方括号：立刻算出整份 list，五个格子一次性出现。一百万个数就会占一百万个位置。'
+    },
+    dict: {
+      code: '{x: x * 2 for x in range(5)}',
+      note: '花括号加冒号：键值对。键必须可哈希。用来做查找表、词表 id→token。'
+    },
+    set: {
+      code: '{x * 2 for x in range(5)}',
+      note: '花括号没冒号：集合，自动去重、无下标。成员判断很快。'
+    },
+    gen: {
+      code: '(x * 2 for x in range(5))',
+      note: '圆括号：生成器表达式。现在还什么都没算。点 next()，才吐下一个。'
+    }
+  };
+  let kind = 'list', gi = 0;
+
+  function cells(vals, doneMax) {
+    return `<div class="cells">${vals.map((v, i) => {
+      const cls = doneMax == null ? '' : (i < doneMax ? ' is-done' : ' is-wait');
+      const body = doneMax == null || i < doneMax ? v : '?';
+      return `<span class="cell${cls}">${body}<kbd>${i}</kbd></span>`;
+    }).join('')}</div>`;
+  }
+
+  function draw() {
+    const d = kinds[kind];
+    $('#compCode').textContent = d.code;
+    $$('#compDemo .chip').forEach(c => c.classList.toggle('is-on', c.dataset.k === kind));
+    const btns = $('#compBtns');
+    const doubled = xs.map(x => x * 2);
+    if (kind === 'list') {
+      btns.hidden = true;
+      stage.innerHTML = cells(doubled) + `<p class="tip">${d.note}</p>`;
+    } else if (kind === 'dict') {
+      btns.hidden = true;
+      stage.innerHTML = `<div class="cells">${xs.map(x => `<span class="cell">${x}: ${x * 2}</span>`).join('')}</div><p class="tip">${d.note}</p>`;
+    } else if (kind === 'set') {
+      btns.hidden = true;
+      stage.innerHTML = cells(doubled).replace(/<kbd>\d+<\/kbd>/g, '') + `<p class="tip">${d.note}</p>`;
+    } else {
+      btns.hidden = false;
+      const exhausted = gi >= doubled.length;
+      const now = exhausted ? cells(doubled, gi) : cells(doubled, gi);
+      const msg = exhausted
+        ? 'StopIteration。生成器取完作废，要再用得重新造一份。'
+        : (gi === 0 ? d.note : `刚吐出 ${doubled[gi - 1]}。已经算过的不会再算，没算过的还不占内存。`);
+      stage.innerHTML = `<p class="tip" style="margin:0 0 10px;border:0;padding:0"><b>&lt;generator&gt;</b>　已取 ${gi} / 5</p>` + now + `<p class="tip">${msg}</p>`;
+    }
+  }
+
+  $$('#compDemo .chip').forEach(c => c.addEventListener('click', () => {
+    kind = c.dataset.k; gi = 0; draw();
+  }));
+  $('#compNext').addEventListener('click', () => {
+    if (kind !== 'gen') return;
+    if (gi < xs.length) gi += 1;
+    draw();
+  });
+  $('#compReset').addEventListener('click', () => { gi = 0; draw(); });
+  draw();
+})();
+
+/* ---------- 闭包 ---------- */
+(function close() {
+  const stage = $('#closeStage');
+  if (!stage) return;
+  let n = 2;
+  function draw() {
+    $$('#closeDemo .chip').forEach(c => c.classList.toggle('is-on', Number(c.dataset.n) === n));
+    const sample = 4;
+    stage.innerHTML = `<div class="close-flow">
+      <div class="close-box is-gone">
+        <span class="close-k">外层已返回</span>
+        <code>def make_mul(n=${n}):</code>
+        <code>　　def inner(x): return x * n</code>
+        <code>　　return inner</code>
+      </div>
+      <span class="close-arrow">捕获 n=${n}</span>
+      <div class="close-box is-live">
+        <span class="close-k">闭包还活着</span>
+        <code>fn = make_mul(${n})</code>
+        <code>fn(${sample}) → <b>${sample * n}</b></code>
+        <p>n 跟着 inner 走，不随 make_mul 结束而销毁。</p>
+      </div>
+    </div>`;
+  }
+  $$('#closeDemo .chip').forEach(c => c.addEventListener('click', () => { n = Number(c.dataset.n); draw(); }));
+  draw();
+})();
+
+/* ---------- 迭代器 next() ---------- */
+(function iter() {
+  const stage = $('#iterStage');
+  if (!stage) return;
+  const tokens = ['你', '好', '世', '界'];
+  let i = 0;
+  function draw() {
+    const done = i >= tokens.length;
+    stage.innerHTML = `<div class="cells">${tokens.map((t, k) => {
+      const cls = k < i ? ' is-done' : (k === i ? ' is-now' : ' is-wait');
+      return `<span class="cell${cls}">${t}<kbd>${k}</kbd></span>`;
+    }).join('')}</div>`;
+    const tip = $('#iterTip');
+    if (i === 0) tip.textContent = '刚 iter(tokens)。还一个都没取。for 循环背后就是反复调 next()。';
+    else if (!done) tip.textContent = `next() → '${tokens[i - 1]}'。游标已经越过它，回不去。`;
+    else tip.textContent = 'StopIteration。迭代器用尽。重新 iter() 才能再走一遍。';
+    $('#iterNext').disabled = done;
+  }
+  $('#iterNext').addEventListener('click', () => { if (i < tokens.length) { i += 1; draw(); } });
+  $('#iterReset').addEventListener('click', () => { i = 0; draw(); });
+  draw();
+})();
+
+/* ---------- 装饰器叠层 ---------- */
+(function deco() {
+  const stage = $('#decoStage');
+  if (!stage) return;
+  const all = ['log', 'timer', 'retry'];
+  const label = { log: '@log 记一笔', timer: '@timer 计时', retry: '@retry 失败重试' };
+  const on = new Set(['log']);
+
+  function draw() {
+    $$('#decoDemo .chip').forEach(c => c.classList.toggle('is-on', on.has(c.dataset.k)));
+    const stack = all.filter(k => on.has(k));
+    const enter = stack.slice();
+    const leave = stack.slice().reverse();
+    const layers = enter.map(k => `<div class="deco-layer">${label[k]} 进入</div>`).join('')
+      + `<div class="deco-core">chat("你好") → 原函数，没被改过</div>`
+      + leave.map(k => `<div class="deco-layer is-out">${label[k]} 离开</div>`).join('');
+    const sugar = stack.length
+      ? stack.map(k => '@' + k).join('\\n') + '\\ndef chat(): ...'
+      : 'def chat(): ...   # 没有装饰器，直接调用';
+    const eq = stack.length
+      ? 'chat = ' + stack.slice().reverse().reduce((acc, k) => `${k}(${acc})`, 'chat')
+      : 'chat 就是它自己';
+    stage.innerHTML = `<pre>${sugar.replace(/\\n/g, '\n')}</pre>
+      <div class="deco-stack">${layers}</div>
+      <p class="tip">${eq}。先写的装饰器在最外层，进得最早、出得最晚。</p>`;
+  }
+
+  $$('#decoDemo .chip').forEach(c => c.addEventListener('click', () => {
+    const k = c.dataset.k;
+    if (on.has(k)) on.delete(k); else on.add(k);
+    draw();
+  }));
+  draw();
+})();
+
+/* ---------- 三程工位 ---------- */
+(function conc() {
+  const stage = $('#concStage');
+  if (!stage) return;
+  const copy = {
+    proc: {
+      title: '两个进程 = 两间独立的房间',
+      body: '各有自己的内存。一个崩了不影响另一个。GIL 管不到隔壁房间，所以 CPU 密集用它来真并行。代价是造得贵，数据要靠队列或管道搬。',
+      lanes: [
+        { name: '进程 A', items: ['代码', '数据', 'CPU ✓'] },
+        { name: '进程 B', items: ['代码', '数据', 'CPU ✓'] }
+      ]
+    },
+    th: {
+      title: '两个线程 = 同一房间里的两双手',
+      body: '共享地址空间，传递数据便宜。但 CPython 有 GIL：同一时刻只有一只手能跑字节码。等 I/O 时会放手，所以读文件、调接口仍然划算；算矩阵就不划算。',
+      lanes: [
+        { name: '线程 1', items: ['跑字节码', 'GIL 钥匙'] },
+        { name: '线程 2', items: ['在等钥匙', '共享内存'] }
+      ]
+    },
+    co: {
+      title: '两个协程 = 一只手自己排队',
+      body: '不劳操作系统调度。碰到 await（等网络、等磁盘）就让位，事件循环去跑下一个。一个协程只要几 KB。CPU 密集的活会堵住整条循环，别往里塞。',
+      lanes: [
+        { name: '协程 retrieve', items: ['await 检索', '让出'] },
+        { name: '协程 call_llm', items: ['await 模型', '让出'] }
+      ]
+    }
+  };
+  function draw(k) {
+    $$('#concDemo .chip').forEach(c => c.classList.toggle('is-on', c.dataset.k === k));
+    const d = copy[k];
+    const lanes = d.lanes.map(l => `<div class="conc-lane ${k}">
+      <h4>${l.name}</h4>
+      <div class="cells">${l.items.map(x => `<span class="cell">${x}</span>`).join('')}</div>
+    </div>`).join('');
+    const wall = k === 'proc'
+      ? '<div class="conc-wall">内存墙<br>互不看见</div>'
+      : (k === 'th' ? '<div class="conc-wall is-soft">GIL<br>同一时刻一把钥匙</div>' : '<div class="conc-wall is-soft">事件循环<br>await 就换人</div>');
+    stage.innerHTML = `<div class="conc-board">${lanes}${wall}</div><p class="tip"><b>${d.title}</b>　${d.body}</p>`;
+  }
+  $$('#concDemo .chip').forEach(c => c.addEventListener('click', () => draw(c.dataset.k)));
+  draw('proc');
+})();
