@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Transformer 图解 · 可交互的大语言模型</title>
+<title>看得见的大模型</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <script>
@@ -20,12 +20,13 @@
 <header class="topbar">
   <a class="brand" href="#hero">
     <span class="brand-mark"></span>
-    <span class="brand-name">Transformer 图解</span>
+    <span class="brand-name">看得见的大模型</span>
   </a>
   <div class="topbar-right">
     <nav class="pagelinks">
       <a class="pagelink is-on" href="index.html">模型</a>
       <a class="pagelink" href="math.html">数学基础</a>
+      <a class="pagelink" href="basics.html">工程基础</a>
     </nav>
     <button class="theme-btn" id="themeBtn" aria-label="切换深浅色">
       <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -53,6 +54,7 @@
   <div class="rail-sep">另一页</div>
   <ol class="rail-list">
     <li><a href="math.html"><b>M</b> 数学基础</a></li>
+    <li><a href="basics.html"><b>B</b> 工程基础</a></li>
   </ol>
 </aside>
 
@@ -752,7 +754,7 @@
   <ol class="next-list">
     <li><b>讲清 Transformer。</b>把一句话变成向量，让每个词看看别人、自己想一想，重复几十层，输出下一个词。</li>
     <li><b>看懂注意力论文里的公式。</b>QK<sup>⊤</sup>、softmax、√d<sub>k</sub>，数学页 <a href="math.html#la1">A1</a> / <a href="math.html#prob3">P3</a> 能把符号翻成直觉。</li>
-    <li><b>判断该不该用 LoRA。</b>要固化格式或术语 → 微调；知识常更新或要溯源 → RAG 就够。</li>
+    <li><b>判断该不该用 LoRA。</b>要固化格式或术语 → 微调；知识常更新或要溯源 → RAG 就够。环境、数据、接口那一层在 <a href="basics.html">工程基础</a>。</li>
   </ol>
 </section>
 
