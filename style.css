@@ -105,13 +105,21 @@ body {
 }
 .brand-name { font-size: 15px; font-weight: 700; }
 
-.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
 
-.pagelinks { display: flex; gap: 4px; }
+.pagelinks { display: flex; align-items: center; gap: 8px; }
 .pagelink {
   padding: 7px 16px; border-radius: var(--r-pill);
   color: var(--dim); text-decoration: none;
   font-size: 13.5px; transition: color .18s, background .18s;
+}
+.pagelink-sep {
+  width: 1px;
+  height: 14px;
+  margin: 0 4px;
+  flex: 0 0 1px;
+  background: var(--faint);
+  opacity: .7;
 }
 .pagelink:hover { color: var(--text); background: var(--surface-2); }
 .pagelink.is-on { color: var(--accent-on); background: var(--accent); font-weight: 600; }
@@ -1047,7 +1055,9 @@ select:focus, .text-input:focus { border-color: var(--accent-line); }
 }
 @media (max-width: 560px) {
   .hero h1 { font-size: 36px; }
+  .pagelinks { gap: 6px; }
   .pagelink { padding: 6px 10px; font-size: 12.5px; }
+  .pagelink-sep { height: 12px; margin: 0 2px; }
 }
 
 /* ============================================================
