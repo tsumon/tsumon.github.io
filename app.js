@@ -14,7 +14,7 @@ const C = {};
 const REDRAW = [];
 function cssv(n) { return getComputedStyle(document.body).getPropertyValue(n).trim(); }
 function readPalette() {
-  C.light  = document.documentElement.getAttribute('data-theme') === 'light';
+  C.light  = document.documentElement.getAttribute('data-theme') !== 'dark';
   C.bg     = cssv('--bg-2');
   C.line   = cssv('--line');
   C.soft   = cssv('--line-soft');
@@ -896,6 +896,12 @@ document.addEventListener('DOMContentLoaded', () => {
    Chapter bridges — 每章开头的承上启下 + 具象类比
    ============================================================ */
 (function bridges() {
+  // 模型页专用。工程基础 / 数学基础也用 ch1..ch10，不能套模型页的承上启下。
+  const page = document.body.getAttribute('data-page')
+    || (/basics\.html/i.test(location.pathname + location.href) ? 'basics'
+        : /math\.html/i.test(location.pathname + location.href) ? 'math'
+        : 'model');
+  if (page !== 'model') return;
   const BRIDGES = [
     { sec: 'ch1',  from: '这是什么',            to: '规律怎么试出来',  note: '模型是一堆能调的数字，「猜错就改一点」循环反复。',
       analogy: '像蒙眼下山——看不见路，但能感觉到脚下哪边是下坡，朝那迈一小步，再感觉一次。',

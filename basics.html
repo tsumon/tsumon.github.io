@@ -10,12 +10,12 @@
 <script>
   (function () {
     var t = localStorage.getItem('theme');
-    if (!t) t = 'light';
+    if (t !== 'dark') t = 'light';
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
 </head>
-<body>
+<body data-page="basics">
 
 <header class="topbar">
   <a class="brand" href="index.html">
@@ -27,6 +27,7 @@
       <a class="pagelink" href="index.html">模型</a>
       <a class="pagelink" href="math.html">数学基础</a>
       <a class="pagelink is-on" href="basics.html">工程基础</a>
+      <a class="pagelink" href="heytea-basics.html">手绘本</a>
     </nav>
     <button class="theme-btn" id="themeBtn" aria-label="切换深浅色">
       <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -57,6 +58,7 @@
   <ol class="rail-list">
     <li><a href="index.html"><b>←</b> 模型</a></li>
     <li><a href="math.html"><b>M</b> 数学基础</a></li>
+    <li><a href="heytea-basics.html"><b>茶</b> 手绘本</a></li>
   </ol>
 </aside>
 
@@ -65,12 +67,12 @@
 <section id="hero" class="hero">
   <div class="hero-copy">
     <h1>跑模型之前<br>先把机器打通</h1>
-    <p class="hero-sub">从 Linux 目录到 Python 容器，再到 MySQL 和 Docker。一条线走完大模型课前面那些「看起来不像 AI」的基础。</p>
+    <p class="hero-sub">从 Linux 目录到 Python 容器，再到 MySQL 和 Docker。模型下面那一层：环境、代码、数据、接口。</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#primer">开始阅读</a>
       <a class="btn btn-ghost" href="#ch6">直接看数据</a>
     </div>
-    <p class="hero-quiet">每一节带一个可动手的演示。</p>
+    <p class="hero-quiet">每一节带一个可动手的演示。另有一册 <a href="heytea-basics.html">手绘本</a>。</p>
   </div>
   <div class="hero-viz">
     <canvas id="bHero" width="720" height="520" aria-label="工程基础流水线"></canvas>
@@ -129,7 +131,7 @@
 <section id="primer" class="ch">
   <div class="ch-head"><span class="ch-num">00</span><h2>从这里开始</h2></div>
   <p class="lead">模型页讲「一个 token 怎么走完网络」，数学页讲「那些符号是什么意思」。这一页讲第三件事：你坐在电脑前，怎么把环境、代码、数据和接口串成一条能跑的线。</p>
-  <p>课里的 VMware、Ubuntu、Xshell，只是让你在 Windows 上拥有一台 Linux。真正要带走的不是安装步骤，是后面那套在服务器上天天用的东西：目录怎么长、命令怎么拼、Python 怎么装数据、MySQL 怎么查、FastAPI 怎么对外、Docker 怎么把「我电脑能跑」变成「哪都能跑」。</p>
+  <p>真正要带走的是服务器上天天用的那一套：目录怎么长、命令怎么拼、Python 怎么装数据、MySQL 怎么查、FastAPI 怎么对外、Docker 怎么把「我电脑能跑」变成「哪都能跑」。</p>
   <div class="note">
     <b>和模型页怎么接</b>
     训练脚本是 Python，张量是 NumPy / PyTorch，语料和业务数据进 MySQL 或文件，推理服务用 FastAPI，部署用 Docker。Linux 和 Shell 是这条链的地板。地板不熟，上面的注意力公式写得再漂亮也跑不起来。
@@ -142,7 +144,7 @@
   <div class="ch-head"><span class="ch-num">01</span><h2>Linux：一切皆文件</h2></div>
   <p class="lead">Windows 用 C:、D: 把世界切开。Linux 用一棵树：根叫 <code>/</code>，往下全是路径。硬盘、进程、网卡，最后都能在某个文件名下面找到。</p>
 
-  <p>课里用 VMware 装 Ubuntu，再用 Xshell 远程登录，是因为真实服务器你摸不到机箱。SSH 连上去之后，你面对的就是这棵树。NAT 网络让虚拟机借宿主机上网；把虚拟机 IP 写死，是为了 Xshell 下次还能连上。</p>
+  <p>真实服务器你摸不到机箱，日常都是 SSH 连上去。连上之后面对的就是这棵树：没有 C: D:，只有从 <code>/</code> 长出来的路径。</p>
 
   <div class="demo" id="fsDemo">
     <div class="demo-head">
@@ -733,7 +735,7 @@ async def create_item(item: Item):
       <ul>
         <li>连客操作系统一起虚拟化</li>
         <li>隔离更彻底，启动以分钟计</li>
-        <li>课里的 VMware 就是这个</li>
+        <li>整台操作系统一起虚拟化</li>
       </ul>
     </div>
     <div class="cmp-col"><h4>容器</h4>
@@ -783,14 +785,14 @@ services:
     depends_on: [db]
 volumes:
   mysql-data:</code></pre>
-  <p><code>docker compose up -d</code> 会先起 MySQL，再起 API。镜像源换成国内的，pull 才不会超时。Windows 上 Docker Desktop 依赖 WSL2，这和课里先开虚拟化是同一类准备。</p>
+  <p><code>docker compose up -d</code> 会先起 MySQL，再起 API。镜像源换成国内的，pull 才不会超时。Windows 上 Docker Desktop 依赖 WSL2，需要先打开 CPU 虚拟化。</p>
 </section>
 
 <div class="ch-air"><p>回头看一遍，从头到尾只有一条线。</p></div>
 
 <section id="ch10" class="ch">
   <div class="ch-head"><span class="ch-num">10</span><h2>回头看：一套环境的一以贯之</h2></div>
-  <p class="lead">VMware 给你一台 Linux。目录和权限让你在这台机器上走动。Shell 把走动写成脚本。Python 描述逻辑，NumPy / Pandas 描述数字和表，MySQL 把表存住，FastAPI 把函数暴露出去，Docker 把这一切封进箱子。</p>
+  <p class="lead">先有一台 Linux。目录和权限让你在这台机器上走动。Shell 把走动写成脚本。Python 描述逻辑，NumPy / Pandas 描述数字和表，MySQL 把表存住，FastAPI 把函数暴露出去，Docker 把这一切封进箱子。</p>
 
   <div class="note">
     <b>一句话带走</b>
@@ -827,8 +829,8 @@ volumes:
 
 <footer class="foot">
   <div class="foot-in">
-    <p>内容按尚硅谷大模型课的 Linux / Shell / Python / NumPy / MySQL / FastAPI / Docker 笔记蒸馏，交互在浏览器本地计算。</p>
-    <p class="foot-dim">安装向导、注册码、逐步截图没有搬进来。需要装环境时，对着原课件点下去即可。</p>
+    <p>Linux / Shell / Python / NumPy / MySQL / FastAPI / Docker，交互在浏览器本地计算。</p>
+    <p class="foot-dim">这一页讲怎么用，不讲怎么装。</p>
   </div>
 </footer>
 
@@ -838,3 +840,5 @@ volumes:
 <script src="vendor/katex/auto-render.min.js"></script>
 <script src="app.js"></script>
 <script src="basics.js"></script>
+</body>
+</html>

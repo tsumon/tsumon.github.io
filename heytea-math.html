@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>看得见的大模型 · 数学手绘本</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="heytea.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar-brand" href="#top">
+    <span class="bar-seal">见</span>
+    <span class="bar-name">看得见的大模型<small>数学手绘本</small></span>
+  </a>
+  <div class="bar-right">
+    <nav class="bar-nav" aria-label="手绘本分册">
+      <a href="heytea.html">模型</a>
+      <a class="is-on" href="heytea-math.html">数学</a>
+      <a href="heytea-basics.html">工程</a>
+    </nav>
+    <a class="bar-back" href="math.html">回互动版</a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<section class="hero">
+  <p class="hero-kicker">数学一册</p>
+  <h1>符号是路标，<br>不是墙</h1>
+  <p class="hero-sub">线代、概率、微积分，大模型真正用到的就这三叠。这一册不点滑块。正文同一副宋体，写意只在图里。</p>
+  <figure class="draw">
+    <div data-illus="mathhero"></div>
+  </figure>
+  <p class="draw-cap">向量指出方向，谷底是错得最少的地方，分数加成一才叫概率。</p>
+</section>
+
+<nav class="toc" aria-label="目录">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#la1"><b>A1</b>向量与矩阵</a></li>
+    <li><a href="#la2"><b>A2</b>矩阵运算</a></li>
+    <li><a href="#la3"><b>A3</b>特征值</a></li>
+    <li><a href="#la4"><b>A4</b>SVD</a></li>
+    <li><a href="#prob1"><b>P1</b>概率</a></li>
+    <li><a href="#prob2"><b>P2</b>期望与方差</a></li>
+    <li><a href="#prob3"><b>P3</b>常见分布</a></li>
+    <li><a href="#prob4"><b>P4</b>最大似然</a></li>
+    <li><a href="#prob5"><b>P5</b>信息论</a></li>
+    <li><a href="#calc1"><b>C1</b>导数与梯度</a></li>
+    <li><a href="#calc2"><b>C2</b>链式法则</a></li>
+    <li><a href="#calc3"><b>C3</b>常用求导</a></li>
+    <li><a href="#calc4"><b>C4</b>雅可比与海森</a></li>
+  </ol>
+</nav>
+
+<ol class="stations">
+  <li><a href="#la1"><i>01</i><b>向量</b><small>方向和长短</small></a></li>
+  <li><a href="#la2"><i>02</i><b>矩阵</b><small>一行对一列</small></a></li>
+  <li><a href="#prob1"><i>03</i><b>概率</b><small>分数加成一</small></a></li>
+  <li><a href="#calc1"><i>04</i><b>梯度</b><small>脚下哪边更陡</small></a></li>
+  <li><a href="#calc2"><i>05</i><b>回传</b><small>一层一层往回乘</small></a></li>
+</ol>
+
+<article class="leaf" id="la1">
+  <div class="leaf-head"><span class="seal">A1</span><h2>向量与矩阵：神经网络的砖瓦</h2></div>
+  <p class="lead">神经网络里的一切都是向量和矩阵。一句话是向量，一层参数是矩阵，一批数据是三维张量。</p>
+  <div class="aside">
+    <b>打个比方</b>
+    向量是一支有方向的箭。长短是大小，箭头指向哪里是方向。两个词越像，两支箭夹角越小，内积越大。词向量就是把意思放进这种箭头里。
+  </div>
+  <figure class="draw"><div data-illus="mvec"></div></figure>
+  <a class="more" href="math.html#la1">去互动版拖两支箭，看内积</a>
+</article>
+
+<p class="air">砖瓦有了。怎么砌？乘起来。</p>
+
+<article class="leaf" id="la2">
+  <div class="leaf-head"><span class="seal">A2</span><h2>矩阵运算：前向传播就是这一下</h2></div>
+  <p class="lead">前向传播就是一连串矩阵乘法。反向传播就是把这些乘法倒过来求导。</p>
+  <div class="aside">
+    <b>一行对一列</b>
+    左边取出第 i 行，右边取出第 j 列，对应位置相乘再加起来，得到结果里的 (i, j)。形状对不上就乘不了：左边的列数必须等于右边的行数。
+  </div>
+  <figure class="draw"><div data-illus="mmat"></div></figure>
+  <a class="more" href="math.html#la2">去互动版走一遍乘法</a>
+</article>
+
+<p class="air">矩阵还可以看成一次变形。</p>
+
+<article class="leaf" id="la3">
+  <div class="leaf-head"><span class="seal">A3</span><h2>特征值：变形后方向不变的那些箭</h2></div>
+  <p class="lead">方阵可以理解成一个线性变换。有些方向被拉伸或压缩，但方向不变，那就是特征向量。拉长的倍数，叫特征值。</p>
+  <figure class="draw"><div data-illus="meig"></div></figure>
+  <a class="more" href="math.html#la3">去互动版看箭头转一圈</a>
+</article>
+
+<p class="air">方阵才能这样拆。任意矩阵呢？</p>
+
+<article class="leaf" id="la4">
+  <div class="leaf-head"><span class="seal">A4</span><h2>SVD：转一下，拉一下，再转一下</h2></div>
+  <p class="lead">特征值分解只能用于方阵。SVD 能分解任意矩阵，而且更稳定。LoRA、PCA、推荐系统都用它。</p>
+  <div class="aside">
+    <b>三步</b>
+    先旋转到一组好轴，再沿轴拉伸（中间那个对角阵就是「瘦」的来源），再旋转到目标方向。任何矩阵都能拆成这三下。
+  </div>
+  <figure class="draw"><div data-illus="msvd"></div></figure>
+  <a class="more" href="math.html#la4">去互动版拧两个伸缩系数</a>
+</article>
+
+<p class="air">形状会了。模型吐出的不是一个字，是一堆分数。</p>
+
+<article class="leaf" id="prob1">
+  <div class="leaf-head"><span class="seal">P1</span><h2>概率：分数要加成一</h2></div>
+  <p class="lead">语言模型不是输出一个确定的词，而是输出一个概率分布。理解概率，是理解生成的前提。</p>
+  <div class="aside">
+    <b>softmax</b>
+    先把分数变成正数（取指数），再除以总和。三根柱子加起来必须是 1，抽的时候才公平。温度低，最高的那根更尖；温度高，大家差不多高。
+  </div>
+  <figure class="draw"><div data-illus="mprob"></div></figure>
+  <a class="more" href="math.html#prob1">去互动版拧温度</a>
+</article>
+
+<p class="air">分布有形状。重心在哪，散开多远？</p>
+
+<article class="leaf" id="prob2">
+  <div class="leaf-head"><span class="seal">P2</span><h2>期望与方差：重心和散开</h2></div>
+  <p class="lead">期望是分布的「重心」，方差是「散开的程度」。训练时要控制激活值的期望和方差，否则梯度爆炸或消失。</p>
+  <div class="aside">
+    <b>为什么要管这两样</b>
+    一层层叠下去，如果每层都把数放大一点，到顶就爆；缩小一点，到顶就没了。BatchNorm、LayerNorm 干的就是把重心拉回零、把散开拉回一。
+  </div>
+  <a class="more" href="math.html#prob2">去互动版看钟形怎么胖</a>
+</article>
+
+<p class="air">几个常用的形状，串起来就是分类。</p>
+
+<article class="leaf" id="prob3">
+  <div class="leaf-head"><span class="seal">P3</span><h2>常见分布：从是非到选一个词</h2></div>
+  <p class="lead">伯努利、高斯、Softmax、Categorical，这几个分布串起来就是一个分类模型。</p>
+  <div class="pair">
+    <div>
+      <h4>是非题</h4>
+      <ul>
+        <li>伯努利：抛一次硬币</li>
+        <li>高斯：连续值，钟形</li>
+      </ul>
+    </div>
+    <div>
+      <h4>选择题</h4>
+      <ul>
+        <li>Categorical：从词表里抽一个</li>
+        <li>Softmax：把分数变成这类分布</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="math.html#prob3">去互动版对照这几个形状</a>
+</article>
+
+<p class="air">有了形状，怎么用数据把参数估出来？</p>
+
+<article class="leaf" id="prob4">
+  <div class="leaf-head"><span class="seal">P4</span><h2>最大似然：让看见的事尽可能像会发生</h2></div>
+  <p class="lead">有一堆数据，假设它们服从某个分布。最大似然说：让这些数据在你的分布下出现的概率最大。</p>
+  <div class="aside">
+    <b>和交叉熵是一件事</b>
+    语言模型的训练损失，就是「下一个词的负对数似然」。让对的那个词概率变大，就是最大似然。交叉熵只是同一句话的另一种写法。
+  </div>
+  <a class="more" href="math.html#prob4">去互动版拖均值看似然</a>
+</article>
+
+<p class="air">概率还有一个别名：不确定性。</p>
+
+<article class="leaf" id="prob5">
+  <div class="leaf-head"><span class="seal">P5</span><h2>信息论：越平均，越难猜</h2></div>
+  <p class="lead">熵给了「不确定性」一个数字。熵越高，分布越平坦，越难预测。KL 散度衡量两个分布差了多少。</p>
+  <figure class="draw"><div data-illus="ment"></div></figure>
+  <a class="more" href="math.html#prob5">去互动版把分布拖平</a>
+</article>
+
+<p class="air">会认分布了。训练靠的是求导。</p>
+
+<article class="leaf" id="calc1">
+  <div class="leaf-head"><span class="seal">C1</span><h2>导数与梯度：脚下哪边更陡</h2></div>
+  <p class="lead">神经网络训练就是求导。误差对每个参数求偏导，得到梯度，然后朝梯度反方向更新参数。</p>
+  <div class="aside">
+    <b>学习率</b>
+    步子太大，会在谷底两边来回跳，甚至飞出去。步子太小，走一夜也到不了。梯度只告诉你方向，不告诉你该迈多大。
+  </div>
+  <figure class="draw"><div data-illus="mgrad"></div></figure>
+  <a class="more" href="math.html#calc1">去互动版改学习率</a>
+</article>
+
+<p class="air">一层还好说。叠起来怎么导？</p>
+
+<article class="leaf" id="calc2">
+  <div class="leaf-head"><span class="seal">C2</span><h2>链式法则：一层一层往回传</h2></div>
+  <p class="lead">神经网络是一层套一层的复合函数。链式法则说：复合函数的导数是每一层导数的连乘。反向传播就是这件事的递归。</p>
+  <figure class="draw"><div data-illus="mchain"></div></figure>
+  <a class="more" href="math.html#calc2">去互动版看外层乘内层</a>
+</article>
+
+<p class="air">几张反复出现的求导表，放在这里。</p>
+
+<article class="leaf" id="calc3">
+  <div class="leaf-head"><span class="seal">C3</span><h2>常用求导：推导时会反复碰到</h2></div>
+  <p class="lead">注意力、LayerNorm、损失函数里，这几张表会反复出现。</p>
+  <div class="pair">
+    <div>
+      <h4>标量</h4>
+      <ul>
+        <li>指数、对数、幂</li>
+        <li>sigmoid、tanh、ReLU</li>
+        <li>softmax 对自身那一项是 p(1−p)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>矩阵</h4>
+      <ul>
+        <li>对 W 求导，形状跟 W 一样</li>
+        <li>转置会把链式里的左右换边</li>
+        <li>互动版把公式都列全了</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="math.html#calc3">去互动版看完整表</a>
+</article>
+
+<p class="air">一阶是坡。二阶是弯。</p>
+
+<article class="leaf" id="calc4">
+  <div class="leaf-head"><span class="seal">C4</span><h2>雅可比与海森：坡度之上还有曲率</h2></div>
+  <p class="lead">雅可比是向量对向量求导，海森是标量对向量求二阶导。牛顿法会用到海森，但深度学习里通常用不起——太大了。</p>
+  <div class="aside">
+    <b>谷、峰、鞍</b>
+    海森正定，是局部谷底；负定，是峰顶；否则是马鞍。Adam 这类一阶方法不看弯，只看坡，所以能训得动几百亿参数。
+  </div>
+  <a class="more" href="math.html#calc4">去互动版拧海森的格子</a>
+</article>
+
+<footer class="foot">
+  <p>这一册是数学互动版的手绘誊本。图是生成的，字是同一副宋体。要动手，请回 <a href="math.html">原页</a>。</p>
+  <p>模型在 <a href="heytea.html">上一册</a>，工程在 <a href="heytea-basics.html">下一册</a>。</p>
+</footer>
+
+</main>
+
+<script src="illus.js"></script>
+</body>
+</html>
