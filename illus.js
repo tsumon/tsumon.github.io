@@ -2,10 +2,15 @@
    版式约定：标题 (36,40)；朱砂印 (655,50)，图元 x<=600，不进印；
    手写体只写在 text.h 上。 */
 (function illus() {
-  const ink = "#17382C";
-  const stamp = "#A33B32";
-  const foam = "#F7F2E7";
-  const soft = "rgba(31,74,58,.12)";
+  function css(name, fallback) {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+  function paint() {
+  const ink = css("--pine-ink", "#17382C");
+  const stamp = css("--stamp", "#A33B32");
+  const foam = css("--paper", "#F7F2E7");
+  const soft = css("--pine-soft", "rgba(31,74,58,.12)");
 
   function cup(x, y, s) {
     return `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="${ink}" stroke-linecap="round" stroke-linejoin="round">
@@ -652,4 +657,25 @@
     const name = el.getAttribute("data-illus");
     el.innerHTML = sketches[name] || "";
   });
+  }
+  paint();
+  window.heyteaPaint = paint;
+
+  const btn = document.getElementById("themeBtn");
+  if (btn) {
+    const sync = () => {
+      const night = document.documentElement.getAttribute("data-theme") === "night";
+      btn.textContent = night ? "昼" : "夜";
+      btn.setAttribute("aria-label", night ? "切回浅色" : "切到夜里");
+    };
+    sync();
+    btn.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "night" ? "day" : "night";
+      if (next === "night") document.documentElement.setAttribute("data-theme", "night");
+      else document.documentElement.removeAttribute("data-theme");
+      try { localStorage.setItem("heytea-theme", next); } catch (e) {}
+      sync();
+      paint();
+    });
+  }
 })();

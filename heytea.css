@@ -130,6 +130,61 @@ a:hover { color: var(--stamp); }
 }
 .bar-back:hover { color: var(--pine-ink); border-color: var(--pine-line); }
 
+html[data-theme="night"] {
+  color-scheme: dark;
+  --bg:        #12110F;
+  --bg-2:      #0C0B0A;
+  --paper:     #1C1A16;
+  --paper-2:   #242118;
+  --line:      #3F3A32;
+  --ink:       #F3EBDC;
+  --dim:       #B7AD9A;
+  --faint:     #8A8274;
+  --pine:      #8BB59A;
+  --pine-ink:  #F3EBDC;
+  --pine-on:   #12110F;
+  --pine-soft: rgba(243, 235, 220, .10);
+  --pine-line: rgba(243, 235, 220, .22);
+  --stamp:     #D46256;
+}
+html[data-theme="night"] body::before {
+  background:
+    radial-gradient(ellipse at 16% -8%, rgba(196,165,116,.18), transparent 42%),
+    radial-gradient(ellipse at 92% 8%, rgba(163,59,50,.08), transparent 36%);
+}
+html[data-theme="night"] body::after {
+  opacity: .06;
+  mix-blend-mode: soft-light;
+}
+html[data-theme="night"] .bar {
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border-bottom-color: rgba(243, 235, 220, .08);
+}
+html[data-theme="night"] .draw {
+  box-shadow: 0 1px 0 rgba(243,235,220,.06), 8px 14px 32px rgba(0,0,0,.45);
+}
+html[data-theme="night"] .stations a,
+html[data-theme="night"] .pair div,
+html[data-theme="night"] .toc,
+html[data-theme="night"] .aside {
+  box-shadow: 0 1px 0 rgba(243,235,220,.05);
+}
+html[data-theme="night"] .hero h1 {
+  text-shadow: 0 1px 0 rgba(0,0,0,.45);
+}
+
+.bar-theme {
+  font: inherit;
+  font-size: 13.5px;
+  letter-spacing: .12em;
+  color: var(--dim);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.bar-theme:hover { color: var(--pine-ink); border-color: var(--pine-line); }
+
 .wrap {
   position: relative;
   z-index: 1;
@@ -357,7 +412,6 @@ pre code { background: none; border: 0; padding: 0; }
   font-size: 14.5px;
 }
 .toc a:hover { color: var(--pine); }
-.toc b { 
 .toc b { color: var(--stamp); font-weight: 700; min-width: 1.8em; }
 
 .foot {
