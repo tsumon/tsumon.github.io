@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>看得见的大模型 · 工程手绘本</title>
+<link rel="stylesheet" href="doodle.css">
+</head>
+<body>
+
+<a class="skip" href="#top">跳到正文</a>
+
+<header class="bar">
+  <a class="bar-brand" href="#top">
+    <span class="bar-mark">见</span>
+    <span class="bar-name">看得见的大模型<small>工程手绘本</small></span>
+  </a>
+  <div class="bar-right">
+    <nav class="bar-nav" aria-label="手绘本分册">
+      <a href="doodle.html">模型</a>
+      <a href="doodle-math.html">数学</a>
+      <a class="is-on" href="doodle-basics.html">工程</a>
+    </nav>
+    <a class="bar-back" href="basics.html">回互动版</a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<section class="hero">
+  <div class="hero-copy">
+    <p class="hero-kicker">工程一册</p>
+    <h1>跑模型之前<br>先把机器打通</h1>
+    <p class="hero-sub">目录、命令、代码、箱子。这一册不点滑块。讲怎么用，不讲怎么装。地板不熟，上面的公式跑不起来。</p>
+  </div>
+  <figure class="draw portrait hung tilt-cw tape">
+    <img src="assets/doodle/cover-basics.jpg" alt="旧插头，小人去接通，手写标题先把机器打通" width="864" height="1152">
+    <figcaption><i></i>先接通。再谈上面跑什么。</figcaption>
+  </figure>
+</section>
+
+<nav class="toc" aria-label="目录">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#ch1"><b>01</b>Linux 目录</a></li>
+    <li><a href="#ch2"><b>02</b>命令与权限</a></li>
+    <li><a href="#ch3"><b>03</b>Shell</a></li>
+    <li><a href="#ch4"><b>04</b>Python 盒子</a></li>
+    <li><a href="#ch5"><b>05</b>闭包与三器</a></li>
+    <li><a href="#ch6"><b>06</b>NumPy / Pandas</a></li>
+    <li><a href="#ch7"><b>07</b>MySQL</a></li>
+    <li><a href="#ch8"><b>08</b>FastAPI</a></li>
+    <li><a href="#ch9"><b>09</b>Docker</a></li>
+    <li><a href="#ch10"><b>10</b>回头看</a></li>
+  </ol>
+</nav>
+
+<ol class="stations">
+  <li><a href="#ch1"><i>01</i><b>机器</b><small>目录、权限</small></a></li>
+  <li><a href="#ch3"><i>02</i><b>说话</b><small>把命令串起来</small></a></li>
+  <li><a href="#ch4"><i>03</i><b>写码</b><small>盒子、闭包</small></a></li>
+  <li><a href="#ch6"><i>04</i><b>算数</b><small>张量和表格</small></a></li>
+  <li><a href="#ch7"><i>05</i><b>上线</b><small>库、接口、箱子</small></a></li>
+</ol>
+
+<article class="leaf hang" id="ch1">
+  <div class="leaf-head"><span class="seal">01</span><h2>Linux：没有盘符，只有一棵树</h2></div>
+  <p class="lead">Windows 用 C:、D: 把世界切开。Linux 用一棵树：根叫 <code>/</code>，往下全是路径。硬盘、进程、网卡，最后都能在某个文件名下面找到。</p>
+  <div class="aside">
+    <b>打个比方</b>
+    <code>/home</code> 是书桌，<code>/etc</code> 是墙上的开关，<code>/opt</code> 是后来搬进来的大家电，<code>/var</code> 是会不断写的流水账，<code>/usr</code> 是已经装好的家具。模型权重、conda 环境，优先放 <code>/opt</code> 或自己家目录，别塞进 <code>/usr</code>。
+  </div>
+  <figure class="draw portrait soft tilt-ccw">
+    <img src="assets/doodle/meta-tree.jpg" alt="陶盆里的分叉枯枝，小人往枝上挂标签，手写标题树一样的目录" width="864" height="1152">
+    <figcaption><i></i>一切皆文件。枝杈就是路径。</figcaption>
+  </figure>
+  <a class="more" href="basics.html#ch1">去互动版点开这棵树</a>
+</article>
+
+<p class="air shift">认路了。下面是和机器说话。</p>
+
+<article class="leaf" id="ch2">
+  <div class="leaf-head"><span class="seal">02</span><h2>命令与权限：谁能碰这个文件</h2></div>
+  <p class="lead">命令不是魔法单词，是 <code>/usr/bin</code> 里的小程序。权限则是「谁能碰这个文件」。把这两件事摸熟，后面的脚本、Docker、SSH 都只是在复用它们。</p>
+  <div class="pair">
+    <div>
+      <h4>日常那几下</h4>
+      <ul>
+        <li><code>pwd / ls / cd</code>：我在哪、有什么、去哪</li>
+        <li><code>cat / tail -f / less</code>：看内容，日志跟</li>
+        <li><code>ps / top / kill</code>：进程。先别急着 <code>-9</code></li>
+      </ul>
+    </div>
+    <div>
+      <h4>权限九个开关</h4>
+      <ul>
+        <li>属主、属组、其他人，各 rwx</li>
+        <li>r=4、w=2、x=1，加起来就是 755、644</li>
+        <li>目录要有 x 才能 <code>cd</code> 进去</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="basics.html#ch2">去互动版拧 chmod</a>
+</article>
+
+<p class="air">命令敲多了就要写成文件。那就是 Shell。</p>
+
+<article class="leaf split-end" id="ch3">
+  <div class="leaf-head"><span class="seal">03</span><h2>Shell：左边吐出的，变成右边吃的</h2></div>
+  <p class="lead">脚本第一行 <code>#!/bin/bash</code> 是在指定「用谁来读我」。变量默认全是字符串，等号两边不能有空格。</p>
+  <div class="aside">
+    <b>管道是灵魂</b>
+    <code>ps -ef | grep python</code> 读作：列出进程，滤出 python。每个程序只做一件小事，用 <code>|</code> 接起来。单引号原样、双引号展开变量、不打引号还会把 <code>*</code> 当成通配符。
+  </div>
+  <figure class="draw portrait clip">
+    <img src="assets/doodle/doodle-pipe.jpg" alt="小人把水从一只桶经软管倒进另一只桶，旁边歪扭手写「接着往下流」" width="864" height="1152">
+    <figcaption><i></i>左边吐出的，变成右边吃的。</figcaption>
+  </figure>
+  <a class="more" href="basics.html#ch3">去互动版看引号怎么展开</a>
+</article>
+
+<p class="air shift">机器听懂命令了。下面用 Python 描述数据。</p>
+
+<article class="leaf split-start" id="ch4">
+  <div class="leaf-head"><span class="seal">04</span><h2>Python：先分清四只盒子</h2></div>
+  <p class="lead">语法规则一天就能混个眼熟。真正决定你会不会写的，是四只盒子：list、tuple、dict、set，以及它们可不可变。</p>
+  <div class="aside">
+    <b>面试只爱问一件事</b>
+    list 可变、不能当字典的键；tuple 不可变、能被哈希。里面嵌了 list，那个 list 仍可变。方括号立刻造出整份 list；圆括号不造容器，它返回生成器。
+  </div>
+  <figure class="draw portrait hung tilt-ccw tape">
+    <img src="assets/doodle/doodle-boxes.jpg" alt="小人搬着一只小盒子，旁边歪扭手写「先装进盒子」" width="864" height="1152">
+    <figcaption><i></i>盒子形状不同，能装的东西也不同。</figcaption>
+  </figure>
+  <a class="more" href="basics.html#ch4">去互动版换四只盒子</a>
+</article>
+
+<p class="air shift">盒子会装了。进阶压成三叠。</p>
+
+<article class="leaf" id="ch5">
+  <div class="leaf-head"><span class="seal">05</span><h2>闭包、三器、三程</h2></div>
+  <p class="lead">闭包把状态揣走；三器分别解决遍历、内存和监控；三程决定 CPU 密集还是 I/O 密集该派谁上场。</p>
+  <div class="pair">
+    <div>
+      <h4>三器</h4>
+      <ul>
+        <li>迭代器：能 <code>next</code> 的东西</li>
+        <li>生成器：函数里 <code>yield</code>，省内存</li>
+        <li>装饰器：闭包的语法糖，给函数加外套</li>
+      </ul>
+    </div>
+    <div>
+      <h4>三程</h4>
+      <ul>
+        <li>进程：各有一份内存，适合 CPU</li>
+        <li>线程：共享内存，但有 GIL</li>
+        <li>协程：等网络时让出，适合 I/O</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="basics.html#ch5">去互动版看口袋还在</a>
+</article>
+
+<p class="air">数字一多，盒子就慢。换整齐的格子。</p>
+
+<article class="leaf" id="ch6">
+  <div class="leaf-head"><span class="seal">06</span><h2>NumPy 与 Pandas：张量和表格</h2></div>
+  <p class="lead">list 能装东西，但装一百万个数就慢，还不能广播。NumPy 的 ndarray 是「同一类型、矩形、连续内存」。Pandas 在它外面加了标签，变成 Series 和 DataFrame。</p>
+  <div class="aside">
+    <b>对齐再运算</b>
+    NumPy 按形状广播，Pandas 按索引对齐。对不齐的格子不是 0，是「空」。<code>loc</code> 按标签，<code>iloc</code> 按下标，这是面试里最爱挖的坑。
+  </div>
+  <a class="more" href="basics.html#ch6">去互动版看广播</a>
+</article>
+
+<p class="air">表要存住，就进库。</p>
+
+<article class="leaf" id="ch7">
+  <div class="leaf-head"><span class="seal">07</span><h2>MySQL：把表问清楚</h2></div>
+  <p class="lead">库是文件夹，表是带类型的 Excel。SQL 不是编程语言，是「描述你想要什么」的语言。</p>
+  <div class="aside">
+    <b>五个字母</b>
+    DDL 建结构，DML 改数据，DQL 查询，DCL 管权限，TCL 管事务。JOIN 是按键把两张表对齐。事务四件事：原子、一致、隔离、持久——要么全成，要么全不当真。
+  </div>
+  <a class="more" href="basics.html#ch7">去互动版写一句 SELECT</a>
+</article>
+
+<p class="air shift">表会问了。把函数挂到门口。</p>
+
+<article class="leaf split-end" id="ch8">
+  <div class="leaf-head"><span class="seal">08</span><h2>FastAPI：把信封推进门缝</h2></div>
+  <p class="lead">浏览器打过来的是 HTTP。FastAPI 做的事：按路径找到函数，把参数从 URL 或 JSON 里拆出来，校验类型，再把返回值变成 JSON。底下用 Uvicorn 跑，调度靠协程。</p>
+  <figure class="draw portrait plain">
+    <img src="assets/doodle/doodle-door.jpg" alt="小人敲门投信，旁边歪扭手写「敲敲门」" width="864" height="1152">
+    <figcaption><i></i>请求是信封。函数在门后面。</figcaption>
+  </figure>
+  <a class="more" href="basics.html#ch8">去互动版点一个接口</a>
+</article>
+
+<p class="air shift">「在我电脑上能跑」就是这样来的。</p>
+
+<article class="leaf split-start" id="ch9">
+  <div class="leaf-head"><span class="seal">09</span><h2>Docker：模子可以复印，账本不能印在纸杯上</h2></div>
+  <p class="lead">没有容器的时候，开发机和服务器永远差那么一点：Python 版本、系统库、环境变量。Docker 的目标是一次打包，到处跑。</p>
+  <div class="aside">
+    <b>数据要另放</b>
+    镜像是只读模板，容器是跑起来的进程。箱子扔了，写在箱子里的盘也没了。所以数据库、上传文件、模型权重，都要挂数据卷。
+  </div>
+  <figure class="draw portrait soft tilt-cw">
+    <img src="assets/doodle/doodle-mold.jpg" alt="小人往模具里倒，旁边歪扭手写「同一个模子」" width="864" height="1152">
+    <figcaption><i></i>模子可以复印很多次。杯子里的东西要另放。</figcaption>
+  </figure>
+  <a class="more" href="basics.html#ch9">去互动版看镜像和容器</a>
+</article>
+
+<p class="air">回头看一遍，地板是这条线。</p>
+
+<article class="leaf" id="ch10">
+  <div class="leaf-head"><span class="seal">10</span><h2>回头看</h2></div>
+  <p class="lead">先有一台 Linux。目录和权限让你在这台机器上走动。Shell 把走动写成脚本。Python 描述逻辑，NumPy / Pandas 描述数字和表，MySQL 把表存住，FastAPI 把函数暴露出去，Docker 把这一切封进箱子。</p>
+  <div class="pair">
+    <div>
+      <h4>三个能带走的</h4>
+      <ul>
+        <li>一切皆文件</li>
+        <li>对齐再运算</li>
+        <li>I/O 让出，CPU 独占</li>
+      </ul>
+    </div>
+    <div>
+      <h4>另外两册</h4>
+      <ul>
+        <li><a href="doodle.html">模型手绘本</a>：注意力那条线</li>
+        <li><a href="doodle-math.html">数学手绘本</a>：符号是路标</li>
+        <li><a href="basics.html">互动版</a>把滑块留在那边</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<footer class="foot">
+  <p>这一册是工程互动版的手绘阅读页。要动手，请回 <a href="basics.html">原页</a>。</p>
+  <p>这一页讲怎么用，不讲怎么装。</p>
+</footer>
+
+</main>
+
+<script src="doodle-illus.js"></script>
+</body>
+</html>

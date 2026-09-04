@@ -2,10 +2,22 @@
 
 一本可交互的大语言模型图解书。从输入到办事，一条线走完注意力、预训练、微调、LoRA 和 Agent。
 
+互动版（可点滑块）：
+
 - [模型主线](index.html)
 - [数学基础](math.html)
 - [工程基础](basics.html)（Linux、Shell、Python、NumPy、MySQL、FastAPI、Docker）
 
-本地打开 `index.html` 即可阅读（KaTeX 已内置，不需要服务器）。发布到 GitHub Pages 后，地址是：
+手绘本（不点滑块，文楷正文）：
+
+- [模型](doodle.html)
+- [数学](doodle-math.html)
+- [工程](doodle-basics.html)
+
+[start-here.html](start-here.html) 是数学 v2 的快速入口，不是全书封面。
+
+本地打开 `index.html` 即可阅读（KaTeX 在 `vendor/katex`，不需要服务器或 CDN）。发布到 GitHub Pages 后，地址是：
 
 `https://<username>.github.io/`
+
+互动版用 localStorage 键 `theme` 记深浅色，手绘本用 `doodle-theme`，两套互不影响。

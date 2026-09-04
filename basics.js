@@ -42,7 +42,7 @@
       ctx.fillStyle = `rgba(${C.heat},${(.08 + pulse * .1).toFixed(3)})`; ctx.fill();
       ctx.beginPath(); ctx.arc(n.x, n.y, 5, 0, 7);
       ctx.fillStyle = C.accent; ctx.fill();
-      ctx.fillStyle = C.dim; ctx.font = '13px ' + cssv('--sans');
+      ctx.fillStyle = C.read || C.text; ctx.font = '13px ' + cssv('--sans');
       ctx.textAlign = 'center'; ctx.fillText(labels[i], n.x, n.y + 42);
     });
     t += 16;

@@ -19,6 +19,7 @@ function readPalette() {
   C.line   = cssv('--line');
   C.soft   = cssv('--line-soft');
   C.text   = cssv('--text');
+  C.read   = cssv('--read') || cssv('--text');
   C.dim    = cssv('--dim');
   C.faint  = cssv('--faint');
   C.accent = cssv('--accent');
@@ -63,6 +64,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const secs = links.map(a => $(a.getAttribute('href'))).filter(Boolean);
   const bar = $('#progressBar');
   const chap = $('#progressChap');
+  // 窄屏没有侧栏：从同一份锚点生成章节跳转，避免三页各写一份。
+  let jump = null;
+  if (links.length) {
+    jump = document.createElement('select');
+    jump.className = 'chap-jump';
+    jump.setAttribute('aria-label', '跳到章节');
+    links.forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a.getAttribute('href');
+      opt.textContent = a.textContent.replace(/\s+/g, ' ').trim();
+      jump.appendChild(opt);
+    });
+    jump.addEventListener('change', () => {
+      if (jump.value) location.hash = jump.value;
+    });
+    const topbar = $('.topbar');
+    if (topbar && topbar.parentNode) topbar.after(jump);
+    else document.body.prepend(jump);
+  }
   // 章节名：取每个 section 的 h2 文本
   const chapName = secs.map(s => {
     const h = s && s.querySelector('h2');
@@ -77,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         links.forEach((a, j) => a.classList.toggle('is-on', j === i));
         cur = i;
         if (chap && chapName[i]) chap.textContent = chapName[i];
+        if (jump && links[i]) jump.value = links[i].getAttribute('href');
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     secs.forEach(s => io.observe(s));

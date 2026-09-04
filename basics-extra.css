@@ -1,4 +1,4 @@
-/* basics page extras — also appended into style.css by _patch.py */
+/* basics page extras — also copied into style.css */
 
 .ch pre, .demo pre {
   font-family: var(--mono);

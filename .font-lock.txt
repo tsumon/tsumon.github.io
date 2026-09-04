@@ -1,0 +1,1 @@
+FONT LOCK: keep @font-face LXGW WenKai in doodle.css; vendor/fonts/*.ttf required

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>看得见的大模型 · 手绘本</title>
+<link rel="stylesheet" href="doodle.css">
+</head>
+<body>
+
+<a class="skip" href="#top">跳到正文</a>
+
+<header class="bar">
+  <a class="bar-brand" href="#top">
+    <span class="bar-mark">见</span>
+    <span class="bar-name">看得见的大模型<small>手绘本</small></span>
+  </a>
+  <div class="bar-right">
+    <nav class="bar-nav" aria-label="手绘本分册">
+      <a class="is-on" href="doodle.html">模型</a>
+      <a href="doodle-math.html">数学</a>
+      <a href="doodle-basics.html">工程</a>
+    </nav>
+    <a class="bar-back" href="index.html">回互动版</a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+<section class="hero">
+  <div class="hero-copy">
+    <p class="hero-kicker">模型一册</p>
+    <h1>看得见的<br>大语言模型</h1>
+    <p class="hero-sub">从输入到办事。这一册不点滑块：白纸、实物、歪扭手写标题。正文同一副文楷，写意只在图里。</p>
+  </div>
+  <figure class="draw portrait hung tilt-cw tape">
+    <img src="assets/doodle/cover-model.jpg" alt="木托盘上的信封，小人递信，手写标题从输入到办事" width="864" height="1152">
+    <figcaption><i></i>信封进来，事情出去。</figcaption>
+  </figure>
+</section>
+
+<nav class="toc" aria-label="目录">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#ch1"><b>01</b>机器学习</a></li>
+    <li><a href="#ch2"><b>02</b>神经网络</a></li>
+    <li><a href="#ch3"><b>03</b>文字变数字</a></li>
+    <li><a href="#ch4"><b>04</b>注意力</a></li>
+    <li><a href="#ch5"><b>05</b>完整架构</a></li>
+    <li><a href="#ch6"><b>06</b>生成下一个字</a></li>
+    <li><a href="#ch7"><b>07</b>预训练</a></li>
+    <li><a href="#ch8"><b>08</b>微调与 LoRA</a></li>
+    <li><a href="#ch9"><b>09</b>强化学习</a></li>
+    <li><a href="#ch10"><b>10</b>Agent</a></li>
+    <li><a href="#ch11"><b>11</b>回头看</a></li>
+  </ol>
+</nav>
+
+<ol class="stations">
+  <li><a href="#ch1"><i>01</i><b>输入</b><small>字变成坐标</small></a></li>
+  <li><a href="#ch4"><i>02</i><b>看见</b><small>注意力</small></a></li>
+  <li><a href="#ch6"><i>03</i><b>生成</b><small>写下下一个</small></a></li>
+  <li><a href="#ch8"><i>04</i><b>对齐</b><small>改成专才</small></a></li>
+  <li><a href="#ch10"><i>05</i><b>办事</b><small>工具与循环</small></a></li>
+</ol>
+
+<article class="leaf hang" id="ch1">
+  <div class="leaf-head"><span class="seal">01</span><h2>机器学习：蒙眼下山</h2></div>
+  <p class="lead">模型不是一串写死的规则。它是一堆可以拧的数字。猜错了，就顺着坡往回拧一点。拧够多次，错得最少的地方，就是它学会的样子。</p>
+  <div class="aside">
+    <b>打个比方</b>
+    蒙着眼往山下走。看不见路，但脚能感觉哪边更陡。朝更陡的反方向迈一小步，再感觉，再迈。谷底就是错得最少的地方。步子太大，会在两边来回跳；太小，走一夜也到不了。
+  </div>
+  <figure class="draw portrait soft tilt-ccw">
+    <img src="assets/doodle/meta-valley.jpg" alt="陶瓷漏斗里小人往下走，手写标题往低处走" width="864" height="1152">
+    <figcaption><i></i>梯度只告诉方向，不告诉该迈多大。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch1">去互动版亲手训一条直线</a>
+</article>
+
+<p class="air">一条直线切开不了弯的世界。</p>
+
+<article class="leaf split-end" id="ch2">
+  <div class="leaf-head"><span class="seal">02</span><h2>神经网络：把直线叠起来</h2></div>
+  <p class="lead">上一章那条直线只能切开线性可分的点。真实世界是弯的。办法很朴素：线性变换之后弯折一次，再叠一层。叠够深，就能画复杂的边界。</p>
+  <div class="aside">
+    <b>弯折是什么</b>
+    每个神经元先加权求和，再过激活函数。ReLU 的规则简单到可笑：负数变 0，正数原样通过。就这一下，叠起来的网络才有画曲线的能力。
+  </div>
+  <figure class="draw portrait clip">
+    <img src="assets/doodle/doodle-layers.jpg" alt="小人爬梯子，往一叠纸上再加一张，旁边歪扭手写「一层一层叠」" width="864" height="1152">
+    <figcaption><i></i>多一张纸，就多一次弯折。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch2">去互动版看它分开两团点</a>
+</article>
+
+<p class="air shift">网络只认数字。下一步：把字变成坐标。</p>
+
+<article class="leaf split-start" id="ch3">
+  <div class="leaf-head"><span class="seal">03</span><h2>文字变数字：抽一张卡片</h2></div>
+  <p class="lead">神经网络只吃数字。所以先把一句话切成小块（token），每块查表换成一串坐标。这串数字不是随便编的，训练会把意思相近的词推到相近的位置。</p>
+  <div class="aside">
+    <b>为什么不按字切</b>
+    按单字切，序列太长，模型算不动。按整词切，词表会爆炸，还对付不了没见过的词。折中叫 BPE：高频的粘成一块，低频的拆开。所以「注意力」常常是一块，unbelievable 却被拆成 un + believ + able。
+  </div>
+  <figure class="draw portrait hung tilt-ccw tape">
+    <img src="assets/doodle/doodle-cards.jpg" alt="小人从卡片柜里抽出一张卡片，旁边歪扭手写「拆成小块」" width="864" height="1152">
+    <figcaption><i></i>每个词是抽屉里的一张卡片。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch3">去互动版看分词和词向量</a>
+</article>
+
+<p class="air">词有了坐标，但还互相看不见。</p>
+
+<article class="leaf bleed" id="ch4">
+  <div class="leaf-head"><span class="seal">04</span><h2>注意力：拿一张卡片去对整面墙</h2></div>
+  <p class="lead">读到「它饿了」的「它」，你会回头找「小猫」。注意力把这个动作做成矩阵乘法：每个词去问所有词「你跟我有多相关」，再按相关度把信息汇总过来。</p>
+  <div class="aside">
+    <b>三个角色</b>
+    Q 是手里的问题，K 是每本书的标签，V 是书里的内容。先拿问题去对所有标签，再按匹配度把内容加权取回。每个词同时扮演这三个角色。
+  </div>
+  <figure class="draw portrait plain">
+    <img src="assets/doodle/meta-attention.jpg" alt="眼镜压在空白卡片上，小人伸手去看，手写标题先看见谁" width="864" height="1152">
+    <figcaption><i></i>问题很小。先看见谁，再取回什么。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch4">去互动版摸注意力矩阵</a>
+</article>
+
+<p class="air shift">注意力是一块砖。下面把它砌进整栋楼。</p>
+
+<article class="leaf hang-alt" id="ch5">
+  <div class="leaf-head"><span class="seal">05</span><h2>完整架构：同一间屋子叠很多层</h2></div>
+  <p class="lead">每个 Transformer 块的入口和出口形状一样，都是「序列长度 × 特征维」。形状不变，才能无限往上叠——GPT-3 叠了 96 层，模具相同，权重不同。</p>
+  <div class="aside">
+    <b>为什么形状必须一样</b>
+    一条残差流贯穿全模型，各层不断往上面读写。前馈层的隐藏维通常是特征维的四倍，参数量的大头其实在 FFN，不在注意力。
+  </div>
+  <figure class="draw portrait soft tilt-cw">
+    <img src="assets/doodle/meta-stack.jpg" alt="叠起的开口木盒，小人爬梯，手写标题同一间房叠起来" width="864" height="1152">
+    <figcaption><i></i>每一层是同一间屋子的复印。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch5">去互动版转一转 3D 结构</a>
+</article>
+
+<p class="air">楼盖好了。怎么从一堆分数里写出一个字？</p>
+
+<article class="leaf split-end" id="ch6">
+  <div class="leaf-head"><span class="seal">06</span><h2>生成：拧三个旋钮</h2></div>
+  <p class="lead">模型最后吐出的不是一个字，而是词表里每个字的分数。怎么从这堆分数里挑一个，决定输出是死板还是活的。</p>
+  <div class="aside">
+    <b>三个旋钮</b>
+    温度趋近于 0，分布变成贪心，字写得死。温度太大，大家差不多高，开始胡来。Top-K 是硬截断，Top-P 是动态截断。实践里通常温度配 Top-P。
+  </div>
+  <figure class="draw portrait hung tilt-cw tape">
+    <img src="assets/doodle/doodle-knobs.jpg" alt="小人拧动桌上的大旋钮，旁边歪扭手写「拧一拧」" width="864" height="1152">
+    <figcaption><i></i>旋钮拧紧，字就死；拧松，字就野。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch6">去互动版拧三个旋钮</a>
+</article>
+
+<p class="air shift">会写一个词，不等于会说话。</p>
+
+<article class="leaf hang" id="ch7">
+  <div class="leaf-head"><span class="seal">07</span><h2>预训练：把空格填上</h2></div>
+  <p class="lead">上一章让模型能写出一个词，但它还没见过世面。真正让它懂语言的，是在海量文本上反复做一件最简单的事：预测下一个词。单调的事重复几万亿次，语言能力就长出来了。</p>
+  <div class="aside">
+    <b>为什么这件事够用</b>
+    要填对「今天天气真____」，得懂语法、常识，甚至一点推理。没法预测的词，它就得逼自己把这些搞清楚。任务看起来机械，入口却是整个世界。
+  </div>
+  <figure class="draw portrait clip">
+    <img src="assets/doodle/meta-pretrain.jpg" alt="打开的填空练习册和铅笔，小人往空线上写字，手写标题把空格填上" width="864" height="1152">
+    <figcaption><i></i>空着的那条线。下一词，写了万亿次。</figcaption>
+  </figure>
+  <a class="more" href="index.html#ch7">去互动版看 loss 往下走</a>
+</article>
+
+<p class="air">它已经懂语言了。现在把它改成专才。</p>
+
+<article class="leaf hang-alt" id="ch8">
+  <div class="leaf-head"><span class="seal">08</span><h2>微调：冻住那堵墙，只练两块薄板</h2></div>
+  <p class="lead">预训练模型什么都懂一点，但不一定懂你的业务。微调就是拿你的数据继续训练。全量更新几百亿参数，显存扛不住。LoRA 的办法：原权重冻住，旁边只训练两个瘦矩阵。</p>
+  <figure class="draw portrait soft tilt-ccw">
+    <img src="assets/doodle/meta-lora.jpg" alt="一叠薄铜片被小人掀起一角，手写标题只动薄片" width="864" height="1152">
+    <figcaption><i></i>墙冻住。变化写在掀起的那一层。</figcaption>
+  </figure>
+  <div class="pair">
+    <div>
+      <h4>什么时候微调</h4>
+      <ul>
+        <li>需要固定的格式或语气</li>
+        <li>领域术语密，提示词教不会</li>
+        <li>想把长提示固化进模型</li>
+      </ul>
+    </div>
+    <div>
+      <h4>什么时候检索就够</h4>
+      <ul>
+        <li>知识要经常更新</li>
+        <li>答案要能溯源到原文</li>
+        <li>数据太少，不够训练</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="index.html#ch8">去互动版拖 LoRA 的秩</a>
+</article>
+
+<p class="air shift">会写，不等于写得合人心意。</p>
+
+<article class="leaf" id="ch9">
+  <div class="leaf-head"><span class="seal">09</span><h2>强化学习：好不好，写不成公式</h2></div>
+  <p class="lead">预训练教会说话，没教什么该说。「这个回答好不好」写不成可导的损失，于是绕一条路：把人的偏好变成奖励，再用策略去优化。</p>
+  <div class="aside">
+    <b>三条路</b>
+    PPO 上限高、难调，显存里同时放好几份权重。DPO 把强化学习消掉，只剩一份偏好数据和一个监督损失。GRPO 去掉价值网络，用同一组样本的均值当基线。
+  </div>
+  <a class="more" href="index.html#ch9">去互动版看完整推导</a>
+</article>
+
+<p class="air">单次问答办不了复杂的事。</p>
+
+<article class="leaf bleed" id="ch10">
+  <div class="leaf-head"><span class="seal">10</span><h2>Agent：走到岔路口，可以绕回来</h2></div>
+  <p class="lead">一次问答解决不了复杂任务。模型得能查资料、调工具、看结果好不好，不行就重来。链是单行道；图才允许循环和分支。</p>
+  <div class="aside">
+    <b>为什么需要图</b>
+    第三步出错，链也只能硬走到底。图可以加一个判断：质量不够就退回去重新检索，三次还不行就转人工。Agent 的本质是「想、做、看、再想」。循环在链里画不出来。
+  </div>
+  <figure class="draw portrait plain">
+    <img src="assets/doodle/meta-agent.jpg" alt="帆布工具袋，小人带着工具走路，手写标题带着工具走路" width="864" height="1152">
+    <figcaption><i></i>带着工具往前。不行就绕回来。</figcaption>
+  </figure>
+  <div class="pair">
+    <div>
+      <h4>用链就够</h4>
+      <ul>
+        <li>步骤固定，比如检索再总结</li>
+        <li>不需要重试或分支</li>
+        <li>调试成本敏感</li>
+      </ul>
+    </div>
+    <div>
+      <h4>需要图</h4>
+      <ul>
+        <li>要调工具再决定下一步</li>
+        <li>需要自检和重试</li>
+        <li>多个角色协作，或等人审批</li>
+      </ul>
+    </div>
+  </div>
+  <a class="more" href="index.html#ch10">去互动版跑一遍链和图</a>
+</article>
+
+<p class="air shift">回头看一遍，从头到尾只有一条线。</p>
+
+<article class="leaf" id="ch11">
+  <div class="leaf-head"><span class="seal">11</span><h2>回头看</h2></div>
+  <p class="lead">把一句话变成一堆向量，让每个词看看别人、自己想一想，重复几十层，最后输出下一个词最可能是哪个。预训练学的是「下一个词最合理」，微调对齐的是「人更希望它说什么」。Agent 只是在主干外面套了工具和重试。</p>
+  <div class="pair">
+    <div>
+      <h4>你可以带走的</h4>
+      <ul>
+        <li>讲清 Transformer 在干什么</li>
+        <li>看懂注意力公式里的符号</li>
+        <li>判断该不该用 LoRA</li>
+      </ul>
+    </div>
+    <div>
+      <h4>另外两册</h4>
+      <ul>
+        <li><a href="doodle-math.html">数学手绘本</a>：符号是路标</li>
+        <li><a href="doodle-basics.html">工程手绘本</a>：目录、命令、箱子</li>
+        <li><a href="index.html">互动版</a>把滑块留在那边</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<footer class="foot">
+  <p>这一册是模型线的手绘阅读页。图是生成的，字是同一副文楷。要动手，请回 <a href="index.html">互动版</a>。</p>
+  <p>数学在 <a href="doodle-math.html">这一册</a>，工程在 <a href="doodle-basics.html">那一册</a>。</p>
+</footer>
+
+</main>
+
+<script src="doodle-illus.js"></script>
+</body>
+</html>
