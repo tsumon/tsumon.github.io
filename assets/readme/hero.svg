@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">看得见的大模型</title>
+  <desc id="desc">可交互的大语言模型图解书。按工程、数学、模型三册阅读：工程铺地，数学捡石，模型走路，从输入到办事。</desc>
+
+  <defs>
+    <clipPath id="page">
+      <rect width="1200" height="400" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#page)">
+    <rect width="1200" height="400" fill="#F5F1E8"/>
+
+    <!-- 线装订口：四眼一线 -->
+    <rect width="36" height="400" fill="#E2D6C0"/>
+    <line x1="18" y1="46" x2="18" y2="354" stroke="#30343A" stroke-width="1" opacity="0.28"/>
+    <g fill="#EDE6D8" stroke="#1C1E22" stroke-width="1.5">
+      <circle cx="18" cy="68" r="5"/>
+      <circle cx="18" cy="156" r="5"/>
+      <circle cx="18" cy="244" r="5"/>
+      <circle cx="18" cy="332" r="5"/>
+    </g>
+
+    <!-- 右缘题签 -->
+    <rect x="1008" y="40" width="52" height="320" fill="#EDE6D8"/>
+    <line x1="1008" y1="40" x2="1008" y2="360" stroke="#30343A" stroke-width="1" opacity="0.18"/>
+    <g fill="#5E6166" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="22" text-anchor="middle">
+      <text x="1034" y="78">从</text>
+      <text x="1034" y="110">输</text>
+      <text x="1034" y="142">入</text>
+      <text x="1034" y="174">到</text>
+      <text x="1034" y="206">办</text>
+      <text x="1034" y="238">事</text>
+    </g>
+    <!-- 朱砂「墨」印 -->
+    <g transform="translate(1012 278)">
+      <rect x="-3" y="-3" width="50" height="50" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+      <rect width="44" height="44" fill="#F5F1E8" stroke="#8B2E2E" stroke-width="2"/>
+      <text x="22" y="30" text-anchor="middle" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="20">墨</text>
+    </g>
+
+    <!-- 书耳：工 / 数 / 模；工为起读 -->
+    <g font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="18" text-anchor="middle">
+      <g transform="translate(1148 72)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#8B2E2E"/>
+        <text x="16" y="23" fill="#F5F1E8">工</text>
+      </g>
+      <g transform="translate(1148 124)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#F5F1E8" stroke="#8B2E2E" stroke-width="1.5"/>
+        <text x="16" y="23" fill="#8B2E2E">数</text>
+      </g>
+      <g transform="translate(1148 176)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#F5F1E8" stroke="#8B2E2E" stroke-width="1.5"/>
+        <text x="16" y="23" fill="#8B2E2E">模</text>
+      </g>
+    </g>
+
+    <!-- 书名 -->
+    <text x="80" y="78" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="20" letter-spacing="8">图解书</text>
+    <text x="80" y="148" fill="#1C1E22" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="56" font-weight="600">看得见的大模型</text>
+    <text x="80" y="192" fill="#5E6166" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif" font-size="22">工程铺地，数学捡石，模型走路。字进来，事情出去。</text>
+
+    <line x1="80" y1="222" x2="980" y2="222" stroke="#30343A" stroke-width="1" opacity="0.16"/>
+
+    <!-- 目次：卷一、二、三。单写「一」会看成破折号。 -->
+    <g font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif">
+      <text x="80" y="268" fill="#8B2E2E" font-size="22">卷一</text>
+      <text x="148" y="268" fill="#1C1E22" font-size="22">工程</text>
+      <text x="240" y="268" fill="#5E6166" font-size="20" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">先把机器打通</text>
+      <line x1="80" y1="284" x2="980" y2="284" stroke="#30343A" stroke-width="1" opacity="0.14" stroke-dasharray="2 5"/>
+
+      <text x="80" y="322" fill="#8B2E2E" font-size="22">卷二</text>
+      <text x="148" y="322" fill="#1C1E22" font-size="22">数学</text>
+      <text x="240" y="322" fill="#5E6166" font-size="20" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">把符号捡回来</text>
+      <line x1="80" y1="338" x2="980" y2="338" stroke="#30343A" stroke-width="1" opacity="0.14" stroke-dasharray="2 5"/>
+
+      <text x="80" y="376" fill="#8B2E2E" font-size="22">卷三</text>
+      <text x="148" y="376" fill="#1C1E22" font-size="22">模型</text>
+      <text x="240" y="376" fill="#5E6166" font-size="20" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">从输入到办事</text>
+    </g>
+  </g>
+</svg>
