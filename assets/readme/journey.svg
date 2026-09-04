@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-labelledby="title desc">
+  <title id="title">从输入到办事</title>
+  <desc id="desc">先读工程、再读数学、最后读模型。模型主线五站：输入、看见、生成、对齐、办事。</desc>
+
+  <defs>
+    <clipPath id="leaf">
+      <rect width="1200" height="380" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#leaf)">
+    <rect width="1200" height="380" fill="#F5F1E8"/>
+
+    <rect width="28" height="380" fill="#E2D6C0"/>
+    <line x1="14" y1="44" x2="14" y2="336" stroke="#30343A" stroke-width="1" opacity="0.28"/>
+    <g fill="#EDE6D8" stroke="#1C1E22" stroke-width="1.4">
+      <circle cx="14" cy="64" r="4.5"/>
+      <circle cx="14" cy="148" r="4.5"/>
+      <circle cx="14" cy="232" r="4.5"/>
+      <circle cx="14" cy="316" r="4.5"/>
+    </g>
+
+    <text x="72" y="56" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="18" letter-spacing="8">先读</text>
+
+    <!-- 三册顺序 -->
+    <g font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="20" text-anchor="middle">
+      <g transform="translate(72 78)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#8B2E2E"/>
+        <text x="16" y="23" fill="#F5F1E8" font-size="18">工</text>
+        <text x="148" y="24" fill="#1C1E22" font-size="22" text-anchor="start">工程铺地</text>
+        <text x="148" y="48" fill="#5E6166" font-size="18" text-anchor="start" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">Linux · Python · Docker</text>
+      </g>
+      <g transform="translate(456 78)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#F5F1E8" stroke="#8B2E2E" stroke-width="1.5"/>
+        <text x="16" y="23" fill="#8B2E2E" font-size="18">数</text>
+        <text x="148" y="24" fill="#1C1E22" font-size="22" text-anchor="start">数学捡石</text>
+        <text x="148" y="48" fill="#5E6166" font-size="18" text-anchor="start" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">线代 · 概率 · 微积分</text>
+      </g>
+      <g transform="translate(840 78)">
+        <rect x="-3" y="-3" width="38" height="38" fill="none" stroke="#8B2E2E" stroke-width="1" opacity="0.45"/>
+        <rect width="32" height="32" fill="#F5F1E8" stroke="#8B2E2E" stroke-width="1.5"/>
+        <text x="16" y="23" fill="#8B2E2E" font-size="18">模</text>
+        <text x="148" y="24" fill="#1C1E22" font-size="22" text-anchor="start">模型走路</text>
+        <text x="148" y="48" fill="#5E6166" font-size="18" text-anchor="start" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">注意力 · 微调 · Agent</text>
+      </g>
+    </g>
+
+    <!-- 连接：不是胶囊，是册页细线 -->
+    <line x1="392" y1="94" x2="444" y2="94" stroke="#8B2E2E" stroke-width="1.2"/>
+    <line x1="776" y1="94" x2="828" y2="94" stroke="#8B2E2E" stroke-width="1.2"/>
+
+    <line x1="72" y1="156" x2="1140" y2="156" stroke="#30343A" stroke-width="1" opacity="0.14"/>
+
+    <text x="72" y="188" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="18" letter-spacing="8">模型主线</text>
+    <text x="196" y="188" fill="#5E6166" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif" font-size="18">一个 token 的旅程</text>
+
+    <!-- 五站目次 -->
+    <g font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif">
+      <text x="72" y="232" fill="#8B2E2E" font-size="22">一、</text>
+      <text x="128" y="232" fill="#1C1E22" font-size="22">输入</text>
+      <text x="196" y="232" fill="#5E6166" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">文字变成向量</text>
+      <text x="72" y="256" fill="#8A8680" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">机器学习 · 神经网络 · 词向量</text>
+
+      <text x="456" y="232" fill="#8B2E2E" font-size="22">二、</text>
+      <text x="516" y="232" fill="#1C1E22" font-size="22">看见</text>
+      <text x="580" y="232" fill="#5E6166" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">注意力与架构</text>
+      <text x="456" y="256" fill="#8A8680" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">注意力机制 · 3D 完整架构</text>
+
+      <text x="840" y="232" fill="#8B2E2E" font-size="22">三、</text>
+      <text x="900" y="232" fill="#1C1E22" font-size="22">生成</text>
+      <text x="964" y="232" fill="#5E6166" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">写下下一个词</text>
+      <text x="840" y="256" fill="#8A8680" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">采样 · 预训练</text>
+    </g>
+
+    <line x1="72" y1="278" x2="1140" y2="278" stroke="#30343A" stroke-width="1" opacity="0.12" stroke-dasharray="2 5"/>
+
+    <g font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif">
+      <text x="72" y="322" fill="#8B2E2E" font-size="22">四、</text>
+      <text x="128" y="322" fill="#1C1E22" font-size="22">对齐</text>
+      <text x="196" y="322" fill="#5E6166" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">改成合心意的专才</text>
+      <text x="72" y="346" fill="#8A8680" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">微调 · LoRA · 强化学习</text>
+
+      <text x="456" y="322" fill="#8B2E2E" font-size="22">五、</text>
+      <text x="516" y="322" fill="#1C1E22" font-size="22">办事</text>
+      <text x="580" y="322" fill="#5E6166" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">Agent 与收束</text>
+      <text x="456" y="346" fill="#8A8680" font-size="18" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">LangChain / LangGraph · 回头看</text>
+    </g>
+  </g>
+</svg>

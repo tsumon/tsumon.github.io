@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-labelledby="title desc">
+  <title id="title">同一条阅读顺序，两套本子</title>
+  <desc id="desc">互动版可点滑块、看离线公式和 3D 架构，并记住深浅色。水墨本一篇一叶讲故事，宣纸静态，不点滑块。</desc>
+
+  <defs>
+    <clipPath id="sheet">
+      <rect width="1200" height="340" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#sheet)">
+    <rect width="1200" height="340" fill="#F5F1E8"/>
+
+    <!-- 订口 -->
+    <rect width="28" height="340" fill="#E2D6C0"/>
+    <line x1="14" y1="40" x2="14" y2="300" stroke="#30343A" stroke-width="1" opacity="0.28"/>
+    <g fill="#EDE6D8" stroke="#1C1E22" stroke-width="1.4">
+      <circle cx="14" cy="58" r="4.5"/>
+      <circle cx="14" cy="133" r="4.5"/>
+      <circle cx="14" cy="208" r="4.5"/>
+      <circle cx="14" cy="283" r="4.5"/>
+    </g>
+
+    <!-- 中缝：摊开的两叶 -->
+    <rect x="598" y="0" width="4" fill="#E4D9C6"/>
+    <line x1="598" y1="24" x2="598" y2="316" stroke="#30343A" stroke-width="1" opacity="0.2"/>
+    <line x1="602" y1="24" x2="602" y2="316" stroke="#30343A" stroke-width="1" opacity="0.12"/>
+
+    <!-- 页眉：同一条线 -->
+    <text x="600" y="42" text-anchor="middle" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="18" letter-spacing="6">同一条阅读顺序</text>
+    <text x="600" y="70" text-anchor="middle" fill="#5E6166" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif" font-size="18">工程 → 数学 → 模型</text>
+
+    <line x1="80" y1="88" x2="560" y2="88" stroke="#30343A" stroke-width="1" opacity="0.12"/>
+    <line x1="640" y1="88" x2="1120" y2="88" stroke="#30343A" stroke-width="1" opacity="0.12"/>
+
+    <!-- 左叶：互动版 -->
+    <text x="80" y="128" fill="#1C1E22" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="32" font-weight="600">互动版</text>
+    <text x="196" y="128" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="20">可点</text>
+    <text x="80" y="162" fill="#5E6166" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif" font-size="20">滑块、公式、3D。每一节带一个演示。</text>
+
+    <g font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">
+      <text x="80" y="210" fill="#8B2E2E" font-size="20">滑块</text>
+      <text x="160" y="210" fill="#30343A" font-size="20">亲手训练一条直线，看误差下山</text>
+      <line x1="80" y1="224" x2="540" y2="224" stroke="#30343A" stroke-width="1" opacity="0.12" stroke-dasharray="2 5"/>
+      <text x="80" y="258" fill="#8B2E2E" font-size="20">公式</text>
+      <text x="160" y="258" fill="#30343A" font-size="20">KaTeX 在 vendor，不靠 CDN</text>
+      <line x1="80" y1="272" x2="540" y2="272" stroke="#30343A" stroke-width="1" opacity="0.12" stroke-dasharray="2 5"/>
+      <text x="80" y="306" fill="#8B2E2E" font-size="20">结构</text>
+      <text x="160" y="306" fill="#30343A" font-size="20">注意力权重与完整 3D 架构</text>
+    </g>
+
+    <!-- 右叶：水墨本 -->
+    <text x="640" y="128" fill="#1C1E22" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="32" font-weight="600">水墨本</text>
+    <text x="756" y="128" fill="#8B2E2E" font-family="Songti SC, STSong, Noto Serif SC, Georgia, serif" font-size="20">不点</text>
+    <text x="640" y="162" fill="#5E6166" font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif" font-size="20">讲故事、说人话。一篇一叶，宣纸静态。</text>
+
+    <g font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, sans-serif">
+      <text x="640" y="210" fill="#8B2E2E" font-size="20">篇叶</text>
+      <text x="720" y="210" fill="#30343A" font-size="20">起一个场景，轻轻点到模型</text>
+      <line x1="640" y1="224" x2="1100" y2="224" stroke="#30343A" stroke-width="1" opacity="0.12" stroke-dasharray="2 5"/>
+      <text x="640" y="258" fill="#8B2E2E" font-size="20">立轴</text>
+      <text x="720" y="258" fill="#30343A" font-size="20">焦墨淡墨飞白，一篇一图</text>
+      <line x1="640" y1="272" x2="1100" y2="272" stroke="#30343A" stroke-width="1" opacity="0.12" stroke-dasharray="2 5"/>
+      <text x="640" y="306" fill="#8B2E2E" font-size="20">纸面</text>
+      <text x="720" y="306" fill="#30343A" font-size="20">宣纸静态，断网也能读</text>
+    </g>
+  </g>
+</svg>
