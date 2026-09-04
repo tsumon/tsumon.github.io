@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>看得见的大语言模型 · 水墨本</title>
+<link rel="preload" href="vendor/fonts/LXGWWenKai-Medium.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="vendor/fonts/LXGWWenKai-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ink.css">
+</head>
+<body>
+
+<a class="skip" href="#mu">跳到目次</a>
+
+<div class="binding" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<nav class="ears" aria-label="分册">
+  <a class="ear is-on" href="ink.html" title="模型一册">模</a>
+  <a class="ear" href="ink-math.html" title="数学一册">数</a>
+  <a class="ear" href="ink-basics.html" title="工程一册">工</a>
+</nav>
+
+<div class="page">
+
+<header class="frontis">
+  <div class="slip">
+    <p class="vol">模型一册</p>
+    <h1>看得见的大语言模型</h1>
+    <div class="slip-tail">
+      <p class="sub">从输入到办事</p>
+      <span class="yin" aria-hidden="true">墨</span>
+    </div>
+  </div>
+</header>
+
+<figure class="axis cover">
+  <img src="assets/ink/cover-model.jpg" alt="焦墨信封，口沿化作一行淡墨脚印" width="768" height="1024">
+  <figcaption>信封进来，事情出去。</figcaption>
+</figure>
+
+<div class="open">
+  <p>夜里有人问路：字是怎么变成事的？</p>
+  <p>这一册不讲公式。只讲七件小事。从一封信进门，到一个人带着工具走出去。</p>
+</div>
+
+<nav class="toc" id="mu" aria-label="目次">
+  <h2>目次</h2>
+  <ol>
+    <li><a href="#ch1"><span class="n">一</span>蒙眼下山</a></li>
+    <li><a href="#ch2"><span class="n">二</span>抽屉里的卡片</a></li>
+    <li><a href="#ch3"><span class="n">三</span>先看见谁</a></li>
+    <li><a href="#ch4"><span class="n">四</span>同一间屋子</a></li>
+    <li><a href="#ch5"><span class="n">五</span>把空格填上</a></li>
+    <li><a href="#ch6"><span class="n">六</span>只动薄片</a></li>
+    <li><a href="#ch7"><span class="n">七</span>带着工具出门</a></li>
+  </ol>
+</nav>
+
+<article class="leaf" id="ch1">
+  <p class="note">脚往低处走</p>
+  <h2><span class="n">一</span>蒙眼下山</h2>
+  <p>山路没有灯。你还是得往下走。</p>
+  <p>看不见，就问脚。哪边陡，哪边就是往上。于是朝反方向迈一小步。再问。再迈。</p>
+  <p>步子太大，人会在两边来回晃。太小，走一夜也到不了谷底。</p>
+  <p class="plaque">脚比眼清楚。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-valley.jpg" alt="焦墨山谷，一人蒙眼沿飞白小路下行" width="1152" height="768">
+    <figcaption>谷底，就是错得最少的地方。</figcaption>
+  </figure>
+  <p>模型学东西，也是这么走的。它猜错了，就顺着更陡的那边，把一堆数字拧回来一点点。</p>
+  <a class="see" href="index.html#ch1">去互动版，亲手训一条直线</a>
+</article>
+
+<article class="leaf" id="ch2">
+  <p class="note">字先变成数</p>
+  <h2><span class="n">二</span>抽屉里的卡片</h2>
+  <p>模型不认字。它只认数。</p>
+  <p>所以进门之前，先把一句话拆成小块。每块去抽屉里抽一张卡片。卡片上不是字，是一串坐标。意思近的，抽屉也挨着。</p>
+  <p>「注意力」常常抽成一整张。「unbelievable」却被拆成三张。不是它不懂英文，是常放在一起的，粘成一块更省事。</p>
+  <p class="plaque">字先变成坐标，才进得了门。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-cards.jpg" alt="焦墨卡片柜，一只抽屉拉开，一张空白卡片滑出" width="1152" height="768">
+    <figcaption>每个词是抽屉里的一张卡片。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch3">去互动版看分词</a>
+</article>
+
+<article class="leaf" id="ch3">
+  <p class="note">不是全看</p>
+  <h2><span class="n">三</span>先看见谁</h2>
+  <p>读到「它饿了」，你会回头找「小猫」。</p>
+  <p>模型也这么干。手里捏着一张卡片，去对整面墙。哪张跟它有关，就多看一眼。无关的，当没看见。</p>
+  <p>问题很小。先看见谁，再取回什么。</p>
+  <p class="plaque">不是全看。是先看该看的。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-gaze.jpg" alt="淡墨卡片墙，近处一张浓墨卡片压在格子上" width="1152" height="768">
+    <figcaption>墙很大。先看见的，只有几张。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch4">去互动版摸注意力</a>
+</article>
+
+<article class="leaf" id="ch4">
+  <p class="note">户型不变</p>
+  <h2><span class="n">四</span>同一间屋子</h2>
+  <p>一间屋子，复印很多遍，叠起来。</p>
+  <p>每间屋子干的事差不多：看看别人，自己想一想，再交给上一层。进门出门的尺寸必须一样，不然叠歪。</p>
+  <p>叠到九十六层，还是同一间屋子。变的是屋里的家具，不是户型。</p>
+  <p class="plaque">户型不变，才能往上盖。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-rooms.jpg" alt="同一间屋子用浓淡墨叠成几层" width="1152" height="768">
+    <figcaption>每一层是同一间屋子的复印。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch5">去互动版转一转结构</a>
+</article>
+
+<article class="leaf" id="ch5">
+  <p class="note">下一空</p>
+  <h2><span class="n">五</span>把空格填上</h2>
+  <p>会写一个词，不等于会说话。</p>
+  <p>真正让它懂语言的，是一件无聊的事：把下一空填上。填了万亿次。「今天天气真____」要填对，得懂一点人间。</p>
+  <p>写的时候还有三个旋钮。拧紧，字就死。拧松，字就野。</p>
+  <p class="plaque">空着的那条线，写了万亿次。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-blank.jpg" alt="练习册上留出一条飞白空行，毛笔停在缺口" width="1152" height="768">
+    <figcaption>空着的，才是要写的。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch7">去互动版看它怎么填</a>
+</article>
+
+<article class="leaf" id="ch6">
+  <p class="note">墙冻住</p>
+  <h2><span class="n">六</span>只动薄片</h2>
+  <p>墙已经砌好了。你只想让它会写病历，或者会说你们那儿的行话。</p>
+  <p>把整堵墙拆了重砌，太贵。于是墙冻住。变化写在掀起的那一层薄片上。</p>
+  <p>薄片很小，换起来也快。</p>
+  <p class="plaque">墙不动。动的是掀起来的那一层。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-foil.jpg" alt="浓墨墙面，一层薄宣纸被掀起" width="1152" height="768">
+    <figcaption>变化写在掀起的那一层。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch8">去互动版看薄片怎么贴</a>
+</article>
+
+<article class="leaf" id="ch7">
+  <p class="note">可以回头</p>
+  <h2><span class="n">七</span>带着工具出门</h2>
+  <p>问一句答一句，办不了复杂的事。</p>
+  <p>得出门。带着家伙。走到岔路，看一眼做得好不好。不好，就绕回来再走。</p>
+  <p>单行道不能回头。画出岔路，才允许绕。</p>
+  <p class="plaque">想，做，看，再想。</p>
+  <figure class="axis">
+    <img src="assets/ink/story-walk.jpg" alt="一人背着行囊走到三岔路口" width="1152" height="768">
+    <figcaption>带着工具往前。不行就绕回来。</figcaption>
+  </figure>
+  <a class="see" href="index.html#ch10">去互动版跑一趟</a>
+</article>
+
+<footer class="colophon">
+  <p>这一册是说书。七件事走完，字就变成了事。要动手拧滑块，请回<a href="index.html">互动版</a>。</p>
+  <p>数学在<a href="ink-math.html">这一册</a>，工程在<a href="ink-basics.html">那一册</a>。喜茶手绘本已由本册代替。</p>
+</footer>
+
+</div>
+</body>
+</html>

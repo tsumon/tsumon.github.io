@@ -1,0 +1,513 @@
+/* 水墨本 V3：线装册页。
+   订口在左，书耳在右，卷首竖排题签，一篇一叶。
+   禁止 hero 双栏、五站胶囊、胶带 tilt、sticky 数字条。
+   断网可读：霞鹜文楷自托管。无深色模式，无滚动动效。 */
+
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("vendor/fonts/LXGWWenKai-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("vendor/fonts/LXGWWenKai-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #F5F1E8;
+  --paper-deep: #EDE6D8;
+  --silk: #E4D9C6;
+  --jiao: #1C1E22;
+  --nong: #30343A;
+  --dan: #5E6166;
+  --fei: #8A8680;
+  --line: rgba(48, 52, 58, 0.18);
+  --line-soft: rgba(48, 52, 58, 0.1);
+  --cinnabar: #8B2E2E;
+  --cinnabar-ink: #6E2424;
+  --prose: 34em;
+  --page: 44rem;
+  --display: "LXGW WenKai", "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif;
+  --serif: "LXGW WenKai", "Songti SC", "STSong", "Noto Serif SC", "SimSun", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+  --s9: 96px;
+  --s10: 128px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  color-scheme: light;
+  scrollbar-color: var(--fei) var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--nong);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 2.05;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.28  0 0 0 0 0.24  0 0 0 0 0.18  0 0 0 .42 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection {
+  background: rgba(139, 46, 46, 0.16);
+  color: var(--jiao);
+}
+
+a { color: var(--cinnabar-ink); text-underline-offset: 3px; }
+a:hover { color: var(--cinnabar); }
+
+:focus-visible {
+  outline: 1px solid var(--cinnabar);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+}
+.skip:focus {
+  left: 44px;
+  z-index: 80;
+  background: var(--paper);
+  padding: 6px 12px;
+  color: var(--jiao);
+  border: 1px solid var(--cinnabar);
+}
+
+/* —— 线装订口：四眼一线，不是顶栏 —— */
+.binding {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 12;
+  background: linear-gradient(90deg, #E2D6C0 0%, var(--paper) 86%);
+  border-right: 1px solid var(--line-soft);
+}
+.binding::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 11%;
+  bottom: 11%;
+  width: 1px;
+  background: var(--nong);
+  opacity: 0.28;
+}
+.binding i {
+  position: absolute;
+  left: 9px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--nong);
+  border-radius: 50%;
+  background: var(--paper-deep);
+  z-index: 1;
+}
+.binding i:nth-child(1) { top: 12%; }
+.binding i:nth-child(2) { top: 37%; }
+.binding i:nth-child(3) { top: 62%; }
+.binding i:nth-child(4) { top: 87%; }
+
+/* —— 书耳：三方印，不是胶囊 —— */
+.ears {
+  position: fixed;
+  right: 14px;
+  top: 22%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ear {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--cinnabar);
+  outline: 1px solid color-mix(in srgb, var(--cinnabar) 50%, transparent);
+  outline-offset: 2px;
+  color: var(--cinnabar);
+  text-decoration: none;
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--paper);
+  line-height: 1;
+}
+.ear.is-on {
+  background: var(--cinnabar);
+  color: var(--paper);
+}
+@media (hover: hover) {
+  .ear:hover { background: color-mix(in srgb, var(--cinnabar) 12%, var(--paper)); }
+  .ear.is-on:hover { background: var(--cinnabar); color: var(--paper); }
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  width: min(var(--page), calc(100% - 88px));
+  margin: 0 auto;
+  padding: 0 0 var(--s10);
+}
+
+/* —— 卷首：右缘竖排题签，左大留白 —— */
+.frontis {
+  min-height: 100svh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10vh 4% 8vh 8%;
+}
+.slip {
+  writing-mode: vertical-rl;
+  height: min(80vh, 42rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.slip h1,
+.slip .vol,
+.slip .sub {
+  white-space: nowrap;
+}
+.slip h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  color: var(--jiao);
+}
+.slip .vol {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 0.95rem;
+  letter-spacing: 0.38em;
+  color: var(--cinnabar);
+  font-weight: 500;
+}
+.slip-tail {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.slip .sub {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  letter-spacing: 0.24em;
+  color: var(--dan);
+  padding-block-start: 3.2em;
+}
+.yin {
+  writing-mode: horizontal-tb;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--cinnabar);
+  outline: 1px solid var(--cinnabar);
+  outline-offset: 3px;
+  color: var(--cinnabar);
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--paper) 88%, var(--cinnabar) 6%);
+  letter-spacing: 0;
+}
+
+/* —— 插页立轴：天杆地杆，无 tilt、无胶带 —— */
+.axis {
+  margin: var(--s7) auto var(--s5);
+  max-width: 36rem;
+  padding: 10px 12px 14px;
+  background: var(--silk);
+  border-top: 3px solid var(--jiao);
+  border-bottom: 3px solid var(--jiao);
+  border-left: 0;
+  border-right: 0;
+}
+.axis.cover {
+  max-width: 19rem;
+  margin-top: 0;
+  margin-bottom: var(--s8);
+}
+.axis img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--paper);
+  vertical-align: middle;
+}
+.axis figcaption {
+  margin: 10px 2px 0;
+  color: var(--dan);
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  line-height: 1.55;
+  text-align: right;
+}
+
+.open {
+  max-width: var(--prose);
+  margin: 0 auto var(--s8);
+}
+.open p {
+  margin: 0 0 1.1em;
+  text-indent: 2em;
+  text-wrap: pretty;
+}
+
+/* —— 目次：一、二、三，不是横向数字条 —— */
+.toc {
+  max-width: 22rem;
+  margin: 0 auto var(--s10);
+  padding-top: var(--s4);
+}
+.toc h2 {
+  margin: 0 0 var(--s5);
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.46em;
+  color: var(--cinnabar);
+}
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.toc a {
+  display: grid;
+  grid-template-columns: 2.1em 1fr;
+  gap: 0.7rem;
+  padding: 0.5rem 0 0.55rem;
+  text-decoration: none;
+  color: var(--nong);
+  border-bottom: 1px dotted var(--line);
+  font-size: 17px;
+}
+@media (hover: hover) {
+  .toc a:hover { color: var(--cinnabar-ink); }
+}
+.toc .n {
+  color: var(--cinnabar);
+  font-family: var(--display);
+  font-weight: 500;
+}
+
+/* —— 一篇一叶 —— */
+.leaf {
+  position: relative;
+  max-width: var(--prose);
+  margin: 0 auto var(--s10);
+  padding-top: var(--s6);
+}
+.leaf + .leaf {
+  border-top: 1px solid var(--line-soft);
+}
+.leaf h2 {
+  margin: 0 0 1.5em;
+  font-family: var(--display);
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  color: var(--jiao);
+  text-wrap: balance;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.leaf h2 .n {
+  flex: 0 0 auto;
+  color: var(--cinnabar);
+  font-size: 0.72em;
+  letter-spacing: 0.12em;
+}
+.leaf p {
+  margin: 0 0 1.12em;
+  text-indent: 2em;
+  text-wrap: pretty;
+}
+.leaf p.flush,
+.leaf .see {
+  text-indent: 0;
+}
+
+.note {
+  writing-mode: vertical-rl;
+  position: absolute;
+  right: calc(100% + 1.4rem);
+  top: 5.2rem;
+  color: var(--dan);
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  height: 9.5em;
+  line-height: 1.2;
+}
+
+/* 匾额：一句闲话，不是术语框 */
+.plaque {
+  margin: 1.6rem 0 1.8rem 12%;
+  padding: 0;
+  max-width: 16em;
+  font-family: var(--display);
+  font-size: 1.18rem;
+  line-height: 1.55;
+  letter-spacing: 0.08em;
+  color: var(--jiao);
+  text-indent: 0;
+}
+.plaque::before {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--cinnabar);
+  margin-bottom: 0.75rem;
+}
+
+.see {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-family: var(--display);
+  font-size: 13.5px;
+  letter-spacing: 0.08em;
+  color: var(--dan);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line);
+}
+@media (hover: hover) {
+  .see:hover { color: var(--cinnabar-ink); border-bottom-style: solid; }
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.84em;
+  background: transparent;
+  border-bottom: 1px dotted var(--line);
+  padding: 0 0.12em;
+}
+
+.colophon {
+  max-width: var(--prose);
+  margin: var(--s8) auto 0;
+  padding-top: var(--s6);
+  border-top: 1px solid var(--nong);
+  color: var(--dan);
+  font-family: var(--display);
+  font-size: 15px;
+  line-height: 1.9;
+}
+.colophon p {
+  margin: 0 0 0.7em;
+  text-indent: 2em;
+}
+.colophon p.flush { text-indent: 0; }
+
+@media (max-width: 860px) {
+  .note {
+    writing-mode: horizontal-tb;
+    position: static;
+    height: auto;
+    letter-spacing: 0.14em;
+    margin: -0.6em 0 1.4em;
+    font-size: 13px;
+  }
+  .page { width: calc(100% - 72px); }
+}
+
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  .binding {
+    width: 100%;
+    height: 10px;
+    bottom: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+    background: linear-gradient(180deg, #E2D6C0 0%, var(--paper) 100%);
+  }
+  .binding::after {
+    left: 10%;
+    right: 10%;
+    top: 4px;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+  .binding i {
+    top: 0;
+    left: auto;
+  }
+  .binding i:nth-child(1) { left: 12%; }
+  .binding i:nth-child(2) { left: 37%; }
+  .binding i:nth-child(3) { left: 62%; }
+  .binding i:nth-child(4) { left: 87%; }
+  .ears {
+    position: static;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 22px 8px 0;
+    gap: 12px;
+  }
+  .page {
+    width: calc(100% - 32px);
+    padding-bottom: 80px;
+  }
+  .frontis {
+    min-height: auto;
+    padding: 8vh 4% 6vh;
+    justify-content: center;
+  }
+  .slip {
+    height: auto;
+    max-height: none;
+  }
+  .slip h1 { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+  .axis.cover { max-width: 16rem; }
+  .plaque { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

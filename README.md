@@ -8,11 +8,11 @@
 - [数学基础](math.html)
 - [工程基础](basics.html)（Linux、Shell、Python、NumPy、MySQL、FastAPI、Docker）
 
-手绘本（不点滑块，文楷正文）：
+水墨本（讲故事、说人话，不点滑块）：
 
-- [模型](doodle.html)
-- [数学](doodle-math.html)
-- [工程](doodle-basics.html)
+- [模型](ink.html)
+- [数学](ink-math.html)
+- [工程](ink-basics.html)
 
 [start-here.html](start-here.html) 是数学 v2 的快速入口，不是全书封面。
 
@@ -20,4 +20,4 @@
 
 `https://<username>.github.io/`
 
-互动版用 localStorage 键 `theme` 记深浅色，手绘本用 `doodle-theme`，两套互不影响。
+互动版用 localStorage 键 `theme` 记深浅色。水墨本为宣纸静态页，无主题切换。旧 `doodle.html` 等地址会跳到对应水墨本。
