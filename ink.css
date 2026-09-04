@@ -300,6 +300,14 @@ a:hover { color: var(--cinnabar); }
   text-align: right;
 }
 
+.open .path {
+  text-indent: 0;
+  color: var(--dan);
+  font-size: 0.95em;
+  margin-bottom: var(--s4);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--line-soft);
+}
 .open {
   max-width: var(--prose);
   margin: 0 auto var(--s8);

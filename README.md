@@ -8,11 +8,11 @@
 - [数学基础](math.html)
 - [工程基础](basics.html)（Linux、Shell、Python、NumPy、MySQL、FastAPI、Docker）
 
-水墨本（讲故事、说人话，不点滑块）：
+水墨本（讲故事、说人话，不点滑块）。**阅读顺序：工程 → 数学 → 模型。**
 
-- [模型](ink.html)
+- [工程](ink-basics.html)（先读）
 - [数学](ink-math.html)
-- [工程](ink-basics.html)
+- [模型](ink.html)
 
 [start-here.html](start-here.html) 是数学 v2 的快速入口，不是全书封面。
 
